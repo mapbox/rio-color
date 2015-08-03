@@ -34,9 +34,9 @@ setup(name='rio-color',
           'rasterio>=0.23'
       ],
       extras_require={
-          'test': ['pytest'],
+          'test': ['coveralls', 'pytest', 'pytest-cov'],
       },
       entry_points="""
-      [rasterio.rio_commands]
+      [rasterio.rio_plugins]
       color=rio_color.scripts.cli:rio_color
       """      )
