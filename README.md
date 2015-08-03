@@ -1,5 +1,8 @@
 # rio-color
 
+[![Build Status](https://travis-ci.org/mapbox/rio-color.svg)](https://travis-ci.org/mapbox/rio-color)
+[![Coverage Status](https://coveralls.io/repos/mapbox/rio-color/badge.svg?branch=master&service=github)](https://coveralls.io/github/mapbox/rio-color?branch=master)
+
 Color-oriented operations for `rasterio`/`rio`.
 
 ## Goals

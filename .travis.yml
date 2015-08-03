@@ -16,6 +16,6 @@ install:
   - pip install -U pip
   - pip install --use-wheel --find-links=$HOME/wheelhouse -e .[test] --cache-dir $HOME/.pip-cache
 script:
-  - py.test --cov mbtiles --cov-report term-missing
+  - py.test --cov rio_color --cov-report term-missing
 after_success:
   - coveralls
