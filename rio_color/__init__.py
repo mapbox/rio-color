@@ -72,18 +72,16 @@ def gamma(arr, g):
 # Utility functions
 
 def simple_atmo(rgb, haze, contrast, bias):
-  '''A simple, non-adaptive atmospheric correction function.'''
+  '''A simple, static (non-adaptive) atmospheric correction function.'''
 	
   rgb = to_math_type(rgb)
 	
-  bias /= 100.0 # easier to express in the range 0..100
-  
   gamma_b = 1 - haze
   gamma_g = 1 - (haze*(1/3.0))
 
-  rgb[1] = gamma(rgb[1], gamma_g)  
+  rgb[1] = gamma(rgb[1], gamma_g)
   rgb[2] = gamma(rgb[2], gamma_b)
 
   return to_uint16(
-    sigmoidal(rgb, midpoint, contrast)
+    sigmoidal(rgb, bias, contrast)
   )
