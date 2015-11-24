@@ -1,6 +1,16 @@
 import click
 import rasterio as rio
 import rio_color as rico
+import riomucho
+
+def colorer(rgb, window, ij, args):
+  #print ij
+  return rico.simple_atmo(
+    rgb[0],
+    args['atmo'],
+    args['contrast'],
+    args['bias']
+  )
 
 @click.command('color')
 @click.option(
@@ -30,32 +40,25 @@ import rio_color as rico
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.pass_context
 def simple_color(ctx, atmo, contrast, bias, src_path, dst_path):
-
-  # todo: test that image is 16 bits, 3 bands, etc.
-  # todo: think about mask/alpha
-  bidxs = 1, 2, 3
-  
-  bias = bias/100.0
-
   with rio.open(src_path) as src:
-    src_meta = src.meta
-    src_meta.update(photometric='RGB')
-    src_meta.update(transform=src_meta['affine'])
-
-    with rio.open(dst_path, 'w', **src_meta) as dst:
-    
-      rgb = src.read()
-    
-      rgb_adj = rico.simple_atmo(
-        rgb,
-        atmo,
-        contrast,
-        bias)
-		
-      for bidx in bidxs:
-        dst.write(
-          rgb_adj[bidx-1],
-          bidx)
+    opts = src.meta.copy()
+    kwds = src.profile.copy()
+  opts.update(**kwds)
+  
+  colorer_args = {
+    'atmo': atmo,
+    'contrast': contrast,
+    'bias': bias/100.0
+  }
+  
+  with riomucho.RioMucho(
+    [src_path],
+    dst_path,
+    colorer,
+    options=opts,
+    global_args=colorer_args
+  ) as mucho:
+    mucho.run(8)
 
 if __name__ == '__main__':
   simple_color()
