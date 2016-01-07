@@ -1,15 +1,7 @@
 import click
-import rasterio as rio
-import rio_color as rico
+import rasterio
+from rio_color import color_worker
 import riomucho
-
-
-def colorer(rgb, window, ij, args):
-    return rico.simple_atmo(
-        rgb[0],
-        args['atmo'],
-        args['contrast'],
-        args['bias'])
 
 
 @click.command('color')
@@ -24,28 +16,40 @@ def colorer(rgb, window, ij, args):
     '--bias', '-b', type=click.FLOAT, default=15,
     help='Skew (brighten/darken) the output. Lower values make it brighter. 0..100 (50 is none), default 15.'
 )
+@click.option('--max-procs', '-j', type=int, default=8)
+@click.option('--out-dtype')
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
-@click.option('--max-procs', '-j', type=int, default=8)
 @click.pass_context
-def simple_color(ctx, atmo, contrast, bias, src_path, dst_path, max_procs):
-    with rio.open(src_path) as src:
+def simple_color(ctx, atmo, contrast, bias, max_procs, out_dtype,
+                 src_path, dst_path):
+    with rasterio.open(src_path) as src:
         opts = src.meta.copy()
         kwds = src.profile.copy()
+        windows = [(window, ij) for ij, window in src.block_windows()]
+
     opts.update(**kwds)
 
     colorer_args = {
         'atmo': atmo,
         'contrast': contrast,
-        'bias': bias / 100.0
+        'bias': bias / 100.0,
+        'out_dtype': out_dtype if out_dtype else opts['dtype']
     }
+
+    # Helpful for debugging
+    # for window, ij in windows:
+    #     rasters = [rasterio.open(src_path)]
+    #     color_worker(rasters, window, ij, colorer_args)
 
     with riomucho.RioMucho(
         [src_path],
         dst_path,
-        colorer,
+        color_worker,
+        windows=windows,
         options=opts,
-        global_args=colorer_args
+        global_args=colorer_args,
+        mode="manual_read"
     ) as mucho:
         mucho.run(max_procs)
 

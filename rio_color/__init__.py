@@ -9,18 +9,17 @@ math_type = np.float32
 
 epsilon = np.finfo(math_type).eps
 
-# The largest value representable by uint16:
-max_int = np.iinfo(np.uint16).max
 
-
-def to_math_type(arr):
+def to_math_type(arr, dtype):
     '''Convert an array from uint16 to 0..1, scaling down linearly'''
+    max_int = np.iinfo(dtype).max
     return arr.astype(math_type) / max_int
 
 
-def to_uint16(arr):
+def scale_dtype(arr, dtype):
     '''Convert an array from 0..1 to uint16, scaling up linearly'''
-    return (arr * max_int).astype(np.uint16)
+    max_int = np.iinfo(dtype).max
+    return (arr * max_int).astype(dtype)
 
 
 # Color manipulation functions
@@ -73,14 +72,25 @@ def gamma(arr, g):
 def simple_atmo(rgb, haze, contrast, bias):
     '''A simple, static (non-adaptive) atmospheric correction function.'''
 
-    rgb = to_math_type(rgb)
-
     gamma_b = 1 - haze
     gamma_g = 1 - (haze * (1 / 3.0))
 
     rgb[1] = gamma(rgb[1], gamma_g)
     rgb[2] = gamma(rgb[2], gamma_b)
 
-    return to_uint16(
-        sigmoidal(rgb, bias, contrast)
-    )
+    return sigmoidal(rgb, bias, contrast)
+
+
+def color_worker(srcs, window, ij, args):
+    src = srcs[0]
+    rgb = src.read(window=window)
+    rgb = to_math_type(rgb, rgb.dtype)
+
+    atmos = simple_atmo(
+        rgb,
+        args['atmo'],
+        args['contrast'],
+        args['bias'])
+
+    # should be scaled 0 to 1, scale to outtype
+    return scale_dtype(atmos, args['out_dtype'])
