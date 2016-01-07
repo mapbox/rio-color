@@ -26,8 +26,9 @@ def colorer(rgb, window, ij, args):
 )
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
+@click.option('--max-procs', '-j', type=int, default=8)
 @click.pass_context
-def simple_color(ctx, atmo, contrast, bias, src_path, dst_path):
+def simple_color(ctx, atmo, contrast, bias, src_path, dst_path, max_procs):
     with rio.open(src_path) as src:
         opts = src.meta.copy()
         kwds = src.profile.copy()
@@ -46,7 +47,7 @@ def simple_color(ctx, atmo, contrast, bias, src_path, dst_path):
         options=opts,
         global_args=colorer_args
     ) as mucho:
-        mucho.run(8)
+        mucho.run(max_procs)
 
 if __name__ == '__main__':
     simple_color()
