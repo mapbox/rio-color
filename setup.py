@@ -38,5 +38,5 @@ setup(name='rio-color',
       },
       entry_points="""
       [rasterio.rio_plugins]
-      color=rio_color.scripts.cli:rio_color
+      color=rio_color.scripts.cli:simple_color
       """      )
