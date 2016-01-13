@@ -17,7 +17,7 @@ import riomucho
     help='Skew (brighten/darken) the output. Lower values make it brighter. 0..100 (50 is none), default 15.'
 )
 @click.option('--max-procs', '-j', type=int, default=8)
-@click.option('--out-dtype')
+@click.option('--out-dtype', '-d', type=click.Choice(['uint8','uint16']))
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.pass_context
@@ -30,11 +30,14 @@ def simple_color(ctx, atmo, contrast, bias, max_procs, out_dtype,
 
     opts.update(**kwds)
 
+    out_dtype = out_dtype if out_dtype else opts['dtype']
+    opts['dtype'] = out_dtype
+
     colorer_args = {
         'atmo': atmo,
         'contrast': contrast,
         'bias': bias / 100.0,
-        'out_dtype': out_dtype if out_dtype else opts['dtype']
+        'out_dtype': out_dtype
     }
 
     # Helpful for debugging
