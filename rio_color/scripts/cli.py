@@ -17,7 +17,7 @@ import riomucho
     help='Skew (brighten/darken) the output. Lower values make it brighter. 0..100 (50 is none), default 15.'
 )
 @click.option('--max-procs', '-j', type=int, default=8)
-@click.option('--out-dtype', '-d', type=click.Choice(['uint8','uint16']))
+@click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']))
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.pass_context
