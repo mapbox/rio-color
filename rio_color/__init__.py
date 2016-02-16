@@ -1,6 +1,6 @@
 import numpy as np
 
-__version__ = '0.0.0'
+__version__ = '0.1'
 
 # The type to be used for all intermediate math
 # operations. Should be a float because values will
