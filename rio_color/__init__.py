@@ -1,7 +1,4 @@
-import rasterio as rio
 import numpy as np
-import sys
-from math import exp, ceil
 
 __version__ = '0.0.0'
 
@@ -12,76 +9,88 @@ math_type = np.float32
 
 epsilon = np.finfo(math_type).eps
 
-# The largest value representable by uint16:
-max_int = np.iinfo(np.uint16).max
+
+def to_math_type(arr, dtype):
+    '''Convert an array from uint16 to 0..1, scaling down linearly'''
+    max_int = np.iinfo(dtype).max
+    return arr.astype(math_type) / max_int
 
 
-def to_math_type(arr):
-  '''Convert an array from uint16 to 0..1, scaling down linearly'''
-  return arr.astype(math_type)/max_int
-
-def to_uint16(arr):
-  '''Convert an array from 0..1 to uint16, scaling up linearly'''
-  return (arr*max_int).astype(np.uint16)
+def scale_dtype(arr, dtype):
+    '''Convert an array from 0..1 to uint16, scaling up linearly'''
+    max_int = np.iinfo(dtype).max
+    return (arr * max_int).astype(dtype)
 
 
 # Color manipulation functions
 
 def sigmoidal(arr, bias, contrast):
 
-  alpha, beta = bias, contrast
-  # We use the names a and b to match documentation.
-  
-  if alpha == 0:
-    alpha = epsilon
-  
-  if beta == 0:
-    return arr
-  
-  np.seterr(divide='ignore', invalid='ignore')
-  
-  if beta > 0:
-    # Forward sigmoidal function:
-    # (This is really badly documented in the wild/internet.
-    # @virginiayung is the only person I trust to understand it.)
-    numerator   = 1/(1+np.exp(beta*(alpha-arr))) - 1/(1+np.exp(beta*alpha))
-    denominator = 1/(1+np.exp(beta*(alpha - 1))) - 1/(1+np.exp(beta*alpha))
-    return numerator / denominator
-  else:
-    # Inverse sigmoidal function:
-    # todo: account for 0s
-    # todo: formatting ;)
-    return (
-      (beta*alpha) - np.log(
-        (
-          1 / (
-            (arr/(1 + np.exp( beta*alpha - beta )))
-            - (arr / (1 + np.exp( beta*alpha )))
-            + (1 / (1 + np.exp( beta*alpha )))
-          )
-        )
-        - 1)
-      ) / beta
+    alpha, beta = bias, contrast
+    # We use the names a and b to match documentation.
 
+    if alpha == 0:
+        alpha = epsilon
+
+    if beta == 0:
+        return arr
+
+    np.seterr(divide='ignore', invalid='ignore')
+
+    if beta > 0:
+        # Forward sigmoidal function:
+        # (This is really badly documented in the wild/internet.
+        # @virginiayung is the only person I trust to understand it.)
+        numerator = 1 / (1 + np.exp(beta * (alpha - arr))) - \
+            1 / (1 + np.exp(beta * alpha))
+        denominator = 1 / (1 + np.exp(beta * (alpha - 1))) - \
+            1 / (1 + np.exp(beta * alpha))
+        return numerator / denominator
+    else:
+        # Inverse sigmoidal function:
+        # todo: account for 0s
+        # todo: formatting ;)
+        return (
+            (beta * alpha) - np.log(
+                (
+                    1 / (
+                        (arr / (1 + np.exp(beta * alpha - beta)))
+                        - (arr / (1 + np.exp(beta * alpha)))
+                        + (1 / (1 + np.exp(beta * alpha)))
+                    )
+                )
+                - 1)
+        ) / beta
 
 
 def gamma(arr, g):
-  return arr**(1.0/g)
+    return arr**(1.0 / g)
 
 
 # Utility functions
 
 def simple_atmo(rgb, haze, contrast, bias):
-  '''A simple, static (non-adaptive) atmospheric correction function.'''
-	
-  rgb = to_math_type(rgb)
-	
-  gamma_b = 1 - haze
-  gamma_g = 1 - (haze*(1/3.0))
+    '''A simple, static (non-adaptive) atmospheric correction function.'''
 
-  rgb[1] = gamma(rgb[1], gamma_g)
-  rgb[2] = gamma(rgb[2], gamma_b)
+    gamma_b = 1 - haze
+    gamma_g = 1 - (haze * (1 / 3.0))
 
-  return to_uint16(
-    sigmoidal(rgb, bias, contrast)
-  )
+    rgb[1] = gamma(rgb[1], gamma_g)
+    rgb[2] = gamma(rgb[2], gamma_b)
+
+    return sigmoidal(rgb, bias, contrast)
+
+
+def color_worker(srcs, window, ij, args):
+    src = srcs[0]
+    rgb = src.read(window=window)
+    rgb = to_math_type(rgb, rgb.dtype)
+
+    atmos = simple_atmo(
+        rgb,
+        args['atmo'],
+        args['contrast'],
+        args['bias'])
+
+    # should be scaled 0 to 1, scale to outtype
+    return scale_dtype(atmos, args['out_dtype'])

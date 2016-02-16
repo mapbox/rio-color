@@ -1,3 +1,4 @@
+import os
 from codecs import open as codecs_open
 from setuptools import setup, find_packages
 
@@ -16,6 +17,10 @@ with codecs_open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
 
 
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+
 setup(name='rio-color',
       version=version,
       description=u"Color correction plugin for rasterio",
@@ -29,14 +34,12 @@ setup(name='rio-color',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          'click',
-          'rasterio>=0.23'
-      ],
+      install_requires=read('requirements.txt').splitlines(),
       extras_require={
-          'test': ['coveralls', 'pytest', 'pytest-cov'],
+          'test': ['pytest', 'pytest-cov', 'codecov', 'raster-tester'],
       },
       entry_points="""
       [rasterio.rio_plugins]
-      color=rio_color.scripts.cli:rio_color
-      """      )
+      color=rio_color.scripts.cli:simple_color
+      """
+      )
