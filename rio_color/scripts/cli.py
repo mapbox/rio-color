@@ -16,7 +16,7 @@ def validate_bands(bandstr, count):
 
 
 @click.command('color')
-@click.option('--max-procs', '-j', type=int, default=8)
+@click.option('--max-procs', '-j', type=int, default=1)
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']))
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
@@ -61,6 +61,7 @@ Example:
         windows = [(window, ij) for ij, window in src.block_windows()]
 
     opts.update(**kwds)
+    opts['transform'] = opts['affine']
 
     out_dtype = out_dtype if out_dtype else opts['dtype']
     opts['dtype'] = out_dtype
@@ -68,7 +69,10 @@ Example:
     # Just run this for validation this time
     # parsing will be run again within the worker
     # where its returned value will be used
-    parse_operations(operations)
+    try:
+        list(parse_operations(operations, opts['count']))
+    except ValueError as e:
+        raise click.UsageError(e.message)
 
     args = {
         'operations': operations,
@@ -120,6 +124,7 @@ def atmos(ctx, atmo, contrast, bias, max_procs, out_dtype,
         windows = [(window, ij) for ij, window in src.block_windows()]
 
     opts.update(**kwds)
+    opts['transform'] = opts['affine']
 
     out_dtype = out_dtype if out_dtype else opts['dtype']
     opts['dtype'] = out_dtype

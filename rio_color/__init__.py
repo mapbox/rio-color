@@ -67,6 +67,20 @@ def gamma(arr, g):
     return arr**(1.0 / g)
 
 
+def saturation(arr, percent):
+    """
+    preprocess array
+    skimage.color.rgb2lab
+    skimage.color.lab2lch
+    multiply saturation by percent
+    skimage.color.lch2lab
+    skimage.color.lab2rgb
+    postprocess
+    return
+    """
+    return arr
+
+
 # Utility functions
 
 def simple_atmo(rgb, haze, contrast, bias):
@@ -103,14 +117,14 @@ def color_worker(srcs, window, ij, args):
     arr = src.read(window=window)
     arr = to_math_type(arr, arr.dtype)
 
-    for func in parse_operations(args['operations']):
+    for func in parse_operations(args['operations'], arr.shape[0]):
         arr = func(arr)
 
     # scaled 0 to 1, now scale to outtype
     return scale_dtype(arr, args['out_dtype'])
 
 
-def parse_operations(operations):
+def parse_operations(operations, count):
     """Takes an iterable of operations,
     each operation is expected to be a string with a specified syntax
 
@@ -119,12 +133,19 @@ def parse_operations(operations):
     And yields a list of functions that take and return ndarrays
     """
     band_lookup = {'r': 1, 'g': 2, 'b': 3}
+
     opfuncs = {
+        'saturation': saturation,
         'sigmoidal': sigmoidal,
         'gamma': gamma}
+
     opkwargs = {
+        'saturation': ('percent',) ,
         'sigmoidal': ('contrast', 'bias'),
-        'gamma': ('g')}
+        'gamma': ('g',)}
+
+    # Operations that assume RGB colorspace
+    rgb_ops = ('saturation',)
 
     for op in operations:
         parts = op.split(" ")
@@ -132,25 +153,44 @@ def parse_operations(operations):
         bandstr = parts[1]
         args = parts[2:]
 
-        func = opfuncs[opname]
+        try:
+            func = opfuncs[opname]
+        except KeyError:
+            raise ValueError("{} is not a valid operation".format(opname))
 
-        # parse bands, r,g,b ~= 1,2,3
-        bands = set()
-        for bs in bandstr.split(","):
-            try:
-                band = int(bs)
-            except ValueError:
-                band = band_lookup[bs.lower()]
-            bands.add(band)
+        if opname in rgb_ops:
+            # push 2nd arg into args
+            args = [bandstr] + args
+            # ignore bands, assumed to be in rgb
+            bands = (1, 2, 3)
+        else:
+            # 2nd arg is bands
+            # parse r,g,b ~= 1,2,3
+            bands = set()
+            for bs in bandstr.split(","):
+                try:
+                    band = int(bs)
+                except ValueError:
+                    band = band_lookup[bs.lower()]
+                if band < 1 or band > count:
+                    raise ValueError(
+                        "{} BAND must be between 1 and {}".format(opname, count))
+                bands.add(band)
+
 
         # assume all args are float
         args = [float(arg) for arg in args]
         kwargs = dict(zip(opkwargs[opname], args))
 
         def f(arr):
-            # apply func to array band at a time
-            for b in bands:
-                arr[b - 1] = func(arr[b - 1], **kwargs)
+            if opname in rgb_ops:
+                # apply func to array assuming 3 band r,g,b
+                # todo what if bands are specified (e.g. b,g,r)
+                arr = func(arr, **kwargs)
+            else:
+                # apply func to array band at a time
+                for b in bands:
+                    arr[b - 1] = func(arr[b - 1], **kwargs)
             return arr
 
         yield f
