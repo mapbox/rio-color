@@ -69,16 +69,32 @@ def gamma(arr, g):
 
 def saturation(arr, percent):
     """
-    preprocess array
-    skimage.color.rgb2lab
-    skimage.color.lab2lch
-    multiply saturation by percent
-    skimage.color.lch2lab
-    skimage.color.lab2rgb
-    postprocess
-    return
+    multiply saturation by percent in LCH color space
     """
-    return arr
+    lch = rgb2lch(arr)
+    # Adjust chroma, band at index=1
+    lch[1] = lch[1] * (percent / 100.0)
+    return lch2rgb(lch)
+
+
+def rgb2lch(rgb):
+    from skimage.color import rgb2lab, lab2lch
+    # reshape for skimage (bands, cols, rows) -> (cols, rows, bands)
+    srgb = np.swapaxes(rgb, 0, 2)
+    # convert colorspace
+    lch = lab2lch(rgb2lab(srgb))
+    # return in (bands, cols, rows) order
+    return np.swapaxes(lch, 2, 0)
+
+
+def lch2rgb(lch):
+    from skimage.color import lch2lab, lab2rgb
+    # reshape for skimage (bands, cols, rows) -> (cols, rows, bands)
+    slch = np.swapaxes(lch, 0, 2)
+    # convert colorspace
+    rgb = lab2rgb(lch2lab(slch))
+    # return in (bands, cols, rows) order
+    return np.swapaxes(rgb, 2, 0)
 
 
 # Utility functions
@@ -140,7 +156,7 @@ def parse_operations(operations, count):
         'gamma': gamma}
 
     opkwargs = {
-        'saturation': ('percent',) ,
+        'saturation': ('percent',),
         'sigmoidal': ('contrast', 'bias'),
         'gamma': ('g',)}
 
@@ -159,9 +175,9 @@ def parse_operations(operations, count):
             raise ValueError("{} is not a valid operation".format(opname))
 
         if opname in rgb_ops:
+            # ignore bands, assumed to be in rgb
             # push 2nd arg into args
             args = [bandstr] + args
-            # ignore bands, assumed to be in rgb
             bands = (1, 2, 3)
         else:
             # 2nd arg is bands
@@ -177,7 +193,6 @@ def parse_operations(operations, count):
                         "{} BAND must be between 1 and {}".format(opname, count))
                 bands.add(band)
 
-
         # assume all args are float
         args = [float(arg) for arg in args]
         kwargs = dict(zip(opkwargs[opname], args))
@@ -185,7 +200,6 @@ def parse_operations(operations, count):
         def f(arr):
             if opname in rgb_ops:
                 # apply func to array assuming 3 band r,g,b
-                # todo what if bands are specified (e.g. b,g,r)
                 arr = func(arr, **kwargs)
             else:
                 # apply func to array band at a time
