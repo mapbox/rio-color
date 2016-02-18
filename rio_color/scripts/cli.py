@@ -6,8 +6,10 @@ import riomucho
 
 
 @click.command('color')
-@click.option('--max-procs', '-j', type=int, default=1)
-@click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']))
+@click.option('--jobs', '-j', type=int, default=1,
+              help="Number of jobs to run simultaneously, default 1")
+@click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
+              help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.argument('operations', nargs=-1)
@@ -99,8 +101,10 @@ Example:
 @click.option('--bias', '-b', type=click.FLOAT, default=15,
               help="Skew (brighten/darken) the output. Lower values make it "
                    "brighter. 0..100 (50 is none), default 15.")
-@click.option('--max-procs', '-j', type=int, default=8)
-@click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']))
+@click.option('--jobs', '-j', type=int, default=1,
+              help="Number of jobs to run simultaneously, default 1")
+@click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
+              help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.pass_context
