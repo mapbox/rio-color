@@ -58,11 +58,6 @@ def saturation(arr, percent):
 
 # Utility functions
 
-# The type to be used for all intermediate math
-# operations. Should be a float because values will
-# be scaled to the range 0..1 for all work.
-
-
 def rgb2lch(rgb):
     from skimage.color import rgb2lab, lab2lch
     # reshape for skimage (bands, cols, rows) -> (cols, rows, bands)
@@ -155,14 +150,16 @@ def parse_operations(operations, count=3):
         args = [float(arg) for arg in args]
         kwargs = dict(zip(opkwargs[opname], args))
 
-        def f(arr):
+        def f(arr, func=func, kwargs=kwargs):
             if opname in rgb_ops:
                 # apply func to array assuming 3 band r,g,b
-                arr = func(arr, **kwargs)
+                newarr = func(arr, **kwargs)
             else:
                 # apply func to array band at a time
+                # Avoid mutation by copying (TODO evalutate)
+                newarr = arr.copy()
                 for b in bands:
-                    arr[b - 1] = func(arr[b - 1], **kwargs)
-            return arr
+                    newarr[b - 1] = func(arr[b - 1], **kwargs)
+            return newarr
 
         yield f
