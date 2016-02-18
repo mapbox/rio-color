@@ -94,7 +94,7 @@ def simple_atmo(rgb, haze, contrast, bias):
     return sigmoidal(rgb, contrast, bias)
 
 
-def parse_operations(operations, count):
+def parse_operations(operations, count=3):
     """Takes an iterable of operations,
     each operation is expected to be a string with a specified syntax
 

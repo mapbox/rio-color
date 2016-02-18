@@ -11,7 +11,23 @@ We want to supply a baseline selection of esthetics-oriented image operations fo
 
 ## Python API
 
-TODO 
+`rio_color` comes with three modules, `operations`, `workers` and `utils`. The `workers` and `utils` modules are mostly used internally so we won't discuss them here. 
+
+Most of the interesting interfaces will be found in `rio_color.operations`. The following functions accept and return numpy arrays. In some cases, the input array is assumed to be in RGB colorspace with the axis order as (bands, columns, rows); the standard in geospatial software but other image processing software may use the (columns, rows, bands) axis order.
+
+* `sigmoidal(arr, contrast, bias)`
+* `gamma(arr, g)`
+* `saturation(arr, percent)`
+* `rgb2lch(rgb)`
+* `lch2rgb(lch)`
+* `simple_atmo(rgb, haze, contrast, bias)`
+
+There is one function in the `rio_color.operations` module which doesn't manipulate arrays, 
+`parse_operations`. This function takes an iterable of *operation strings* and
+yields python functions which can be applied to an array. This provides a tiny *Domain Specific Language* to allow you
+to compose ordered chains of image manipulations using the above operations. For more information on
+operation strings, see the `rio color` command line help.
+
 
 ## Command Line Interface
 
