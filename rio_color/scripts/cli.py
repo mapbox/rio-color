@@ -5,17 +5,6 @@ from rio_color.operations import parse_operations
 import riomucho
 
 
-def validate_bands(bandstr, count):
-    try:
-        bands = [int(x) for x in bandstr.split(",")]
-        assert min(bands) > 0
-        assert max(bands) <= count
-    except (AssertionError, ValueError):
-        raise click.UsageError(
-            "Invalid bands: '{}' (requires comma-separated ints)".format(bandstr))
-    return bands
-
-
 @click.command('color')
 @click.option('--max-procs', '-j', type=int, default=1)
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']))
@@ -153,5 +142,5 @@ def atmos(ctx, atmo, contrast, bias, max_procs, out_dtype,
             with rasterio.open(src_path) as src:
                 rasters = [src]
                 for window, ij in windows:
-                    arr = color_worker(rasters, window, ij, args)
+                    arr = atmos_worker(rasters, window, ij, args)
                     dest.write(arr, window=window)
