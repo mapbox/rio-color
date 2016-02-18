@@ -1,4 +1,4 @@
-import click
+mport click
 import rasterio
 from rio_color.workers import atmos_worker, color_worker
 from rio_color.operations import parse_operations
@@ -14,7 +14,7 @@ import riomucho
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.argument('operations', nargs=-1)
 @click.pass_context
-def color(ctx, max_procs, out_dtype, src_path, dst_path, operations):
+def color(ctx, jobs, out_dtype, src_path, dst_path, operations):
     """Color correction
 
 Operations will be applied to the src image in the specified order.
@@ -71,7 +71,7 @@ Example:
         'out_dtype': out_dtype
     }
 
-    if max_procs > 1:
+    if jobs > 1:
         with riomucho.RioMucho(
             [src_path],
             dst_path,
@@ -81,7 +81,7 @@ Example:
             global_args=args,
             mode="manual_read"
         ) as mucho:
-            mucho.run(max_procs)
+            mucho.run(jobs)
     else:
         with rasterio.open(dst_path, 'w', **opts) as dest:
             with rasterio.open(src_path) as src:
@@ -108,7 +108,7 @@ Example:
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.pass_context
-def atmos(ctx, atmo, contrast, bias, max_procs, out_dtype,
+def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
           src_path, dst_path):
     """Atmospheric correction
     """
@@ -130,7 +130,7 @@ def atmos(ctx, atmo, contrast, bias, max_procs, out_dtype,
         'out_dtype': out_dtype
     }
 
-    if max_procs > 1:
+    if jobs > 1:
         with riomucho.RioMucho(
             [src_path],
             dst_path,
@@ -140,7 +140,7 @@ def atmos(ctx, atmo, contrast, bias, max_procs, out_dtype,
             global_args=args,
             mode="manual_read"
         ) as mucho:
-            mucho.run(max_procs)
+            mucho.run(jobs)
     else:
         with rasterio.open(dst_path, 'w', **opts) as dest:
             with rasterio.open(src_path) as src:
