@@ -12,9 +12,9 @@ before_install:
   - sudo apt-get install -y python-numpy libgdal1h gdal-bin
 install:
   - "pip install -U pip"
-  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm-dev/simple -c https://mapbox-pi.s3.amazonaws.com/pxm-dev/constraints.txt -r requirements-dev.txt"
-  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm-dev/simple -c https://mapbox-pi.s3.amazonaws.com/pxm-dev/constraints.txt scipy"
-  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm-dev/simple -c https://mapbox-pi.s3.amazonaws.com/pxm-dev/constraints.txt -r requirements.txt"
+  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm -c https://mapbox-pi.s3.amazonaws.com/pxm/constraints.txt -r requirements-dev.txt"
+  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm -c https://mapbox-pi.s3.amazonaws.com/pxm/constraints.txt scipy"
+  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm -c https://mapbox-pi.s3.amazonaws.com/pxm/constraints.txt -r requirements.txt"
   - "pip install -e .[test]"
 script:
   - py.test --cov rio_color --cov-report term-missing
