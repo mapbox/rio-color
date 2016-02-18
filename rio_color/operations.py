@@ -85,6 +85,9 @@ def lch2rgb(lch):
 
 def simple_atmo(rgb, haze, contrast, bias):
     '''A simple, static (non-adaptive) atmospheric correction function.'''
+    # bias assumed to be given in percent,
+    # convert to proportion
+    bias = bias / 100.0
 
     gamma_b = 1 - haze
     gamma_g = 1 - (haze * (1 / 3.0))

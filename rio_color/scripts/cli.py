@@ -133,7 +133,7 @@ def atmos(ctx, atmo, contrast, bias, max_procs, out_dtype,
     args = {
         'atmo': atmo,
         'contrast': contrast,
-        'bias': bias / 100.0,
+        'bias': bias,
         'out_dtype': out_dtype
     }
 
