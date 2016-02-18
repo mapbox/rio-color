@@ -57,6 +57,15 @@ Options:
   --help                          Show this message and exit.
 ```
 
+Example:
+
+```
+$ rio color -d uint8 -j 4 rgb.tif test.tif \
+    "gamma 3 1.85" "gamma 1,2 1.95" "sigmoidal 1,2,3 35 0.13" "saturation 115"
+```
+
+![screen shot 2016-02-17 at 12 18 47 pm](https://cloud.githubusercontent.com/assets/1151287/13116122/0f7f5f20-d571-11e5-82e7-9cc65c443972.png)
+
 ### `rio atmos`
 
 ```
