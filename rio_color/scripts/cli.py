@@ -1,6 +1,7 @@
 import click
 import rasterio
-from rio_color import atmos_worker, color_worker, parse_operations
+from rio_color.workers import atmos_worker, color_worker
+from rio_color.operations import parse_operations
 import riomucho
 
 
