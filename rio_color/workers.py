@@ -6,7 +6,7 @@ from .utils import to_math_type, scale_dtype
 def atmos_worker(srcs, window, ij, args):
     src = srcs[0]
     rgb = src.read(window=window)
-    rgb = to_math_type(rgb, rgb.dtype)
+    rgb = to_math_type(rgb)
 
     atmos = simple_atmo(
         rgb,
@@ -21,7 +21,7 @@ def atmos_worker(srcs, window, ij, args):
 def color_worker(srcs, window, ij, args):
     src = srcs[0]
     arr = src.read(window=window)
-    arr = to_math_type(arr, arr.dtype)
+    arr = to_math_type(arr)
 
     for func in parse_operations(args['operations'], arr.shape[0]):
         arr = func(arr)
