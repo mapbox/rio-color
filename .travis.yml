@@ -1,22 +1,36 @@
 language: python
-python:
-  - "2.7"
-  - "3.4"
+sudo: false
 cache:
   directories:
-    - $HOME/.pip-cache/
-    - $HOME/wheelhouse
+    - ~/.cache/pip
+env:
+  global:
+    - PIP_WHEEL_DIR=$HOME/.cache/pip/wheels
+    - PIP_FIND_LINKS=file://$HOME/.cache/pip/wheels
+addons:
+  apt:
+    packages:
+    - libgdal1h
+    - gdal-bin
+    - libgdal-dev
+    - libatlas-dev
+    - libatlas-base-dev
+    - gfortran
+python:
+  - "2.7"
 before_install:
-  - sudo add-apt-repository -y ppa:ubuntugis/ppa
-  - sudo apt-get update -qq
-  - sudo apt-get install -y python-numpy libgdal1h gdal-bin
-install:
   - "pip install -U pip"
-  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm -c https://mapbox-pi.s3.amazonaws.com/pxm/constraints.txt -r requirements-dev.txt"
-  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm -c https://mapbox-pi.s3.amazonaws.com/pxm/constraints.txt scipy"
-  - "pip install --extra-index-url=https://dd8kvqd1c0bor.cloudfront.net/pxm -c https://mapbox-pi.s3.amazonaws.com/pxm/constraints.txt -r requirements.txt"
+  - "pip install wheel"
+install:
+  - "pip wheel numpy scipy"
+  - "pip install --use-wheel numpy scipy"
+  - "pip wheel -r requirements.txt"
+  - "pip install --use-wheel -r requirements.txt"
+  - "pip wheel -r requirements-dev.txt"
+  - "pip install --use-wheel -r requirements-dev.txt"
   - "pip install -e .[test]"
 script:
   - py.test --cov rio_color --cov-report term-missing
 after_success:
   - coveralls
+
