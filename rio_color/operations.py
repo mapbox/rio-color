@@ -1,4 +1,5 @@
 import numpy as np
+from .utils import epsilon
 
 # Color manipulation functions
 
