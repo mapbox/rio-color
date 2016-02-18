@@ -62,7 +62,7 @@ Example:
     try:
         list(parse_operations(operations, opts['count']))
     except ValueError as e:
-        raise click.UsageError(e.message)
+        raise click.UsageError(str(e))
 
     args = {
         'operations': operations,
