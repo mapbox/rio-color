@@ -30,7 +30,7 @@ Available OPERATIONS include:
 \b
     "sigmoidal BANDS CONTRAST BIAS"
         Adjusts the contrast and brightness of midtones.
-        BIAS > 50 darkens the image.
+        BIAS > 0.5 darkens the image.
 
 \b
     "saturation PERCENTAGE"
