@@ -7,7 +7,7 @@ import riomucho
 
 @click.command('color')
 @click.option('--jobs', '-j', type=int, default=1,
-              help="Number of jobs to run simultaneously, default 1")
+              help="Number of jobs to run simultaneously, default: 1")
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
@@ -24,17 +24,18 @@ Available OPERATIONS include:
 
 \b
     "gamma BANDS VALUE"
-        Applies a gamma curve, brighten or darken midtones.
+        Applies a gamma curve, brightening or darkening midtones.
         VALUE > 1 brightens the image.
 
 \b
     "sigmoidal BANDS CONTRAST BIAS"
         Adjusts the contrast and brightness of midtones.
+        BIAS > 50 darkens the image.
 
 \b
     "saturation PERCENTAGE"
-        Controls the saturation in HSV color space.
-        PERCENTAGE = 0 results in a grayscale image
+        Controls the saturation in LCH color space (similar to HSV).
+        PERCENTAGE = 0 results in a grayscale image.
 
 BANDS are specified as a comma-separated list of band numbers or letters
 
@@ -94,15 +95,15 @@ Example:
 @click.command('atmos')
 @click.option('--atmo', '-a', type=click.FLOAT, default=0.03,
               help="How much to dampen cool colors, thus cutting through "
-                   "haze. 0..1 (0 is none), default 0.03.")
+                   "haze. 0..1 (0 is none), default: 0.03.")
 @click.option('--contrast', '-c', type=click.FLOAT, default=10,
               help="Contrast factor to apply to the scene. -infinity..infinity"
                    "(0 is none), default 10.")
 @click.option('--bias', '-b', type=click.FLOAT, default=15,
               help="Skew (brighten/darken) the output. Lower values make it "
-                   "brighter. 0..100 (50 is none), default 15.")
+                   "brighter. 0..100 (50 is none), default: 15.")
 @click.option('--jobs', '-j', type=int, default=1,
-              help="Number of jobs to run simultaneously, default 1")
+              help="Number of jobs to run simultaneously, default: 1")
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
