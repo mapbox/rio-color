@@ -35,9 +35,10 @@ Available OPERATIONS include:
 \b
     "saturation PERCENTAGE"
         Controls the saturation in LCH color space (similar to HSV).
-        PERCENTAGE = 0 results in a grayscale image.
+        PERCENTAGE = 0 results in a grayscale image, 100 is no change,
+        and 200 is a lot.
 
-BANDS are specified as a comma-separated list of band numbers or letters
+BANDS are specified as a comma-separated list of band numbers or letters:
 
 \b
     `1,2,3` or `R,G,B` or `r,g,b` are all equivalent
@@ -98,7 +99,7 @@ Example:
                    "haze. 0..1 (0 is none), default: 0.03.")
 @click.option('--contrast', '-c', type=click.FLOAT, default=10,
               help="Contrast factor to apply to the scene. -infinity..infinity"
-                   "(0 is none), default 10.")
+                   "(0 is none), default: 10.")
 @click.option('--bias', '-b', type=click.FLOAT, default=15,
               help="Skew (brighten/darken) the output. Lower values make it "
                    "brighter. 0..100 (50 is none), default: 15.")
