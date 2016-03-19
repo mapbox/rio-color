@@ -9,9 +9,112 @@ Color-oriented operations for `rasterio`/`rio`.
 
 We want to supply a baseline selection of esthetics-oriented image operations for numpy/rasterio, exposed as much as possible through `rio`. Some functions may be trivial (gamma) or already implemented elsewhere (for example, in `skimage`), but we want versions of them that are standard and light, without big dependencies.
 
-## Supported operations
+## Python API
 
-- *gamma* applies a gamma curve, brightening or darkening an image's midtones. It's expressed in the conventional way for image processing, where a gamma larger than 1 brightens the image.
+`rio_color` comes with three modules, `operations`, `workers` and `utils`. The `workers` and `utils` modules are mostly used internally so we won't discuss them here. 
 
-- *sigmoidal contrast* increases (or decreases) midtone contrast, with an optional bias that brightens or darkens midtones at the same time.
+Most of the interesting interfaces will be found in `rio_color.operations`. The following functions accept and return numpy arrays. The arrays are assumed to be scaled 0 to 1. In some cases, the input array is assumed to be in a certain colorspace with the axis order as (bands, columns, rows); other image processing software may use the (columns, rows, bands) axis order.
 
+* `sigmoidal(arr, contrast, bias)`
+* `gamma(arr, g)`
+* `saturation(arr, percent)`
+* `rgb2lch(rgb)`
+* `lch2rgb(lch)`
+* `simple_atmo(rgb, haze, contrast, bias)`
+
+There is one function in the `rio_color.operations` module which doesn't manipulate arrays: 
+`parse_operations`. This function takes an iterable of *operation strings* and
+yields python functions which can be applied to an array. 
+
+```
+ops = [
+    "gamma 3 1.85", 
+    "gamma 1,2 1.95",
+    "sigmoidal 1,2,3 35 0.13",
+    "saturation 115"]
+
+# arr is an 3D numpy array, RGB, scaled 0 to 1
+
+for func in parse_operations(ops):
+    arr = func(arr)
+```
+
+This provides a tiny *domain specific language* to allow you
+to compose ordered chains of image manipulations using the above operations.
+For more information on operation strings, see the `rio color` command line help.
+
+
+## Command Line Interface
+
+Rio color provides two command line interfaces:
+
+### `rio color`
+
+```
+$ rio color --help
+Usage: rio color [OPTIONS] SRC_PATH DST_PATH [OPERATIONS]...
+
+  Color correction
+
+  Operations will be applied to the src image in the specified order. Each
+  operation should be a single quoted argument.
+
+  Available OPERATIONS include:
+
+      "gamma BANDS VALUE"
+          Applies a gamma curve, brighten or darken midtones.
+          VALUE > 1 brightens the image.
+
+      "sigmoidal BANDS CONTRAST BIAS"
+          Adjusts the contrast and brightness of midtones.
+
+      "saturation PERCENTAGE"
+          Controls the saturation in HSV color space.
+          PERCENTAGE = 0 results in a grayscale image
+
+  BANDS are specified as a comma-separated list of band numbers or letters
+
+      `1,2,3` or `R,G,B` or `r,g,b` are all equivalent
+
+  Example:
+
+      rio color -d uint8 -j 4 input.tif output.tif \
+          "gamma 3 0.95" "sigmoidal 1,2,3 35 0.13"
+
+
+Options:
+  -j, --max-procs INTEGER
+  -d, --out-dtype [uint8|uint16]
+  --help                          Show this message and exit.
+```
+
+Example:
+
+```
+$ rio color -d uint8 -j 4 rgb.tif test.tif \
+    "gamma 3 1.85" "gamma 1,2 1.95" "sigmoidal 1,2,3 35 0.13" "saturation 115"
+```
+
+![screen shot 2016-02-17 at 12 18 47 pm](https://cloud.githubusercontent.com/assets/1151287/13116122/0f7f5f20-d571-11e5-82e7-9cc65c443972.png)
+
+### `rio atmos`
+
+```
+$ rio atmos --help
+Usage: rio atmos [OPTIONS] SRC_PATH DST_PATH
+
+  Atmospheric correction
+
+Options:
+  -a, --atmo FLOAT                How much to dampen cool colors, thus cutting
+                                  through haze. 0..1 (0 is none), default
+                                  0.03.
+  -c, --contrast FLOAT            Contrast factor to apply to the scene.
+                                  -infinity..infinity(0 is none), default 10.
+  -b, --bias FLOAT                Skew (brighten/darken) the output. Lower
+                                  values make it brighter. 0..100 (50 is
+                                  none), default 15.
+  -j, --max-procs INTEGER
+  -d, --out-dtype [uint8|uint16]
+  --help                          Show this message and exit.
+```

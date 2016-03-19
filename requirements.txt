@@ -1,2 +1,4 @@
 click
 rasterio
+scikit-image
+rio-mucho

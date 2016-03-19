@@ -13,7 +13,7 @@ with open('rio_color/__init__.py') as f:
             break
 
 # Get the long description from the relevant file
-with codecs_open('README.rst', encoding='utf-8') as f:
+with codecs_open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
 
@@ -40,6 +40,7 @@ setup(name='rio-color',
       },
       entry_points="""
       [rasterio.rio_plugins]
-      color=rio_color.scripts.cli:simple_color
+      color=rio_color.scripts.cli:color
+      atmos=rio_color.scripts.cli:atmos
       """
       )
