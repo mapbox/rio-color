@@ -1,10 +1,12 @@
 import os
 
+from click import UsageError
 from click.testing import CliRunner
 import numpy as np
+import pytest
 import rasterio
 
-from rio_color.scripts.cli import color, atmos
+from rio_color.scripts.cli import color, atmos, check_jobs
 
 
 def equal(r1, r2):
@@ -113,3 +115,10 @@ def test_color_jobsn1(tmpdir):
             "gamma 1,2,3 1.85"])
     assert result.exit_code == 0
     assert os.path.exists(output)
+
+
+def test_check_jobs():
+    assert 1 == check_jobs(1)
+    assert check_jobs(-1) > 0
+    with pytest.raises(UsageError):
+        check_jobs(0)

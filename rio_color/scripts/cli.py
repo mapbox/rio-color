@@ -1,13 +1,27 @@
 import click
+
 import rasterio
 from rio_color.workers import atmos_worker, color_worker
 from rio_color.operations import parse_operations
 import riomucho
 
 
+jobs_opt = click.option(
+    '--jobs', '-j', type=int, default=1,
+    help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1")
+
+
+def check_jobs(jobs):
+    if jobs == 0:
+        raise click.UsageError("Jobs must be >= 1 or == -1")
+    elif jobs < 0:
+        import multiprocessing
+        jobs = multiprocessing.cpu_count()
+    return jobs
+
+
 @click.command('color')
-@click.option('--jobs', '-j', type=int, default=1,
-              help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1")
+@jobs_opt
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
@@ -73,11 +87,7 @@ Example:
         'out_dtype': out_dtype
     }
 
-    if jobs == 0:
-        raise click.UsageError("Jobs must be >= 1 or == -1")
-    elif jobs < 0:
-        import multiprocessing
-        jobs = multiprocessing.cpu_count()
+    jobs = check_jobs(jobs)
 
     if jobs > 1:
         with riomucho.RioMucho(
@@ -109,8 +119,7 @@ Example:
 @click.option('--bias', '-b', type=click.FLOAT, default=15,
               help="Skew (brighten/darken) the output. Lower values make it "
                    "brighter. 0..100 (50 is none), default: 15.")
-@click.option('--jobs', '-j', type=int, default=1,
-              help="Number of jobs to run simultaneously, default: 1")
+@jobs_opt
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
@@ -137,6 +146,8 @@ def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
         'bias': bias,
         'out_dtype': out_dtype
     }
+
+    jobs = check_jobs(jobs)
 
     if jobs > 1:
         with riomucho.RioMucho(
