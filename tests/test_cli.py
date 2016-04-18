@@ -5,6 +5,7 @@ from click.testing import CliRunner
 import numpy as np
 import pytest
 import rasterio
+from rasterio.enums import Compression
 
 from rio_color.scripts.cli import color, atmos, check_jobs
 
@@ -122,3 +123,49 @@ def test_check_jobs():
     assert check_jobs(-1) > 0
     with pytest.raises(UsageError):
         check_jobs(0)
+
+
+def test_creation_opts(tmpdir):
+    output = str(tmpdir.join('color_opts.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        color,
+        [
+            '--co', 'compress=jpeg',
+            'tests/rgb8.tif',
+            output,
+            "gamma 1,2,3 1.85"])
+    assert result.exit_code == 0
+
+    with rasterio.open(output, 'r') as src:
+        assert src.compression == Compression.jpeg
+
+    output = str(tmpdir.join('color_opts.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        color,
+        [
+            '--co', 'compress=jpeg',
+            'tests/rgb8.tif',
+            output,
+            "gamma 1,2,3 1.85"])
+    assert result.exit_code == 0
+    with rasterio.open(output, 'r') as src:
+        assert src.compression == Compression.jpeg
+
+    output = str(tmpdir.join('atmos_opts.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        atmos,
+        [
+            '--co', 'compress=jpeg',
+            '-a', '0.03',
+            '-b', '10',
+            '-c', '15',
+            '-j', '1',
+            'tests/rgb8.tif',
+            output]
+        )
+    assert result.exit_code == 0
+    with rasterio.open(output, 'r') as src:
+        assert src.compression == Compression.jpeg

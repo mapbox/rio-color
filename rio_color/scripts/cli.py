@@ -1,6 +1,7 @@
 import click
 
 import rasterio
+from rasterio.rio.options import creation_options
 from rio_color.workers import atmos_worker, color_worker
 from rio_color.operations import parse_operations
 import riomucho
@@ -28,7 +29,9 @@ def check_jobs(jobs):
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.argument('operations', nargs=-1)
 @click.pass_context
-def color(ctx, jobs, out_dtype, src_path, dst_path, operations):
+@creation_options
+def color(ctx, jobs, out_dtype, src_path, dst_path, operations,
+          creation_options):
     """Color correction
 
 Operations will be applied to the src image in the specified order.
@@ -64,11 +67,10 @@ Example:
         "gamma 3 0.95" "sigmoidal 1,2,3 35 0.13"
     """
     with rasterio.open(src_path) as src:
-        opts = src.meta.copy()
-        kwds = src.profile.copy()
+        opts = src.profile.copy()
         windows = [(window, ij) for ij, window in src.block_windows()]
 
-    opts.update(**kwds)
+    opts.update(**creation_options)
     opts['transform'] = opts['affine']
 
     out_dtype = out_dtype if out_dtype else opts['dtype']
@@ -124,17 +126,17 @@ Example:
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
+@creation_options
 @click.pass_context
 def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
-          src_path, dst_path):
+          src_path, dst_path, creation_options):
     """Atmospheric correction
     """
     with rasterio.open(src_path) as src:
-        opts = src.meta.copy()
-        kwds = src.profile.copy()
+        opts = src.profile.copy()
         windows = [(window, ij) for ij, window in src.block_windows()]
 
-    opts.update(**kwds)
+    opts.update(**creation_options)
     opts['transform'] = opts['affine']
 
     out_dtype = out_dtype if out_dtype else opts['dtype']
