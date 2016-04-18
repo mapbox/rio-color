@@ -7,7 +7,7 @@ import riomucho
 
 @click.command('color')
 @click.option('--jobs', '-j', type=int, default=1,
-              help="Number of jobs to run simultaneously, default: 1")
+              help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1")
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
@@ -72,6 +72,12 @@ Example:
         'operations': operations,
         'out_dtype': out_dtype
     }
+
+    if jobs == 0:
+        raise click.UsageError("Jobs must be >= 1 or == -1")
+    elif jobs < 0:
+        import multiprocessing
+        jobs = multiprocessing.cpu_count()
 
     if jobs > 1:
         with riomucho.RioMucho(

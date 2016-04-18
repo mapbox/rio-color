@@ -98,3 +98,18 @@ def test_bad_op(tmpdir):
     assert result.exit_code == 2
     assert "foob is not a valid operation" in result.output
     assert not os.path.exists(output)
+
+
+def test_color_jobsn1(tmpdir):
+    output = str(tmpdir.join('colorj1.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        color,
+        [
+            '-d', 'uint8',
+            '-j', '-1',
+            'tests/rgb8.tif',
+            output,
+            "gamma 1,2,3 1.85"])
+    assert result.exit_code == 0
+    assert os.path.exists(output)
