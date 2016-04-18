@@ -27,15 +27,15 @@ def arr():
 
 def test_sigmoidal(arr):
     x = sigmoidal(arr, 10, 0.15)
-    assert round(x[0][0][0], 4) == round(0.08056034, 4)
+    assert x[0][0][0] - 0.08056034 < 1e-4
 
     # contrast < 0
     x = sigmoidal(arr, -10, 0.15)
-    assert round(x[0][0][0], 4) == round(0.020186627, 4)
+    assert x[0][0][0] - 0.020186627 < 1e-4
 
     # bias zero, make it a tiny epsilon
     x = sigmoidal(arr, 10, 0)
-    assert round(x[0][0][0], 4) == round(0.19362122, 4)
+    assert x[0][0][0] - 0.19362122 < 1e-4
 
     # contrast zzero, arrays are equal
     x = sigmoidal(arr, 0, 0.15)
@@ -44,17 +44,17 @@ def test_sigmoidal(arr):
 
 def test_gamma(arr):
     x = gamma(arr, 0.95)
-    assert round(x[0][0][0], 4) == round(0.033069782, 4)
+    assert x[0][0][0] - 0.033069782 < 1e-4
 
 
 def test_sat(arr):
     x = saturation(arr, 50)
-    assert round(x[0][0][0], 4) == round(0.1513809257, 4)
+    assert x[0][0][0] - 0.1513809257 < 1e-4
 
 
 def test_atmo(arr):
     x = simple_atmo(arr, 0.03, 10, 15)
-    assert round(x[0][0][0], 4) == round(0.080560341, 4)
+    assert x[0][0][0] - 0.080560341 < 1e-4
 
 
 def test_parse_one(arr):
@@ -86,4 +86,3 @@ def test_parse_bands(arr):
 
     with pytest.raises(ValueError):
         list(parse_operations(["gamma 7,8,9 1.05"]))
-
