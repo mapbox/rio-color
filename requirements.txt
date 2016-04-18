@@ -1,4 +1,5 @@
 click
 rasterio
 scikit-image
+scipy
 rio-mucho
