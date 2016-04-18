@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from rio_color.utils import to_math_type, math_type, scale_dtype
+from rio_color.utils import to_math_type, math_type, scale_dtype, magick_to_rio
 
 @pytest.fixture
 def arr():
@@ -38,3 +38,29 @@ def test_scale_round_trip(arr):
     x = to_math_type(arr)
     y = scale_dtype(x, arr.dtype)
     assert np.array_equal(arr, y)
+
+
+def test_magick_to_rio():
+    ops = magick_to_rio(
+        "-channel B -sigmoidal-contrast 4 -gamma 0.95 "
+        "-channel r -gamma 1.10 "
+        "-channel rgb -sigmoidal-contrast 1x55% "
+        "-channel G -gamma 0.9 "
+        "-modulate 100,125 "
+        "+channel -sigmoidal-contrast 3,40% "
+        "-modulate 222,135 "
+    )
+
+    expected = (
+        "sigmoidal B 4 0.5",
+        "gamma B 0.95",
+        "gamma R 1.10",
+        "sigmoidal R,G,B 1 0.55",
+        "gamma G 0.9",
+        "saturation 125",
+        "sigmoidal R,G,B 3 0.4",
+        "saturation 135",
+    )
+
+    for op, ex in zip(ops, expected):
+        assert op == ex
