@@ -4,7 +4,43 @@ from .utils import epsilon
 # Color manipulation functions
 
 def sigmoidal(arr, contrast, bias):
+    """
+    Sigmoidal contrast is type of contrast control that 
+    adjusts the contrast without saturating highlights or shadows.
+    It allows control over two factors: 
+    the contrast range from light to dark, and where the middle value 
+    of the mid-tones falls. The result is a non-linear and smooth 
+    contrast change.
 
+    Parameters
+    ----------
+    contrast : Float. For example, 0 is none, 3 is typical and 20 is a lot.
+    bias : Float, threshold level for the contrast function to 
+        center on (typically centered at '50%')
+
+
+    Notes
+    ----------
+
+    Sigmoidal contrast is based on the sigmoidal transfer function:
+
+    .. math:: g(u) = ( 1/(1 + e^{- \alpha * u + \beta)})
+
+    This sigmoid function is scaled so that the output is bound by 
+    the interval [0, 1].
+
+    .. math:: ( 1/(1 + e^(\beta * (\alpha - u))) - 1/(1 + e^(\beta * \alpha)) ) / 
+    ( 1/(1 + e^(\beta*(\alpha - 1))) - 1/(1 + e^(\beta * \alpha)) )
+
+    Where :math: `\alpha` is the threshold level, and :math: `\beta` the contrast factor
+    to be applied.
+
+    References
+    ----------
+    .. [CT] Hany Farid "Fundamentals of Image Processing"
+            http://www.cs.dartmouth.edu/farid/downloads/tutorials/fip.pdf
+
+    """
     alpha, beta = bias, contrast
     # We use the names a and b to match documentation.
 
@@ -17,9 +53,6 @@ def sigmoidal(arr, contrast, bias):
     np.seterr(divide='ignore', invalid='ignore')
 
     if beta > 0:
-        # Forward sigmoidal function:
-        # (This is really badly documented in the wild/internet.
-        # @virginiayung is the only person I trust to understand it.)
         numerator = 1 / (1 + np.exp(beta * (alpha - arr))) - \
             1 / (1 + np.exp(beta * alpha))
         denominator = 1 / (1 + np.exp(beta * (alpha - 1))) - \
@@ -43,12 +76,32 @@ def sigmoidal(arr, contrast, bias):
 
 
 def gamma(arr, g):
+    """
+    Gamma correction is a nonlinear operation that
+    adjusts the image's channel values pixel-by-pixel according
+    to a power-law:
+
+    .. math:: pixel_{out} = pixel_{in} ^ {\gamma}
+
+    Setting gamma (:math:`\gamma`) to be less than 1.0 darkens the image and setting gamma 
+    to be greater than 1.0 lightens it.
+
+    Parameters
+    ----------
+    Gamma (:math:`\gamma`): Float, Reasonable values range from 0.8 to 2.3. 
+
+
+    """
     return arr**(1.0 / g)
 
 
 def saturation(arr, percent):
     """
     multiply saturation by percent in LCH color space
+    Color saturation is used to describe the intensity of 
+    color in the image. As saturation increases, colors appear 
+    more "pure." As saturation decreases, colors appear more "washed-out."
+
     """
     lch = rgb2lch(arr)
     # Adjust chroma, band at index=1
