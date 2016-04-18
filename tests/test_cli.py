@@ -1,10 +1,12 @@
 import os
 
+from click import UsageError
 from click.testing import CliRunner
 import numpy as np
+import pytest
 import rasterio
 
-from rio_color.scripts.cli import color, atmos
+from rio_color.scripts.cli import color, atmos, check_jobs
 
 
 def equal(r1, r2):
@@ -98,3 +100,25 @@ def test_bad_op(tmpdir):
     assert result.exit_code == 2
     assert "foob is not a valid operation" in result.output
     assert not os.path.exists(output)
+
+
+def test_color_jobsn1(tmpdir):
+    output = str(tmpdir.join('colorj1.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        color,
+        [
+            '-d', 'uint8',
+            '-j', '-1',
+            'tests/rgb8.tif',
+            output,
+            "gamma 1,2,3 1.85"])
+    assert result.exit_code == 0
+    assert os.path.exists(output)
+
+
+def test_check_jobs():
+    assert 1 == check_jobs(1)
+    assert check_jobs(-1) > 0
+    with pytest.raises(UsageError):
+        check_jobs(0)
