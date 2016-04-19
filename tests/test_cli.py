@@ -193,3 +193,23 @@ def test_color_cli_rgba(tmpdir):
             assert out.profile['count'] == 4
             # Alpha band is unaltered
             assert np.array_equal(src.read(4), out.read(4))
+
+
+def test_color_cli_16bit_photointerp(tmpdir):
+    output = str(tmpdir.join('color16color.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        color,
+        [ '-d', 'uint16',
+          '-j', '1',
+          'tests/rgb16.tif',
+          output,
+          "gamma 3 1.85",
+          "gamma 1,2 1.95"])
+    assert result.exit_code == 0
+
+    with rasterio.open('tests/rgb16.tif') as src:
+        with rasterio.open(output) as out:
+            raise Exception
+            for b in src.indexes:
+                assert out.colorinterp(b) == src.colorinterp(b)
