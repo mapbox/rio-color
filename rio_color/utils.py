@@ -38,13 +38,15 @@ def magick_to_rio(convert_opts):
     tuple, ordered rio color operations
     """
     ops = []
-    bands = "R,G,B"
+    bands = None
 
     def set_band(x):
         global bands
         if x.upper() == "RGB":
             x = "R,G,B"
         bands = x.upper()
+
+    set_band("RGB")
 
     def append_sig(arg):
         global bands
@@ -66,6 +68,7 @@ def magick_to_rio(convert_opts):
         # ignore args[0]
         ops.append("saturation {}".format(args[1]))
 
+    nextf = None
     for part in convert_opts.strip().split(" "):
         if part == "-channel":
             nextf = set_band
