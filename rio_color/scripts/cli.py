@@ -80,7 +80,7 @@ Example:
     # parsing will be run again within the worker
     # where its returned value will be used
     try:
-        list(parse_operations(operations, opts['count']))
+        list(parse_operations(operations))
     except ValueError as e:
         raise click.UsageError(str(e))
 
