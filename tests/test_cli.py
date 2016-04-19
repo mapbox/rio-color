@@ -169,3 +169,27 @@ def test_creation_opts(tmpdir):
     assert result.exit_code == 0
     with rasterio.open(output, 'r') as src:
         assert src.compression == Compression.jpeg
+
+
+def test_color_cli_rgba(tmpdir):
+    output = str(tmpdir.join('colorj1.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        color,
+        [
+            '-d', 'uint8',
+            '-j', '1',
+            'tests/rgba8.tif',
+            output,
+            "gamma 3 1.85",
+            "gamma 1,2 1.95",
+            "sigmoidal 1,2,3 35 0.13",
+            "saturation 115"]
+        )
+    assert result.exit_code == 0
+
+    with rasterio.open('tests/rgba8.tif') as src:
+        with rasterio.open(output) as out:
+            assert out.profile['count'] == 4
+            # Alpha band is unaltered
+            assert np.array_equal(src.read(4), out.read(4))
