@@ -210,6 +210,5 @@ def test_color_cli_16bit_photointerp(tmpdir):
 
     with rasterio.open('tests/rgb16.tif') as src:
         with rasterio.open(output) as out:
-            raise Exception
             for b in src.indexes:
                 assert out.colorinterp(b) == src.colorinterp(b)
