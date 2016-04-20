@@ -5,7 +5,7 @@ import re
 # operations. Should be a float because values will
 # be scaled to the range 0..1 for all work.
 
-math_type = np.float32
+math_type = np.float64
 
 epsilon = np.finfo(math_type).eps
 
