@@ -1,20 +1,37 @@
 import click
+
 import rasterio
+from rasterio.rio.options import creation_options
 from rio_color.workers import atmos_worker, color_worker
 from rio_color.operations import parse_operations
 import riomucho
 
 
+jobs_opt = click.option(
+    '--jobs', '-j', type=int, default=1,
+    help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1")
+
+
+def check_jobs(jobs):
+    if jobs == 0:
+        raise click.UsageError("Jobs must be >= 1 or == -1")
+    elif jobs < 0:
+        import multiprocessing
+        jobs = multiprocessing.cpu_count()
+    return jobs
+
+
 @click.command('color')
-@click.option('--jobs', '-j', type=int, default=1,
-              help="Number of jobs to run simultaneously, default: 1")
+@jobs_opt
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
 @click.argument('operations', nargs=-1)
 @click.pass_context
-def color(ctx, jobs, out_dtype, src_path, dst_path, operations):
+@creation_options
+def color(ctx, jobs, out_dtype, src_path, dst_path, operations,
+          creation_options):
     """Color correction
 
 Operations will be applied to the src image in the specified order.
@@ -50,11 +67,10 @@ Example:
         "gamma 3 0.95" "sigmoidal 1,2,3 35 0.13"
     """
     with rasterio.open(src_path) as src:
-        opts = src.meta.copy()
-        kwds = src.profile.copy()
+        opts = src.profile.copy()
         windows = [(window, ij) for ij, window in src.block_windows()]
 
-    opts.update(**kwds)
+    opts.update(**creation_options)
     opts['transform'] = opts['affine']
 
     out_dtype = out_dtype if out_dtype else opts['dtype']
@@ -64,7 +80,7 @@ Example:
     # parsing will be run again within the worker
     # where its returned value will be used
     try:
-        list(parse_operations(operations, opts['count']))
+        list(parse_operations(operations))
     except ValueError as e:
         raise click.UsageError(str(e))
 
@@ -72,6 +88,8 @@ Example:
         'operations': operations,
         'out_dtype': out_dtype
     }
+
+    jobs = check_jobs(jobs)
 
     if jobs > 1:
         with riomucho.RioMucho(
@@ -103,23 +121,22 @@ Example:
 @click.option('--bias', '-b', type=click.FLOAT, default=15,
               help="Skew (brighten/darken) the output. Lower values make it "
                    "brighter. 0..100 (50 is none), default: 15.")
-@click.option('--jobs', '-j', type=int, default=1,
-              help="Number of jobs to run simultaneously, default: 1")
+@jobs_opt
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
+@creation_options
 @click.pass_context
 def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
-          src_path, dst_path):
+          src_path, dst_path, creation_options):
     """Atmospheric correction
     """
     with rasterio.open(src_path) as src:
-        opts = src.meta.copy()
-        kwds = src.profile.copy()
+        opts = src.profile.copy()
         windows = [(window, ij) for ij, window in src.block_windows()]
 
-    opts.update(**kwds)
+    opts.update(**creation_options)
     opts['transform'] = opts['affine']
 
     out_dtype = out_dtype if out_dtype else opts['dtype']
@@ -131,6 +148,8 @@ def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
         'bias': bias,
         'out_dtype': out_dtype
     }
+
+    jobs = check_jobs(jobs)
 
     if jobs > 1:
         with riomucho.RioMucho(
