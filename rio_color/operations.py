@@ -116,14 +116,13 @@ def saturation(arr, percent):
     percent: integer
 
     """
-    lch = rgb2lch(arr)
+    img = rgb2lch(arr)
     # Adjust chroma, band at index=1
-    lch[1] = lch[1] * (percent / 100.0)
-    return lch2rgb(lch)
+    img[1] = img[1] * (percent / 100.0)
+    return lch2rgb(img)
 
 
 # Utility functions
-
 def rgb2lch(rgb):
     """
     Converts image array from RGB to LCH color space
@@ -181,9 +180,8 @@ def simple_atmo(rgb, haze, contrast, bias):
     return sigmoidal(rgb, contrast, bias)
 
 
-def parse_operations(operations, count=3):
-    """
-    Takes an iterable of operations,
+def parse_operations(operations):
+    """Takes an iterable of operations,
     each operation is expected to be a string with a specified syntax
 
     "OPERATION-NAME BANDS ARGS..."
@@ -191,6 +189,7 @@ def parse_operations(operations, count=3):
     And yields a list of functions that take and return ndarrays
     """
     band_lookup = {'r': 1, 'g': 2, 'b': 3}
+    count = len(band_lookup)
 
     opfuncs = {
         'saturation': saturation,
@@ -241,13 +240,14 @@ def parse_operations(operations, count=3):
         kwargs = dict(zip(opkwargs[opname], args))
 
         def f(arr, func=func, kwargs=kwargs):
+            # Avoid mutation by copying
+            newarr = arr.copy()
             if opname in rgb_ops:
-                # apply func to array assuming 3 band r,g,b
-                newarr = func(arr, **kwargs)
+                # apply func to array's first 3 bands, assumed r,g,b
+                # additional band(s) are untouched
+                newarr[0:3] = func(newarr[0:3], **kwargs)
             else:
                 # apply func to array band at a time
-                # Avoid mutation by copying (TODO evalutate)
-                newarr = arr.copy()
                 for b in bands:
                     newarr[b - 1] = func(arr[b - 1], **kwargs)
             return newarr
