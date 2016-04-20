@@ -50,10 +50,10 @@ def saturation(arr, percent):
     """
     multiply saturation by percent in LCH color space
     """
-    lch = rgb2lch(arr)
+    img = rgb2lch(arr)
     # Adjust chroma, band at index=1
-    lch[1] = lch[1] * (percent / 100.0)
-    return lch2rgb(lch)
+    img[1] = img[1] * (percent / 100.0)
+    return lch2rgb(img)
 
 
 # Utility functions
