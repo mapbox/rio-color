@@ -80,6 +80,8 @@ def sigmoidal(arr, contrast, bias):
 
     if np.any(output < 0) or np.any(output > (1 + epsilon)):
         raise ValueError("Output is not within the range of [0,1]")
+    elif np.isnan(output.sum()):
+        raise ValueError("Output contains NaN")
     else:
         return output
 

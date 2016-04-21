@@ -51,6 +51,16 @@ def test_sigmoidal(arr):
     x = sigmoidal(arr, 0, 0.15)
     assert np.array_equal(x, arr)
 
+    # output contains nan
+    with pytest.raises(ValueError):
+        x = sigmoidal(arr, 100, -0.5)
+
+    # output is not within the range of 0..1
+    with pytest.raises(ValueError):
+        arr[0][0][0] = 1.0
+        arr[0][0][1] = 2.0
+        x = sigmoidal(arr, 10, -.5)
+
 
 def test_gamma(arr):
     x = gamma(arr, 0.95)
