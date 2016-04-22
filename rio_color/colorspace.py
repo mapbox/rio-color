@@ -179,9 +179,6 @@ if __name__ == "__main__":
     while True:
         l, c, h = rgb_to_lch(r, g, b)
         print("                               ", l, c, h)
-        c = c * 1.1
-        if c > 100:
-            c = 100
         r, g, b = lch_to_rgb(l, c, h)
         print(r, g, b)
         time.sleep(1)
