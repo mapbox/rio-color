@@ -1,6 +1,7 @@
 import os
 from codecs import open as codecs_open
 from setuptools import setup, find_packages
+from Cython.Build import cythonize
 
 
 # Parse the version from the fiona module.
@@ -35,6 +36,8 @@ setup(name='rio-color',
       include_package_data=True,
       zip_safe=False,
       install_requires=read('requirements.txt').splitlines(),
+      # TODO http://docs.cython.org/src/reference/compilation.html#distributing-cython-modules
+      ext_modules=cythonize("rio_color/lch.pyx"),
       extras_require={
           'test': ['pytest', 'pytest-cov', 'codecov', 'raster-tester'],
       },
