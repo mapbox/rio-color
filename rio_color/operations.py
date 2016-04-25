@@ -79,9 +79,9 @@ def sigmoidal(arr, contrast, bias):
             ) / beta
 
     if np.any(output < 0) or np.any(output > (1 + epsilon)):
-        raise ValueError("Output is not within the range of [0,1]")
+        raise ValueError("Sigmoidal contrast output is not within the range of [0,1]")
     elif np.isnan(output.sum()):
-        raise ValueError("Output contains NaN")
+        raise ValueError("Sigmoidal contrast output contains NaN")
     else:
         return output
 
@@ -104,7 +104,14 @@ def gamma(arr, g):
 
 
     """
-    return arr**(1.0 / g)
+    output = arr**(1.0 / g)
+
+    if np.any(output < 0) or np.any(output > (1 + epsilon)):
+        raise ValueError("Gamma corrected output is not within the range of [0,1]")
+    elif np.isnan(output.sum()):
+        raise ValueError("Gamma corrected output contains NaN")
+    else:
+        return output
 
 
 def saturation(arr, percent):
@@ -179,7 +186,9 @@ def simple_atmo(rgb, haze, contrast, bias):
     rgb[1] = gamma(rgb[1], gamma_g)
     rgb[2] = gamma(rgb[2], gamma_b)
 
-    return sigmoidal(rgb, contrast, bias)
+    output = sigmoidal(rgb, contrast, bias)
+
+    return output
 
 
 def parse_operations(operations):
