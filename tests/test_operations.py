@@ -51,10 +51,30 @@ def test_sigmoidal(arr):
     x = sigmoidal(arr, 0, 0.15)
     assert np.array_equal(x, arr)
 
+    # output contains NaN
+    with pytest.raises(ValueError):
+        x = sigmoidal(arr, 100, -0.5)
+
+    # output is not within the range of 0..1
+    with pytest.raises(ValueError):
+        arr[0][0][0] = 1.0
+        arr[0][0][1] = 2.0
+        x = sigmoidal(arr, 10, -0.5)
+
 
 def test_gamma(arr):
     x = gamma(arr, 0.95)
     assert x[0][0][0] - 0.033069782 < 1e-4
+    # output is not within the range of 0..1
+    with pytest.raises(ValueError):
+        x = gamma(arr, -2.0)
+    # test output contains inf and is out of range 0..1
+    with pytest.raises(ValueError):
+        x = gamma(arr, -0.001)
+    # test output contains NaN
+    with pytest.raises(ValueError):
+        x = gamma(arr, np.nan)
+
 
 
 def test_sat(arr):
@@ -73,6 +93,14 @@ def test_sat_rgba_direct(arr_rgba):
 def test_atmo(arr):
     x = simple_atmo(arr, 0.03, 10, 15)
     assert x[0][0][0] - 0.080560341 < 1e-4
+
+    # Gamma output is not within the range 0..1
+    with pytest.raises(ValueError):
+        x = simple_atmo(arr, 2.0, 10, 15)
+
+    # Sigmoidal contrast output contains NaN
+    with pytest.raises(ValueError):
+        x = simple_atmo(arr, 0.03, 1000, -5)
 
 
 def test_parse_gamma(arr):

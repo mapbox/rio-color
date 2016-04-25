@@ -2,10 +2,50 @@ import numpy as np
 from .utils import epsilon
 from .colorspace import saturate_rgb
 
+
 # Color manipulation functions
-
 def sigmoidal(arr, contrast, bias):
+    """
+    Sigmoidal contrast is type of contrast control that
+    adjusts the contrast without saturating highlights or shadows.
+    It allows control over two factors:
+    the contrast range from light to dark, and where the middle value
+    of the mid-tones falls. The result is a non-linear and smooth
+    contrast change.
 
+    Parameters
+    ----------
+    contrast : integer
+        Enhances the intensity differences between the lighter and darker
+        elements of the image. For example, 0 is none, 3 is typical and
+        20 is a lot.
+    bias : float
+        Threshold level for the contrast function to center on
+        (typically centered at '50%')
+
+
+    Notes
+    ----------
+
+    Sigmoidal contrast is based on the sigmoidal transfer function:
+
+    .. math:: g(u) = ( 1/(1 + e^{- \alpha * u + \beta)})
+
+    This sigmoid function is scaled so that the output is bound by
+    the interval [0, 1].
+
+    .. math:: ( 1/(1 + e^(\beta * (\alpha - u))) - 1/(1 + e^(\beta * \alpha)))/
+        ( 1/(1 + e^(\beta*(\alpha - 1))) - 1/(1 + e^(\beta * \alpha)) )
+
+    Where :math: `\alpha` is the threshold level, and :math: `\beta` the
+    contrast factor to be applied.
+
+    References
+    ----------
+    .. [CT] Hany Farid "Fundamentals of Image Processing"
+            http://www.cs.dartmouth.edu/farid/downloads/tutorials/fip.pdf
+
+    """
     alpha, beta = bias, contrast
     # We use the names a and b to match documentation.
 
@@ -18,39 +58,75 @@ def sigmoidal(arr, contrast, bias):
     np.seterr(divide='ignore', invalid='ignore')
 
     if beta > 0:
-        # Forward sigmoidal function:
-        # (This is really badly documented in the wild/internet.
-        # @virginiayung is the only person I trust to understand it.)
         numerator = 1 / (1 + np.exp(beta * (alpha - arr))) - \
             1 / (1 + np.exp(beta * alpha))
         denominator = 1 / (1 + np.exp(beta * (alpha - 1))) - \
             1 / (1 + np.exp(beta * alpha))
-        return numerator / denominator
+        output = numerator / denominator
+
     else:
         # Inverse sigmoidal function:
         # todo: account for 0s
         # todo: formatting ;)
-        return (
+        output = (
             (beta * alpha) - np.log(
                 (
                     1 / (
-                        (arr / (1 + np.exp(beta * alpha - beta)))
-                        - (arr / (1 + np.exp(beta * alpha)))
-                        + (1 / (1 + np.exp(beta * alpha)))
+                        (arr / (1 + np.exp(beta * alpha - beta))) -
+                        (arr / (1 + np.exp(beta * alpha))) +
+                        (1 / (1 + np.exp(beta * alpha)))
                     )
-                )
-                - 1)
-        ) / beta
+                ) - 1)
+            ) / beta
+
+    if np.any(output < 0) or np.any(output > (1 + epsilon)):
+        raise ValueError("Sigmoidal contrast output is not within the range of [0,1]")
+    elif np.isnan(output.sum()):
+        raise ValueError("Sigmoidal contrast output contains NaN")
+    else:
+        return output
 
 
 def gamma(arr, g):
-    return arr**(1.0 / g)
+    """
+    Gamma correction is a nonlinear operation that
+    adjusts the image's channel values pixel-by-pixel according
+    to a power-law:
+
+    .. math:: pixel_{out} = pixel_{in} ^ {\gamma}
+
+    Setting gamma (:math:`\gamma`) to be less than 1.0 darkens the image and
+    setting gamma to be greater than 1.0 lightens it.
+
+    Parameters
+    ----------
+    gamma (:math:`\gamma`): float
+        Reasonable values range from 0.8 to 2.3.
+
+
+    """
+    output = arr**(1.0 / g)
+
+    if np.any(output < 0) or np.any(output > (1 + epsilon)):
+        raise ValueError("Gamma corrected output is not within the range of [0,1]")
+    elif np.isnan(output.sum()):
+        raise ValueError("Gamma corrected output contains NaN")
+    else:
+        return output
 
 
 def saturation(arr, percent):
-    """
-    Apply saturation to RGB array
-    multiply saturation in LCH color space
+    """Apply saturation to an RGB array (in LCH color space)
+
+    Multiply saturation by percent in LCH color space to adjust the intensity
+    of color in the image. As saturation increases, colors appear
+    more "pure." As saturation decreases, colors appear more "washed-out."
+
+    Parameters
+    ----------
+    arr: ndarray with shape (3, ..., ...)
+    percent: integer
+
     """
     if arr.shape[0] != 3:
         raise ValueError("saturation requires a 3-band array")
@@ -58,7 +134,23 @@ def saturation(arr, percent):
 
 
 def simple_atmo(rgb, haze, contrast, bias):
-    '''A simple, static (non-adaptive) atmospheric correction function.'''
+    '''
+    A simple, static (non-adaptive) atmospheric correction function.
+
+    Parameters
+    ----------
+    haze: float
+        Amount of haze to adjust for. For example, 0.03
+    contrast : integer
+        Enhances the intensity differences between the lighter and darker
+        elements of the image. For example, 0 is none, 3 is typical and
+        20 is a lot.
+    bias : float
+        Threshold level for the contrast function to center on
+        (typically centered at '50%')
+
+
+    '''
     # bias assumed to be given in percent,
     # convert to proportion
     bias = bias / 100.0
@@ -69,7 +161,9 @@ def simple_atmo(rgb, haze, contrast, bias):
     rgb[1] = gamma(rgb[1], gamma_g)
     rgb[2] = gamma(rgb[2], gamma_b)
 
-    return sigmoidal(rgb, contrast, bias)
+    output = sigmoidal(rgb, contrast, bias)
+
+    return output
 
 
 def parse_operations(operations):
@@ -123,7 +217,8 @@ def parse_operations(operations):
                     band = band_lookup[bs.lower()]
                 if band < 1 or band > count:
                     raise ValueError(
-                        "{} BAND must be between 1 and {}".format(opname, count))
+                        "{} BAND must be between 1 and {}"
+                        .format(opname, count))
                 bands.add(band)
 
         # assume all args are float
