@@ -71,6 +71,10 @@ def test_gamma(arr):
     # test output contains inf and is out of range 0..1
     with pytest.raises(ValueError):
         x = gamma(arr, -0.001)
+    # test output contains NaN
+    with pytest.raises(ValueError):
+        x = gamma(arr, np.nan)
+
 
 
 def test_sat(arr):
