@@ -1,7 +1,17 @@
 import os
+import sys
 from codecs import open as codecs_open
 from setuptools import setup, find_packages
 from Cython.Build import cythonize
+
+
+include_dirs = []
+try:
+    import numpy
+    include_dirs.append(numpy.get_include())
+except ImportError:
+    print("Numpy and its headers are required to run setup(). Exiting.")
+    sys.exit(1)
 
 
 # Parse the version from the fiona module.
@@ -37,7 +47,8 @@ setup(name='rio-color',
       zip_safe=False,
       install_requires=read('requirements.txt').splitlines(),
       # TODO http://docs.cython.org/src/reference/compilation.html#distributing-cython-modules
-      ext_modules=cythonize("rio_color/lch.pyx"),
+      ext_modules=cythonize("rio_color/colorspace.pyx"),
+      include_dirs=include_dirs,
       extras_require={
           'test': ['pytest', 'pytest-cov', 'codecov', 'raster-tester'],
       },

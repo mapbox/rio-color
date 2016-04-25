@@ -60,3 +60,5 @@ target/
 .python-version
 
 .*.swp
+
+rio_color/colorspace.html
