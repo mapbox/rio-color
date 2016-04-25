@@ -4,7 +4,7 @@ import numpy as np
 from rio_color.utils import to_math_type
 from rio_color.operations import (
     sigmoidal, gamma, saturation,
-    rgb2lch, lch2rgb, simple_atmo, parse_operations)
+    simple_atmo, parse_operations)
 
 
 @pytest.fixture
@@ -59,7 +59,7 @@ def test_gamma(arr):
 
 def test_sat(arr):
     x = saturation(arr, 50)
-    assert x[0][0][0] - 0.1513809257 < 1e-4
+    assert x[0][0][0] - 0.15860622 < 1e-4
 
 
 def test_sat_rgba_direct(arr_rgba):
@@ -95,7 +95,7 @@ def test_parse_multi(arr):
         sigmoidal(gamma(arr, g=0.95), contrast=35, bias=0.13))
 
 
-def test_parse_rgb(arr):
+def test_parse_saturation_rgb(arr):
     f = list(parse_operations(["saturation 125", ]))[0]
     assert np.allclose(f(arr), saturation(arr, 125))
 

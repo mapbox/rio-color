@@ -77,7 +77,11 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
     cdef lch c_lch
     cdef rgb c_rgb
 
-    cdef np.ndarray[FLOAT_t, ndim=3] out = arr[:]
+    # Allocate an equal-sized array
+    cdef int a0 = arr.shape[0]
+    cdef int a1 = arr.shape[1]
+    cdef int a2 = arr.shape[2]
+    cdef np.ndarray[FLOAT_t, ndim=3] out = np.zeros((a0, a1, a2))
 
     for j in range(arr.shape[2]):
         for i in range(arr.shape[1]):
@@ -225,26 +229,24 @@ cdef rgb _lch_to_rgb(double L, double C, double H):
     glin = (x * -0.9689) + (y * 1.8758) + (z * 0.0415)
     blin = (x * 0.0557) + (y * -0.2040) + (z * 1.0570)
 
+    # constrain to 0..1 to deal with any float drift
+    if rlin > 1.0:
+        rlin = 1.0
+    elif rlin < 0.0:
+        rlin = 0.0
+    if glin > 1.0:
+        glin = 1.0
+    elif glin < 0.0:
+        glin = 0.0
+    if blin > 1.0:
+        blin = 1.0
+    elif blin < 0.0:
+        blin = 0.0
+        
     # includes gamma exponentiation
     # Use simplified sRGB with gamma = 2.2
     color.r = rlin ** (1 / 2.2)
     color.g = glin ** (1 / 2.2)
     color.b = blin ** (1 / 2.2)
-
-    # constrain to 0..1 to deal with any float drift
-    if color.r > 1.0:
-        color.r = 1.0
-    elif color.r < 0.0:
-        color.r = 0.0
-
-    if color.g > 1.0:
-        color.g = 1.0
-    elif color.g < 0.0:
-        color.g = 0.0
-
-    if color.b > 1.0:
-        color.b = 1.0
-    elif color.b < 0.0:
-        color.b = 0.0
 
     return color
