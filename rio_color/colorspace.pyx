@@ -76,12 +76,14 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
     cdef double r, g, b
     cdef lch c_lch
     cdef rgb c_rgb
+    if arr.shape[0] != 3:
+        raise ValueError("The 0th dimension must contain 3 bands")
 
     # Allocate an equal-sized array
     cdef int a0 = arr.shape[0]
     cdef int a1 = arr.shape[1]
     cdef int a2 = arr.shape[2]
-    cdef np.ndarray[FLOAT_t, ndim=3] out = np.zeros((a0, a1, a2))
+    cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty((a0, a1, a2))
 
     for j in range(arr.shape[2]):
         for i in range(arr.shape[1]):
@@ -103,12 +105,14 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
 cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr):
     cdef double r, g, b
     cdef lch color
+    if arr.shape[0] != 3:
+        raise ValueError("The 0th dimension must contain 3 bands")
 
     # Allocate an equal-sized array
     cdef int a0 = arr.shape[0]
     cdef int a1 = arr.shape[1]
     cdef int a2 = arr.shape[2]
-    cdef np.ndarray[FLOAT_t, ndim=3] out = np.zeros((a0, a1, a2))
+    cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty((a0, a1, a2))
 
     for j in range(arr.shape[2]):
         for i in range(arr.shape[1]):
@@ -126,12 +130,14 @@ cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr
 cpdef np.ndarray[FLOAT_t, ndim=3] arr_lch_to_rgb(np.ndarray[FLOAT_t, ndim=3] arr):
     cdef double l, c, h
     cdef rgb color
+    if arr.shape[0] != 3:
+        raise ValueError("The 0th dimension must contain 3 bands")
 
     # Allocate an equal-sized array
     cdef int a0 = arr.shape[0]
     cdef int a1 = arr.shape[1]
     cdef int a2 = arr.shape[2]
-    cdef np.ndarray[FLOAT_t, ndim=3] out = np.zeros((a0, a1, a2))
+    cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty((a0, a1, a2))
 
     for j in range(arr.shape[2]):
         for i in range(arr.shape[1]):
