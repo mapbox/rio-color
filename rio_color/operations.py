@@ -1,5 +1,6 @@
 import numpy as np
 from .utils import epsilon
+from .colorspace import saturate_rgb
 
 
 # Color manipulation functions
@@ -115,47 +116,21 @@ def gamma(arr, g):
 
 
 def saturation(arr, percent):
-    """
+    """Apply saturation to an RGB array (in LCH color space)
+
     Multiply saturation by percent in LCH color space to adjust the intensity
     of color in the image. As saturation increases, colors appear
     more "pure." As saturation decreases, colors appear more "washed-out."
 
     Parameters
     ----------
+    arr: ndarray with shape (3, ..., ...)
     percent: integer
 
     """
-    img = rgb2lch(arr)
-    # Adjust chroma, band at index=1
-    img[1] = img[1] * (percent / 100.0)
-    return lch2rgb(img)
-
-
-# Utility functions
-def rgb2lch(rgb):
-    """
-    Converts image array from RGB to LCH color space
-    """
-    from skimage.color import rgb2lab, lab2lch
-    # reshape for skimage (bands, cols, rows) -> (cols, rows, bands)
-    srgb = np.swapaxes(rgb, 0, 2)
-    # convert colorspace
-    lch = lab2lch(rgb2lab(srgb))
-    # return in (bands, cols, rows) order
-    return np.swapaxes(lch, 2, 0)
-
-
-def lch2rgb(lch):
-    """
-    Converts image array from LCH color space to RGB
-    """
-    from skimage.color import lch2lab, lab2rgb
-    # reshape for skimage (bands, cols, rows) -> (cols, rows, bands)
-    slch = np.swapaxes(lch, 0, 2)
-    # convert colorspace
-    rgb = lab2rgb(lch2lab(slch))
-    # return in (bands, cols, rows) order
-    return np.swapaxes(rgb, 2, 0)
+    if arr.shape[0] != 3:
+        raise ValueError("saturation requires a 3-band array")
+    return saturate_rgb(arr, percent / 100.0)
 
 
 def simple_atmo(rgb, haze, contrast, bias):
