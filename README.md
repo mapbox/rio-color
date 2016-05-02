@@ -20,9 +20,9 @@ The following functions accept and return numpy `ndarrays`. The arrays are assum
 * `saturation(rgb, proportion)`
 * `simple_atmo(rgb, haze, contrast, bias)`
 
-There is one function in the `rio_color.operations` module which doesn't manipulate arrays: 
+There is one function in the `rio_color.operations` module which doesn't manipulate arrays:
 `parse_operations`. This function takes an *operations string* and
-returns a list of python functions which can be applied to an array. 
+returns a list of python functions which can be applied to an array.
 
 ```
 ops = "gamma b 1.85, gamma rg 1.95, sigmoidal rgb 35 0.13, saturation 1.15"
@@ -70,7 +70,7 @@ Usage: rio color [OPTIONS] SRC_PATH DST_PATH [OPERATIONS]...
           PROPORTION = 2 is likely way too saturated
 
   BANDS are specified as a single arg
-  
+
         `123` or `RGB` or `rgb` are all equivalent
 
   Example:

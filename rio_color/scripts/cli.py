@@ -27,7 +27,7 @@ def check_jobs(jobs):
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
-@click.argument('operations', nargs=-1)
+@click.argument('operations', nargs=-1, required=True)
 @click.pass_context
 @creation_options
 def color(ctx, jobs, out_dtype, src_path, dst_path, operations,
@@ -85,7 +85,7 @@ Example:
     # parsing will be run again within the worker
     # where its returned value will be used
     try:
-        parse_operations(args['ops_string'])
+        ops = parse_operations(args['ops_string'])
     except ValueError as e:
         raise click.UsageError(str(e))
 

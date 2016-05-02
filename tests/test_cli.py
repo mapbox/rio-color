@@ -212,3 +212,18 @@ def test_color_cli_16bit_photointerp(tmpdir):
         with rasterio.open(output) as out:
             for b in src.indexes:
                 assert out.colorinterp(b) == src.colorinterp(b)
+
+
+def test_color_empty_operations(tmpdir):
+    output = str(tmpdir.join('color.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        color,
+        ['tests/rgb8.tif', output])
+    assert result.exit_code == 2
+    assert not os.path.exists(output)
+
+    result = runner.invoke(
+        color,
+        ['tests/rgb8.tif', output, ", , ,"])
+    assert result.exit_code == 2
