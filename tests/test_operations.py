@@ -130,8 +130,8 @@ def test_parse_comma(arr):
 
 
 def test_parse_saturation_rgb(arr):
-    f = parse_operations("saturation 125")[0]
-    assert np.allclose(f(arr), saturation(arr, 125))
+    f = parse_operations("saturation 1.25")[0]
+    assert np.allclose(f(arr), saturation(arr, 1.25))
 
 
 def test_parse_rgba(arr, arr_rgba):
@@ -148,7 +148,7 @@ def test_parse_rgba(arr, arr_rgba):
 
 
 def test_saturation_rgba(arr, arr_rgba):
-    f = parse_operations("saturation 125")[0]
+    f = parse_operations("saturation 1.25")[0]
 
     satrgb = f(arr)
     assert satrgb.shape[0] == 3

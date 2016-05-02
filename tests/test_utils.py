@@ -57,8 +57,8 @@ def test_magick_to_rio():
         "gamma R 1.10",
         "sigmoidal RGB 1 0.55",
         "gamma G 0.9",
-        "saturation 125",
+        "saturation 1.25",
         "sigmoidal RGB 3 0.4",
-        "saturation 135",
+        "saturation 1.35",
     ])
 

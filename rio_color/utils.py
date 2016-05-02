@@ -66,7 +66,9 @@ def magick_to_rio(convert_opts):
     def append_sat(arg):
         args = list(filter(None, re.split("[,x]+", arg)))
         # ignore args[0]
-        ops.append("saturation {}".format(args[1]))
+        # convert to proportion
+        prop = float(args[1]) / 100
+        ops.append("saturation {}".format(prop))
 
     nextf = None
     for part in convert_opts.strip().split(" "):

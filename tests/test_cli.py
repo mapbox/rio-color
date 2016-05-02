@@ -62,7 +62,7 @@ def test_color_cli(tmpdir):
             "gamma 3 1.85",
             "gamma 1,2 1.95",
             "sigmoidal 1,2,3 35 0.13",
-            "saturation 115"]
+            "saturation 1.15"]
         )
     assert result.exit_code == 0
     assert os.path.exists(output)
@@ -78,7 +78,7 @@ def test_color_cli(tmpdir):
             "gamma 3 1.85",
             "gamma 1,2 1.95",
             "sigmoidal 1,2,3 35 0.13",
-            "saturation 115"]
+            "saturation 1.15"]
         )
     assert result.exit_code == 0
     assert os.path.exists(output2)
@@ -184,7 +184,7 @@ def test_color_cli_rgba(tmpdir):
             "gamma 3 1.85",
             "gamma 1,2 1.95",
             "sigmoidal 1,2,3 35 0.13",
-            "saturation 115"]
+            "saturation 1.15"]
         )
     assert result.exit_code == 0
 

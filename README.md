@@ -17,7 +17,7 @@ The following functions accept and return numpy `ndarrays`. The arrays are assum
 
 * `sigmoidal(arr, contrast, bias)`
 * `gamma(arr, g)`
-* `saturation(rgb, percent)`
+* `saturation(rgb, proportion)`
 * `simple_atmo(rgb, haze, contrast, bias)`
 
 There is one function in the `rio_color.operations` module which doesn't manipulate arrays: 
@@ -29,7 +29,7 @@ ops = [
     "gamma 3 1.85", 
     "gamma 1,2 1.95",
     "sigmoidal 1,2,3 35 0.13",
-    "saturation 115"]
+    "saturation 1.15"]
 
 # arr is an 3D numpy array, RGB, scaled 0 to 1
 
@@ -89,7 +89,7 @@ Example:
 
 ```
 $ rio color -d uint8 -j 4 rgb.tif test.tif \
-    "gamma 3 1.85" "gamma 1,2 1.95" "sigmoidal 1,2,3 35 0.13" "saturation 115"
+    "gamma 3 1.85" "gamma  1.95" "sigmoidal 1,2,3 35 0.13" "saturation 1.15"
 ```
 
 ![screen shot 2016-02-17 at 12 18 47 pm](https://cloud.githubusercontent.com/assets/1151287/13116122/0f7f5f20-d571-11e5-82e7-9cc65c443972.png)

@@ -115,22 +115,22 @@ def gamma(arr, g):
         return output
 
 
-def saturation(arr, percent):
+def saturation(arr, proportion):
     """Apply saturation to an RGB array (in LCH color space)
 
-    Multiply saturation by percent in LCH color space to adjust the intensity
+    Multiply saturation by proportion in LCH color space to adjust the intensity
     of color in the image. As saturation increases, colors appear
     more "pure." As saturation decreases, colors appear more "washed-out."
 
     Parameters
     ----------
     arr: ndarray with shape (3, ..., ...)
-    percent: integer
+    proportion: number
 
     """
     if arr.shape[0] != 3:
         raise ValueError("saturation requires a 3-band array")
-    return saturate_rgb(arr, percent / 100.0)
+    return saturate_rgb(arr, proportion)
 
 
 def simple_atmo(rgb, haze, contrast, bias):
@@ -182,7 +182,7 @@ def parse_operations(ops_string):
         'gamma': gamma}
 
     opkwargs = {
-        'saturation': ('percent',),
+        'saturation': ('proportion',),
         'sigmoidal': ('contrast', 'bias'),
         'gamma': ('g',)}
 
