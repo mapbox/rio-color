@@ -74,6 +74,7 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
     """Convert array of RGB -> LCH, adjust saturation, back to RGB
     """
     cdef double r, g, b
+    cdef int i, j
     cdef lch c_lch
     cdef rgb c_rgb
     if arr.shape[0] != 3:
@@ -85,8 +86,8 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
     cdef int a2 = arr.shape[2]
     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty((a0, a1, a2))
 
-    for j in range(arr.shape[2]):
-        for i in range(arr.shape[1]):
+    for i in range(arr.shape[1]):
+        for j in range(arr.shape[2]):
             r = arr[0, i, j]
             g = arr[1, i, j]
             b = arr[2, i, j]
@@ -95,7 +96,7 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
             c_lch.c *= satmult
             c_rgb = _lch_to_rgb(c_lch.l, c_lch.c, c_lch.h)
 
-            out[0, i, j] = c_rgb.r 
+            out[0, i, j] = c_rgb.r
             out[1, i, j] = c_rgb.g
             out[2, i, j] = c_rgb.b
 
@@ -104,6 +105,7 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
 
 cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr):
     cdef double r, g, b
+    cdef int i, j
     cdef lch color
     if arr.shape[0] != 3:
         raise ValueError("The 0th dimension must contain 3 bands")
@@ -114,8 +116,8 @@ cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr
     cdef int a2 = arr.shape[2]
     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty((a0, a1, a2))
 
-    for j in range(arr.shape[2]):
-        for i in range(arr.shape[1]):
+    for i in range(arr.shape[1]):
+        for j in range(arr.shape[2]):
             r = arr[0, i, j]
             g = arr[1, i, j]
             b = arr[2, i, j]
@@ -129,6 +131,7 @@ cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr
 
 cpdef np.ndarray[FLOAT_t, ndim=3] arr_lch_to_rgb(np.ndarray[FLOAT_t, ndim=3] arr):
     cdef double l, c, h
+    cdef int i, j
     cdef rgb color
     if arr.shape[0] != 3:
         raise ValueError("The 0th dimension must contain 3 bands")
@@ -139,8 +142,8 @@ cpdef np.ndarray[FLOAT_t, ndim=3] arr_lch_to_rgb(np.ndarray[FLOAT_t, ndim=3] arr
     cdef int a2 = arr.shape[2]
     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty((a0, a1, a2))
 
-    for j in range(arr.shape[2]):
-        for i in range(arr.shape[1]):
+    for i in range(arr.shape[1]):
+        for j in range(arr.shape[2]):
             l = arr[0, i, j]
             c = arr[1, i, j]
             h = arr[2, i, j]
@@ -248,7 +251,7 @@ cdef rgb _lch_to_rgb(double L, double C, double H):
         blin = 1.0
     elif blin < 0.0:
         blin = 0.0
-        
+
     # includes gamma exponentiation
     # Use simplified sRGB with gamma = 2.2
     color.r = rlin ** (1 / 2.2)
