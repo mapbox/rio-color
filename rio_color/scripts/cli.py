@@ -50,21 +50,22 @@ Available OPERATIONS include:
         BIAS > 0.5 darkens the image.
 
 \b
-    "saturation PERCENTAGE"
-        Controls the saturation in LCH color space (similar to HSV).
-        PERCENTAGE = 0 results in a grayscale image, 100 is no change,
-        and 200 is a lot.
+    "saturation PROPORTION"
+        Controls the saturation in LCH color space.
+        PROPORTION = 0 results in a grayscale image
+        PROPORTION = 1 results in an identical image
+        PROPORTION = 2 is likely way too saturated
 
-BANDS are specified as a comma-separated list of band numbers or letters:
+BANDS are specified as a single arg
 
 \b
-    `1,2,3` or `R,G,B` or `r,g,b` are all equivalent
+    `123` or `RGB` or `rgb` are all equivalent
 
 Example:
 
 \b
     rio color -d uint8 -j 4 input.tif output.tif \\
-        "gamma 3 0.95" "sigmoidal 1,2,3 35 0.13"
+        gamma 3 0.95 sigmoidal 1,2,3 35 0.13
     """
     with rasterio.open(src_path) as src:
         opts = src.profile.copy()
