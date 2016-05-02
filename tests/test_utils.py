@@ -51,16 +51,14 @@ def test_magick_to_rio():
         "-modulate 222,135 "
     )
 
-    expected = (
+    assert ops == ' '.join([
         "sigmoidal B 4 0.5",
         "gamma B 0.95",
         "gamma R 1.10",
-        "sigmoidal R,G,B 1 0.55",
+        "sigmoidal RGB 1 0.55",
         "gamma G 0.9",
         "saturation 125",
-        "sigmoidal R,G,B 3 0.4",
+        "sigmoidal RGB 3 0.4",
         "saturation 135",
-    )
+    ])
 
-    for op, ex in zip(ops, expected):
-        assert op == ex

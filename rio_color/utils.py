@@ -35,7 +35,7 @@ def magick_to_rio(convert_opts):
 
     Returns
     -------
-    tuple, ordered rio color operations
+    operations string, ordered rio color operations
     """
     ops = []
     bands = None
@@ -43,7 +43,7 @@ def magick_to_rio(convert_opts):
     def set_band(x):
         global bands
         if x.upper() == "RGB":
-            x = "R,G,B"
+            x = "RGB"
         bands = x.upper()
 
     set_band("RGB")
@@ -86,4 +86,4 @@ def magick_to_rio(convert_opts):
                 nextf(part)
             nextf = None
 
-    return tuple(ops)
+    return ' '.join(ops)
