@@ -76,18 +76,17 @@ Example:
     out_dtype = out_dtype if out_dtype else opts['dtype']
     opts['dtype'] = out_dtype
 
+    args = {
+        'ops_string': ' '.join(operations),
+        'out_dtype': out_dtype
+    }
     # Just run this for validation this time
     # parsing will be run again within the worker
     # where its returned value will be used
     try:
-        list(parse_operations(operations))
+        parse_operations(args['ops_string'])
     except ValueError as e:
         raise click.UsageError(str(e))
-
-    args = {
-        'operations': operations,
-        'out_dtype': out_dtype
-    }
 
     jobs = check_jobs(jobs)
 

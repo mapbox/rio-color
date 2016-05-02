@@ -38,7 +38,7 @@ def test_atmos():
 def test_color():
     i = 77
     args = {
-        'operations': ['gamma 3 0.95', 'gamma 1,2 0.99'],
+        'ops_string': 'gamma 3 0.95 gamma 1,2 0.99',
         'out_dtype': 'uint8'}
 
     with rasterio.open('tests/rgb8.tif') as src:

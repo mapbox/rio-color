@@ -113,7 +113,7 @@ def test_color_jobsn1(tmpdir):
             '-j', '-1',
             'tests/rgb8.tif',
             output,
-            "gamma 1,2,3 1.85"])
+            "gamma 1,2,3 1.85 sigmoidal rgb 35 0.13"])
     assert result.exit_code == 0
     assert os.path.exists(output)
 
@@ -134,7 +134,7 @@ def test_creation_opts(tmpdir):
             '--co', 'compress=jpeg',
             'tests/rgb8.tif',
             output,
-            "gamma 1,2,3 1.85"])
+            "gamma 1,2,3 1.85 sigmoidal rgb 35 0.13"])
     assert result.exit_code == 0
 
     with rasterio.open(output, 'r') as src:

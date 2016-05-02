@@ -166,13 +166,12 @@ def simple_atmo(rgb, haze, contrast, bias):
     return output
 
 
-def parse_operations(operations):
-    """Takes an iterable of operations,
-    each operation is expected to be a string with a specified syntax
+def parse_operations(ops_string):
+    """Takes a string of operations written with a handy DSL
 
-    "OPERATION-NAME BANDS ARGS..."
+    "OPERATION-NAME BANDS ARG1 ARG2 OPERATION-NAME BANDS ARG"
 
-    And yields a list of functions that take and return ndarrays
+    And returns a list of functions, each of which take and return ndarrays
     """
     band_lookup = {'r': 1, 'g': 2, 'b': 3}
     count = len(band_lookup)
@@ -190,8 +189,21 @@ def parse_operations(operations):
     # Operations that assume RGB colorspace
     rgb_ops = ('saturation',)
 
-    for op in operations:
-        parts = op.split(" ")
+    # split into tokens, commas are optional whitespace
+    tokens = [x.strip() for x in ops_string.replace(',', '').split(' ')]
+    operations = []
+    current = []
+    for token in tokens:
+        if token.lower() in opfuncs.keys():
+            if len(current) > 0:
+                operations.append(current)
+                current = []
+        current.append(token.lower())
+    if len(current) > 0:
+        operations.append(current)
+
+    result = []
+    for parts in operations:
         opname = parts[0]
         bandstr = parts[1]
         args = parts[2:]
@@ -210,7 +222,7 @@ def parse_operations(operations):
             # 2nd arg is bands
             # parse r,g,b ~= 1,2,3
             bands = set()
-            for bs in bandstr.split(","):
+            for bs in bandstr:
                 try:
                     band = int(bs)
                 except ValueError:
@@ -238,4 +250,6 @@ def parse_operations(operations):
                     newarr[b - 1] = func(arr[b - 1], **kwargs)
             return newarr
 
-        yield f
+        result.append(f)
+
+    return result
