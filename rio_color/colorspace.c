@@ -1205,6 +1205,9 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__NPY_TYPES(enum NPY_TYPES value);
 
 /* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
+
+/* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntToPy.proto */
@@ -1684,8 +1687,8 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
   double __pyx_v_r;
   double __pyx_v_g;
   double __pyx_v_b;
-  int __pyx_v_i;
-  int __pyx_v_j;
+  size_t __pyx_v_i;
+  size_t __pyx_v_j;
   __pyx_t_9rio_color_10colorspace_lch __pyx_v_c_lch;
   __pyx_t_9rio_color_10colorspace_rgb __pyx_v_c_rgb;
   int __pyx_v_a0;
@@ -1707,28 +1710,28 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
   PyObject *__pyx_t_7 = NULL;
   PyArrayObject *__pyx_t_8 = NULL;
   npy_intp __pyx_t_9;
-  int __pyx_t_10;
+  size_t __pyx_t_10;
   npy_intp __pyx_t_11;
-  int __pyx_t_12;
+  size_t __pyx_t_12;
   Py_ssize_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  Py_ssize_t __pyx_t_15;
+  size_t __pyx_t_14;
+  size_t __pyx_t_15;
   Py_ssize_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
-  Py_ssize_t __pyx_t_18;
+  size_t __pyx_t_17;
+  size_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
-  Py_ssize_t __pyx_t_20;
-  Py_ssize_t __pyx_t_21;
+  size_t __pyx_t_20;
+  size_t __pyx_t_21;
   double __pyx_t_22;
   Py_ssize_t __pyx_t_23;
-  Py_ssize_t __pyx_t_24;
-  Py_ssize_t __pyx_t_25;
+  size_t __pyx_t_24;
+  size_t __pyx_t_25;
   Py_ssize_t __pyx_t_26;
-  Py_ssize_t __pyx_t_27;
-  Py_ssize_t __pyx_t_28;
+  size_t __pyx_t_27;
+  size_t __pyx_t_28;
   Py_ssize_t __pyx_t_29;
-  Py_ssize_t __pyx_t_30;
-  Py_ssize_t __pyx_t_31;
+  size_t __pyx_t_30;
+  size_t __pyx_t_31;
   __Pyx_RefNannySetupContext("saturate_rgb", 0);
   __pyx_pybuffer_out.pybuffer.buf = NULL;
   __pyx_pybuffer_out.refcount = 0;
@@ -2158,7 +2161,7 @@ static PyObject *__pyx_pf_9rio_color_10colorspace_4saturate_rgb(CYTHON_UNUSED Py
  * 
  * cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr):             # <<<<<<<<<<<<<<
  *     cdef double r, g, b
- *     cdef int i, j
+ *     cdef size_t i, j
  */
 
 static PyObject *__pyx_pw_9rio_color_10colorspace_7arr_rgb_to_lch(PyObject *__pyx_self, PyObject *__pyx_v_arr); /*proto*/
@@ -2166,8 +2169,8 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_rgb_to_lch(PyArrayObje
   double __pyx_v_r;
   double __pyx_v_g;
   double __pyx_v_b;
-  int __pyx_v_i;
-  int __pyx_v_j;
+  size_t __pyx_v_i;
+  size_t __pyx_v_j;
   __pyx_t_9rio_color_10colorspace_lch __pyx_v_color;
   int __pyx_v_a0;
   int __pyx_v_a1;
@@ -2188,28 +2191,28 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_rgb_to_lch(PyArrayObje
   PyObject *__pyx_t_7 = NULL;
   PyArrayObject *__pyx_t_8 = NULL;
   npy_intp __pyx_t_9;
-  int __pyx_t_10;
+  size_t __pyx_t_10;
   npy_intp __pyx_t_11;
-  int __pyx_t_12;
+  size_t __pyx_t_12;
   Py_ssize_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  Py_ssize_t __pyx_t_15;
+  size_t __pyx_t_14;
+  size_t __pyx_t_15;
   Py_ssize_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
-  Py_ssize_t __pyx_t_18;
+  size_t __pyx_t_17;
+  size_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
-  Py_ssize_t __pyx_t_20;
-  Py_ssize_t __pyx_t_21;
+  size_t __pyx_t_20;
+  size_t __pyx_t_21;
   double __pyx_t_22;
   Py_ssize_t __pyx_t_23;
-  Py_ssize_t __pyx_t_24;
-  Py_ssize_t __pyx_t_25;
+  size_t __pyx_t_24;
+  size_t __pyx_t_25;
   Py_ssize_t __pyx_t_26;
-  Py_ssize_t __pyx_t_27;
-  Py_ssize_t __pyx_t_28;
+  size_t __pyx_t_27;
+  size_t __pyx_t_28;
   Py_ssize_t __pyx_t_29;
-  Py_ssize_t __pyx_t_30;
-  Py_ssize_t __pyx_t_31;
+  size_t __pyx_t_30;
+  size_t __pyx_t_31;
   __Pyx_RefNannySetupContext("arr_rgb_to_lch", 0);
   __pyx_pybuffer_out.pybuffer.buf = NULL;
   __pyx_pybuffer_out.refcount = 0;
@@ -2226,7 +2229,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_rgb_to_lch(PyArrayObje
   __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
 
   /* "rio_color/colorspace.pyx":110
- *     cdef int i, j
+ *     cdef size_t i, j
  *     cdef lch color
  *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
  *         raise ValueError("The 0th dimension must contain 3 bands")
@@ -2249,7 +2252,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_rgb_to_lch(PyArrayObje
     __PYX_ERR(0, 111, __pyx_L1_error)
 
     /* "rio_color/colorspace.pyx":110
- *     cdef int i, j
+ *     cdef size_t i, j
  *     cdef lch color
  *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
  *         raise ValueError("The 0th dimension must contain 3 bands")
@@ -2478,7 +2481,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_rgb_to_lch(PyArrayObje
  * 
  * cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr):             # <<<<<<<<<<<<<<
  *     cdef double r, g, b
- *     cdef int i, j
+ *     cdef size_t i, j
  */
 
   /* function exit code */
@@ -2575,7 +2578,7 @@ static PyObject *__pyx_pf_9rio_color_10colorspace_6arr_rgb_to_lch(CYTHON_UNUSED 
  * 
  * cpdef np.ndarray[FLOAT_t, ndim=3] arr_lch_to_rgb(np.ndarray[FLOAT_t, ndim=3] arr):             # <<<<<<<<<<<<<<
  *     cdef double l, c, h
- *     cdef int i, j
+ *     cdef size_t i, j
  */
 
 static PyObject *__pyx_pw_9rio_color_10colorspace_9arr_lch_to_rgb(PyObject *__pyx_self, PyObject *__pyx_v_arr); /*proto*/
@@ -2583,8 +2586,8 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_lch_to_rgb(PyArrayObje
   double __pyx_v_l;
   double __pyx_v_c;
   double __pyx_v_h;
-  int __pyx_v_i;
-  int __pyx_v_j;
+  size_t __pyx_v_i;
+  size_t __pyx_v_j;
   __pyx_t_9rio_color_10colorspace_rgb __pyx_v_color;
   int __pyx_v_a0;
   int __pyx_v_a1;
@@ -2605,28 +2608,28 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_lch_to_rgb(PyArrayObje
   PyObject *__pyx_t_7 = NULL;
   PyArrayObject *__pyx_t_8 = NULL;
   npy_intp __pyx_t_9;
-  int __pyx_t_10;
+  size_t __pyx_t_10;
   npy_intp __pyx_t_11;
-  int __pyx_t_12;
+  size_t __pyx_t_12;
   Py_ssize_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  Py_ssize_t __pyx_t_15;
+  size_t __pyx_t_14;
+  size_t __pyx_t_15;
   Py_ssize_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
-  Py_ssize_t __pyx_t_18;
+  size_t __pyx_t_17;
+  size_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
-  Py_ssize_t __pyx_t_20;
-  Py_ssize_t __pyx_t_21;
+  size_t __pyx_t_20;
+  size_t __pyx_t_21;
   double __pyx_t_22;
   Py_ssize_t __pyx_t_23;
-  Py_ssize_t __pyx_t_24;
-  Py_ssize_t __pyx_t_25;
+  size_t __pyx_t_24;
+  size_t __pyx_t_25;
   Py_ssize_t __pyx_t_26;
-  Py_ssize_t __pyx_t_27;
-  Py_ssize_t __pyx_t_28;
+  size_t __pyx_t_27;
+  size_t __pyx_t_28;
   Py_ssize_t __pyx_t_29;
-  Py_ssize_t __pyx_t_30;
-  Py_ssize_t __pyx_t_31;
+  size_t __pyx_t_30;
+  size_t __pyx_t_31;
   __Pyx_RefNannySetupContext("arr_lch_to_rgb", 0);
   __pyx_pybuffer_out.pybuffer.buf = NULL;
   __pyx_pybuffer_out.refcount = 0;
@@ -2643,7 +2646,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_lch_to_rgb(PyArrayObje
   __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
 
   /* "rio_color/colorspace.pyx":136
- *     cdef int i, j
+ *     cdef size_t i, j
  *     cdef rgb color
  *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
  *         raise ValueError("The 0th dimension must contain 3 bands")
@@ -2666,7 +2669,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_lch_to_rgb(PyArrayObje
     __PYX_ERR(0, 137, __pyx_L1_error)
 
     /* "rio_color/colorspace.pyx":136
- *     cdef int i, j
+ *     cdef size_t i, j
  *     cdef rgb color
  *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
  *         raise ValueError("The 0th dimension must contain 3 bands")
@@ -2895,7 +2898,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_lch_to_rgb(PyArrayObje
  * 
  * cpdef np.ndarray[FLOAT_t, ndim=3] arr_lch_to_rgb(np.ndarray[FLOAT_t, ndim=3] arr):             # <<<<<<<<<<<<<<
  *     cdef double l, c, h
- *     cdef int i, j
+ *     cdef size_t i, j
  */
 
   /* function exit code */
@@ -7927,6 +7930,191 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
         return _PyLong_FromByteArray(bytes, sizeof(enum NPY_TYPES),
                                      little, !is_unsigned);
     }
+}
+
+/* CIntFromPy */
+        static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(size_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (size_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
+                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
+                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
+                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (size_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            size_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (size_t) -1;
+        }
+    } else {
+        size_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to size_t");
+    return (size_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to size_t");
+    return (size_t) -1;
 }
 
 /* CIntFromPy */
