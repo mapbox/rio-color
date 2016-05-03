@@ -1,2 +1,4 @@
-README.md
-requirements.txt
+include README.md
+include requirements.txt
+include rio_color/*.pyx
+include rio_color/*.c
