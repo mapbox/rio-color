@@ -1,9 +1,13 @@
 import os
 import sys
-from codecs import open as codecs_open
 from setuptools import setup, find_packages
-from Cython.Build import cythonize
+from setuptools.extension import Extension
 
+# Use Cython if available.
+try:
+    from Cython.Build import cythonize
+except ImportError:
+    cythonize = None
 
 include_dirs = []
 try:
@@ -31,6 +35,14 @@ See https://github.com/mapbox/rio-color for docs."""
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+if cythonize and 'clean' not in sys.argv:
+    ext_modules = cythonize([
+        Extension(
+            "rio_color.colorspace", ["rio_color/colorspace.pyx"])])
+else:
+    ext_modules = [
+        Extension(
+            "rio_color.colorspace", ["rio_color/colorspace.c"])]
 
 setup(name='rio-color',
       version=version,
@@ -45,9 +57,8 @@ setup(name='rio-color',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=read('requirements.txt').splitlines(),
-      # TODO http://docs.cython.org/src/reference/compilation.html#distributing-cython-modules
-      ext_modules=cythonize("rio_color/colorspace.pyx"),
+      install_requires=["click", "rasterio", "rio-mucho"],
+      ext_modules=ext_modules,
       include_dirs=include_dirs,
       extras_require={
           'test': ['pytest', 'pytest-cov', 'codecov', 'raster-tester'],
