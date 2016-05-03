@@ -23,9 +23,9 @@ with open('rio_color/__init__.py') as f:
             version = version.strip("'")
             break
 
-# Get the long description from the relevant file
-with codecs_open('README.md', encoding='utf-8') as f:
-    long_description = f.read()
+long_description = """Color adjustment plugin for rasterio.
+
+See https://github.com/mapbox/rio-color for docs."""
 
 
 def read(fname):
