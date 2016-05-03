@@ -76,7 +76,6 @@ def test_gamma(arr):
         x = gamma(arr, np.nan)
 
 
-
 def test_sat(arr):
     x = saturation(arr, 50)
     assert x[0][0][0] - 0.15860622 < 1e-4
@@ -104,32 +103,39 @@ def test_atmo(arr):
 
 
 def test_parse_gamma(arr):
-    f = list(parse_operations(["gamma 1,2,3 0.95", ]))[0]
+    f = parse_operations("gamma rgb 0.95")[0]
     assert np.array_equal(f(arr), gamma(arr, 0.95))
 
 
 def test_parse_sigmoidal(arr):
-    f = list(parse_operations(["sigmoidal 1,2,3 5 0.53", ]))[0]
+    f = parse_operations("sigmoidal rgb 5 0.53")[0]
     assert np.array_equal(
         f(arr),
         sigmoidal(arr, contrast=5, bias=0.53))
 
 
 def test_parse_multi(arr):
-    f1, f2 = list(parse_operations([
-        "gamma 1,2,3 0.95", "sigmoidal 1,2,3 35 0.13"]))
+    f1, f2 = parse_operations("gamma rgb 0.95 sigmoidal rgb 35 0.13")
+    assert np.array_equal(
+        f2(f1(arr)),
+        sigmoidal(gamma(arr, g=0.95), contrast=35, bias=0.13))
+
+
+def test_parse_comma(arr):
+    # Commas are optional whitespace, treated like empty string
+    f1, f2 = parse_operations("gamma r,g,b 0.95, sigmoidal r,g,b 35 0.13")
     assert np.array_equal(
         f2(f1(arr)),
         sigmoidal(gamma(arr, g=0.95), contrast=35, bias=0.13))
 
 
 def test_parse_saturation_rgb(arr):
-    f = list(parse_operations(["saturation 125", ]))[0]
-    assert np.allclose(f(arr), saturation(arr, 125))
+    f = parse_operations("saturation 1.25")[0]
+    assert np.allclose(f(arr), saturation(arr, 1.25))
 
 
 def test_parse_rgba(arr, arr_rgba):
-    f = list(parse_operations(["gamma r,g 0.95", ]))[0]
+    f = parse_operations("gamma rg 0.95")[0]
     rgb = f(arr)
     assert rgb.shape[0] == 3
 
@@ -142,7 +148,7 @@ def test_parse_rgba(arr, arr_rgba):
 
 
 def test_saturation_rgba(arr, arr_rgba):
-    f = list(parse_operations(["saturation 125", ]))[0]
+    f = parse_operations("saturation 1.25")[0]
 
     satrgb = f(arr)
     assert satrgb.shape[0] == 3
@@ -158,13 +164,13 @@ def test_saturation_rgba(arr, arr_rgba):
 
 def test_parse_bad_op():
     with pytest.raises(ValueError):
-        list(parse_operations(["foob 123"]))
+        parse_operations("foob 123")
 
 
 def test_parse_bands(arr):
-    fa = list(parse_operations(["gamma 1,2 0.95", ]))[0]
-    fb = list(parse_operations(["gamma R,g 0.95", ]))[0]
+    fa = parse_operations("gamma 1,2 0.95")[0]
+    fb = parse_operations("gamma Rg 0.95")[0]
     assert np.array_equal(fa(arr), fb(arr))
 
     with pytest.raises(ValueError):
-        list(parse_operations(["gamma 7,8,9 1.05"]))
+        parse_operations("gamma 7,8,9 1.05")

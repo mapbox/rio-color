@@ -27,7 +27,7 @@ def check_jobs(jobs):
               help="Integer data type for output data, default: same as input")
 @click.argument('src_path', type=click.Path(exists=True))
 @click.argument('dst_path', type=click.Path(exists=False))
-@click.argument('operations', nargs=-1)
+@click.argument('operations', nargs=-1, required=True)
 @click.pass_context
 @creation_options
 def color(ctx, jobs, out_dtype, src_path, dst_path, operations,
@@ -50,21 +50,22 @@ Available OPERATIONS include:
         BIAS > 0.5 darkens the image.
 
 \b
-    "saturation PERCENTAGE"
-        Controls the saturation in LCH color space (similar to HSV).
-        PERCENTAGE = 0 results in a grayscale image, 100 is no change,
-        and 200 is a lot.
+    "saturation PROPORTION"
+        Controls the saturation in LCH color space.
+        PROPORTION = 0 results in a grayscale image
+        PROPORTION = 1 results in an identical image
+        PROPORTION = 2 is likely way too saturated
 
-BANDS are specified as a comma-separated list of band numbers or letters:
+BANDS are specified as a single arg
 
 \b
-    `1,2,3` or `R,G,B` or `r,g,b` are all equivalent
+    `123` or `RGB` or `rgb` are all equivalent
 
 Example:
 
 \b
     rio color -d uint8 -j 4 input.tif output.tif \\
-        "gamma 3 0.95" "sigmoidal 1,2,3 35 0.13"
+        gamma 3 0.95 sigmoidal 1,2,3 35 0.13
     """
     with rasterio.open(src_path) as src:
         opts = src.profile.copy()
@@ -76,18 +77,17 @@ Example:
     out_dtype = out_dtype if out_dtype else opts['dtype']
     opts['dtype'] = out_dtype
 
+    args = {
+        'ops_string': ' '.join(operations),
+        'out_dtype': out_dtype
+    }
     # Just run this for validation this time
     # parsing will be run again within the worker
     # where its returned value will be used
     try:
-        list(parse_operations(operations))
+        ops = parse_operations(args['ops_string'])
     except ValueError as e:
         raise click.UsageError(str(e))
-
-    args = {
-        'operations': operations,
-        'out_dtype': out_dtype
-    }
 
     jobs = check_jobs(jobs)
 

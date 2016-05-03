@@ -17,27 +17,25 @@ The following functions accept and return numpy `ndarrays`. The arrays are assum
 
 * `sigmoidal(arr, contrast, bias)`
 * `gamma(arr, g)`
-* `saturation(rgb, percent)`
+* `saturation(rgb, proportion)`
 * `simple_atmo(rgb, haze, contrast, bias)`
 
-There is one function in the `rio_color.operations` module which doesn't manipulate arrays: 
-`parse_operations`. This function takes an iterable of *operation strings* and
-yields python functions which can be applied to an array. 
+There is one function in the `rio_color.operations` module which doesn't manipulate arrays:
+`parse_operations`. This function takes an *operations string* and
+returns a list of python functions which can be applied to an array.
 
 ```
-ops = [
-    "gamma 3 1.85", 
-    "gamma 1,2 1.95",
-    "sigmoidal 1,2,3 35 0.13",
-    "saturation 115"]
+ops = "gamma b 1.85, gamma rg 1.95, sigmoidal rgb 35 0.13, saturation 1.15"
 
-# arr is an 3D numpy array, RGB, scaled 0 to 1
+assert arr.shape[0] == 3
+assert arr.min() >= 0
+assert arr.max() <= 1
 
 for func in parse_operations(ops):
     arr = func(arr)
 ```
 
-This provides a tiny *domain specific language* to allow you
+This provides a tiny domain specific language (DSL) to allow you
 to compose ordered chains of image manipulations using the above operations.
 For more information on operation strings, see the `rio color` command line help.
 
@@ -65,18 +63,20 @@ Usage: rio color [OPTIONS] SRC_PATH DST_PATH [OPERATIONS]...
       "sigmoidal BANDS CONTRAST BIAS"
           Adjusts the contrast and brightness of midtones.
 
-      "saturation PERCENTAGE"
-          Controls the saturation in HSV color space.
-          PERCENTAGE = 0 results in a grayscale image
+      "saturation PROPORTION"
+          Controls the saturation in LCH color space.
+          PROPORTION = 0 results in a grayscale image
+          PROPORTION = 1 results in an identical image
+          PROPORTION = 2 is likely way too saturated
 
-  BANDS are specified as a comma-separated list of band numbers or letters
+  BANDS are specified as a single arg
 
-      `1,2,3` or `R,G,B` or `r,g,b` are all equivalent
+        `123` or `RGB` or `rgb` are all equivalent
 
   Example:
 
       rio color -d uint8 -j 4 input.tif output.tif \
-          "gamma 3 0.95" "sigmoidal 1,2,3 35 0.13"
+          gamma b 0.95 sigmoidal rgb 35 0.13
 
 
 Options:
@@ -89,7 +89,7 @@ Example:
 
 ```
 $ rio color -d uint8 -j 4 rgb.tif test.tif \
-    "gamma 3 1.85" "gamma 1,2 1.95" "sigmoidal 1,2,3 35 0.13" "saturation 115"
+    gamma G 1.85 gamma B 1.95 sigmoidal RGB 35 0.13 saturation 1.15
 ```
 
 ![screen shot 2016-02-17 at 12 18 47 pm](https://cloud.githubusercontent.com/assets/1151287/13116122/0f7f5f20-d571-11e5-82e7-9cc65c443972.png)

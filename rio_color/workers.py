@@ -23,7 +23,7 @@ def color_worker(srcs, window, ij, args):
     arr = src.read(window=window)
     arr = to_math_type(arr)
 
-    for func in parse_operations(args['operations']):
+    for func in parse_operations(args['ops_string']):
         arr = func(arr)
 
     # scaled 0 to 1, now scale to outtype

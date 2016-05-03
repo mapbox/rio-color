@@ -62,7 +62,7 @@ def test_color_cli(tmpdir):
             "gamma 3 1.85",
             "gamma 1,2 1.95",
             "sigmoidal 1,2,3 35 0.13",
-            "saturation 115"]
+            "saturation 1.15"]
         )
     assert result.exit_code == 0
     assert os.path.exists(output)
@@ -78,7 +78,7 @@ def test_color_cli(tmpdir):
             "gamma 3 1.85",
             "gamma 1,2 1.95",
             "sigmoidal 1,2,3 35 0.13",
-            "saturation 115"]
+            "saturation 1.15"]
         )
     assert result.exit_code == 0
     assert os.path.exists(output2)
@@ -113,7 +113,7 @@ def test_color_jobsn1(tmpdir):
             '-j', '-1',
             'tests/rgb8.tif',
             output,
-            "gamma 1,2,3 1.85"])
+            "gamma 1,2,3 1.85 sigmoidal rgb 35 0.13"])
     assert result.exit_code == 0
     assert os.path.exists(output)
 
@@ -134,7 +134,7 @@ def test_creation_opts(tmpdir):
             '--co', 'compress=jpeg',
             'tests/rgb8.tif',
             output,
-            "gamma 1,2,3 1.85"])
+            "gamma 1,2,3 1.85 sigmoidal rgb 35 0.13"])
     assert result.exit_code == 0
 
     with rasterio.open(output, 'r') as src:
@@ -184,7 +184,7 @@ def test_color_cli_rgba(tmpdir):
             "gamma 3 1.85",
             "gamma 1,2 1.95",
             "sigmoidal 1,2,3 35 0.13",
-            "saturation 115"]
+            "saturation 1.15"]
         )
     assert result.exit_code == 0
 
@@ -212,3 +212,18 @@ def test_color_cli_16bit_photointerp(tmpdir):
         with rasterio.open(output) as out:
             for b in src.indexes:
                 assert out.colorinterp(b) == src.colorinterp(b)
+
+
+def test_color_empty_operations(tmpdir):
+    output = str(tmpdir.join('color.tif'))
+    runner = CliRunner()
+    result = runner.invoke(
+        color,
+        ['tests/rgb8.tif', output])
+    assert result.exit_code == 2
+    assert not os.path.exists(output)
+
+    result = runner.invoke(
+        color,
+        ['tests/rgb8.tif', output, ", , ,"])
+    assert result.exit_code == 2
