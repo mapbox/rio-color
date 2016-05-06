@@ -165,6 +165,26 @@ def simple_atmo(rgb, haze, contrast, bias):
 
     return output
 
+def _op_factory(func, kwargs, opname, bands, rgb_op=False):
+    """create an operation function closure
+    don't call directly, use parse_operations
+    returns a function which itself takes and returns ndarrays
+    """
+    def f(arr):
+        # Avoid mutation by copying
+        newarr = arr.copy()
+        if rgb_op:
+            # apply func to array's first 3 bands, assumed r,g,b
+            # additional band(s) are untouched
+            newarr[0:3] = func(newarr[0:3], **kwargs)
+        else:
+            # apply func to array band at a time
+            for b in bands:
+                newarr[b - 1] = func(arr[b - 1], **kwargs)
+        return newarr
+
+    return f
+
 
 def parse_operations(ops_string):
     """Takes a string of operations written with a handy DSL
@@ -237,19 +257,9 @@ def parse_operations(ops_string):
         args = [float(arg) for arg in args]
         kwargs = dict(zip(opkwargs[opname], args))
 
-        def f(arr, func=func, kwargs=kwargs):
-            # Avoid mutation by copying
-            newarr = arr.copy()
-            if opname in rgb_ops:
-                # apply func to array's first 3 bands, assumed r,g,b
-                # additional band(s) are untouched
-                newarr[0:3] = func(newarr[0:3], **kwargs)
-            else:
-                # apply func to array band at a time
-                for b in bands:
-                    newarr[b - 1] = func(arr[b - 1], **kwargs)
-            return newarr
-
+        # Create opperation function
+        f = _op_factory(func=func, kwargs=kwargs, opname=opname,
+                        bands=bands, rgb_op=(opname in rgb_ops))
         result.append(f)
 
     return result
