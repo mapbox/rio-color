@@ -4,7 +4,7 @@ import numpy as np
 from rio_color.utils import to_math_type
 from rio_color.operations import (
     sigmoidal, gamma, saturation,
-    simple_atmo, parse_operations)
+    simple_atmo, parse_operations, simple_atmo_opstring)
 
 
 @pytest.fixture
@@ -187,3 +187,11 @@ def test_parse_multi_name(arr):
     f1, f2 = parse_operations("saturation 1.25 gamma rgb 0.95")
     assert f1.__name__ == 'saturation'
     assert f2.__name__ == 'gamma'
+
+
+def test_simple_atmos_opstring(arr):
+    x = simple_atmo(arr, 0.03, 10, 0.15)
+    ops = simple_atmo_opstring(0.03, 10, 0.15)
+    for op in parse_operations(ops):
+        arr = op(arr)
+    assert np.allclose(x, arr)
