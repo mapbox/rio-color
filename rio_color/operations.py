@@ -183,6 +183,7 @@ def _op_factory(func, kwargs, opname, bands, rgb_op=False):
                 newarr[b - 1] = func(arr[b - 1], **kwargs)
         return newarr
 
+    f.__name__ = opname
     return f
 
 
