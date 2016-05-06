@@ -19,10 +19,9 @@ def sigmoidal(arr, contrast, bias):
         Enhances the intensity differences between the lighter and darker
         elements of the image. For example, 0 is none, 3 is typical and
         20 is a lot.
-    bias : float
+    bias : float, between 0 and 1
         Threshold level for the contrast function to center on
-        (typically centered at '50%')
-
+        (typically centered at 0.5)
 
     Notes
     ----------
@@ -145,16 +144,10 @@ def simple_atmo(rgb, haze, contrast, bias):
         Enhances the intensity differences between the lighter and darker
         elements of the image. For example, 0 is none, 3 is typical and
         20 is a lot.
-    bias : float
+    bias : float, between 0 and 1
         Threshold level for the contrast function to center on
-        (typically centered at '50%')
-
-
+        (typically centered at 0.5 or 50%)
     '''
-    # bias assumed to be given in percent,
-    # convert to proportion
-    bias = bias / 100.0
-
     gamma_b = 1 - haze
     gamma_g = 1 - (haze * (1 / 3.0))
 
