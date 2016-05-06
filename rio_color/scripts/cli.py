@@ -3,7 +3,7 @@ import click
 import rasterio
 from rasterio.rio.options import creation_options
 from rio_color.workers import atmos_worker, color_worker
-from rio_color.operations import parse_operations
+from rio_color.operations import parse_operations, simple_atmo_opstring
 import riomucho
 
 
@@ -118,20 +118,28 @@ Example:
 @click.option('--contrast', '-c', type=click.FLOAT, default=10,
               help="Contrast factor to apply to the scene. -infinity..infinity"
                    "(0 is none), default: 10.")
-@click.option('--bias', '-b', type=click.FLOAT, default=15,
+@click.option('--bias', '-b', type=click.FLOAT, default=0.15,
               help="Skew (brighten/darken) the output. Lower values make it "
-                   "brighter. 0..100 (50 is none), default: 15.")
-@jobs_opt
+                   "brighter. 0..1 (0.5 is none), default: 0.15")
 @click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
               help="Integer data type for output data, default: same as input")
-@click.argument('src_path', type=click.Path(exists=True))
+@click.option('--as-color', is_flag=True, default=False,
+              help="Prints the equivalent rio color command to stdout."
+                   "Does NOT run either command, SRC_PATH will not be created")
+@click.argument('src_path', required=True)
 @click.argument('dst_path', type=click.Path(exists=False))
+@jobs_opt
 @creation_options
 @click.pass_context
 def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
-          src_path, dst_path, creation_options):
+          src_path, dst_path, creation_options, as_color):
     """Atmospheric correction
     """
+    if as_color:
+        click.echo("rio color {} {} {}".format(
+            src_path, dst_path, simple_atmo_opstring(atmo, contrast, bias)))
+        exit(0)
+
     with rasterio.open(src_path) as src:
         opts = src.profile.copy()
         windows = [(window, ij) for ij, window in src.block_windows()]
