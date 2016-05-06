@@ -174,3 +174,16 @@ def test_parse_bands(arr):
 
     with pytest.raises(ValueError):
         parse_operations("gamma 7,8,9 1.05")
+
+
+def test_parse_multi_saturation_first(arr):
+    f1, f2 = parse_operations("saturation 1.25 gamma rgb 0.95")
+    assert np.array_equal(
+        f2(f1(arr)),
+        gamma(saturation(arr, 1.25), g=0.95))
+
+
+def test_parse_multi_name(arr):
+    f1, f2 = parse_operations("saturation 1.25 gamma rgb 0.95")
+    assert f1.__name__ == 'saturation'
+    assert f2.__name__ == 'gamma'
