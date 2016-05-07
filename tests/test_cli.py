@@ -227,3 +227,18 @@ def test_color_empty_operations(tmpdir):
         color,
         ['tests/rgb8.tif', output, ", , ,"])
     assert result.exit_code == 2
+
+def test_as_color(tmpdir):
+    runner = CliRunner()
+    result = runner.invoke(
+        atmos,
+        [
+            '-a', '0.03',
+            '--as-color',
+            'foo.tif',
+            'bar.tif']
+        )
+    assert result.exit_code == 0
+    assert not os.path.exists("bar.tif")
+    assert result.output.strip() == \
+        "rio color foo.tif bar.tif gamma g 0.99, gamma b 0.97, sigmoidal rgb 10.0 0.15"

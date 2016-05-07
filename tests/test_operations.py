@@ -4,7 +4,7 @@ import numpy as np
 from rio_color.utils import to_math_type
 from rio_color.operations import (
     sigmoidal, gamma, saturation,
-    simple_atmo, parse_operations)
+    simple_atmo, parse_operations, simple_atmo_opstring)
 
 
 @pytest.fixture
@@ -90,16 +90,16 @@ def test_sat_rgba_direct(arr_rgba):
 
 
 def test_atmo(arr):
-    x = simple_atmo(arr, 0.03, 10, 15)
+    x = simple_atmo(arr, 0.03, 10, 0.15)
     assert x[0][0][0] - 0.080560341 < 1e-4
 
     # Gamma output is not within the range 0..1
     with pytest.raises(ValueError):
-        x = simple_atmo(arr, 2.0, 10, 15)
+        x = simple_atmo(arr, 2.0, 10, 0.15)
 
     # Sigmoidal contrast output contains NaN
     with pytest.raises(ValueError):
-        x = simple_atmo(arr, 0.03, 1000, -5)
+        x = simple_atmo(arr, 0.03, 1000, -0.15)
 
 
 def test_parse_gamma(arr):
@@ -187,3 +187,11 @@ def test_parse_multi_name(arr):
     f1, f2 = parse_operations("saturation 1.25 gamma rgb 0.95")
     assert f1.__name__ == 'saturation'
     assert f2.__name__ == 'gamma'
+
+
+def test_simple_atmos_opstring(arr):
+    x = simple_atmo(arr, 0.03, 10, 0.15)
+    ops = simple_atmo_opstring(0.03, 10, 0.15)
+    for op in parse_operations(ops):
+        arr = op(arr)
+    assert np.allclose(x, arr)

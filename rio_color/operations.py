@@ -19,10 +19,9 @@ def sigmoidal(arr, contrast, bias):
         Enhances the intensity differences between the lighter and darker
         elements of the image. For example, 0 is none, 3 is typical and
         20 is a lot.
-    bias : float
+    bias : float, between 0 and 1
         Threshold level for the contrast function to center on
-        (typically centered at '50%')
-
+        (typically centered at 0.5)
 
     Notes
     ----------
@@ -133,6 +132,17 @@ def saturation(arr, proportion):
     return saturate_rgb(arr, proportion)
 
 
+def simple_atmo_opstring(haze, contrast, bias):
+    gamma_b = 1 - haze
+    gamma_g = 1 - (haze / 3.0)
+    ops = ("gamma g {gamma_g}, "
+           "gamma b {gamma_b}, "
+           "sigmoidal rgb {contrast} {bias}").format(
+               gamma_g=gamma_g, gamma_b=gamma_b,
+               contrast=contrast, bias=bias)
+    return ops
+
+
 def simple_atmo(rgb, haze, contrast, bias):
     '''
     A simple, static (non-adaptive) atmospheric correction function.
@@ -145,23 +155,19 @@ def simple_atmo(rgb, haze, contrast, bias):
         Enhances the intensity differences between the lighter and darker
         elements of the image. For example, 0 is none, 3 is typical and
         20 is a lot.
-    bias : float
+    bias : float, between 0 and 1
         Threshold level for the contrast function to center on
-        (typically centered at '50%')
-
-
+        (typically centered at 0.5 or 50%)
     '''
-    # bias assumed to be given in percent,
-    # convert to proportion
-    bias = bias / 100.0
-
     gamma_b = 1 - haze
-    gamma_g = 1 - (haze * (1 / 3.0))
+    gamma_g = 1 - (haze / 3.0)
+    arr = np.empty_like(rgb)
 
-    rgb[1] = gamma(rgb[1], gamma_g)
-    rgb[2] = gamma(rgb[2], gamma_b)
+    arr[0] = rgb[0]
+    arr[1] = gamma(rgb[1], gamma_g)
+    arr[2] = gamma(rgb[2], gamma_b)
 
-    output = sigmoidal(rgb, contrast, bias)
+    output = sigmoidal(arr, contrast, bias)
 
     return output
 
