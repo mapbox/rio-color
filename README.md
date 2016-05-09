@@ -45,9 +45,14 @@ Rio color provides two command line interfaces:
 
 ### `rio color`
 
+A general-purpose color correction tool to perform gamma, contrast and saturation adjustments.
+
+The advantages over Imagemagick `convert`: `rio color` is
+geo-aware, retains the profile of the source image, iterates efficiently over interal tiles
+and can use multiple cores.
+
 ```
-$ rio color --help
-Usage: rio color [OPTIONS] SRC_PATH DST_PATH [OPERATIONS]...
+Usage: rio color [OPTIONS] SRC_PATH DST_PATH OPERATIONS...
 
   Color correction
 
@@ -57,11 +62,12 @@ Usage: rio color [OPTIONS] SRC_PATH DST_PATH [OPERATIONS]...
   Available OPERATIONS include:
 
       "gamma BANDS VALUE"
-          Applies a gamma curve, brighten or darken midtones.
+          Applies a gamma curve, brightening or darkening midtones.
           VALUE > 1 brightens the image.
 
       "sigmoidal BANDS CONTRAST BIAS"
           Adjusts the contrast and brightness of midtones.
+          BIAS > 0.5 darkens the image.
 
       "saturation PROPORTION"
           Controls the saturation in LCH color space.
@@ -71,17 +77,22 @@ Usage: rio color [OPTIONS] SRC_PATH DST_PATH [OPERATIONS]...
 
   BANDS are specified as a single arg
 
-        `123` or `RGB` or `rgb` are all equivalent
+      `123` or `RGB` or `rgb` are all equivalent
 
   Example:
 
       rio color -d uint8 -j 4 input.tif output.tif \
-          gamma b 0.95 sigmoidal rgb 35 0.13
+          gamma 3 0.95 sigmoidal 1,2,3 35 0.13
 
 
 Options:
-  -j, --max-procs INTEGER
-  -d, --out-dtype [uint8|uint16]
+  -j, --jobs INTEGER              Number of jobs to run simultaneously, Use -1
+                                  for all cores, default: 1
+  -d, --out-dtype [uint8|uint16]  Integer data type for output data, default:
+                                  same as input
+  --co NAME=VALUE                 Driver specific creation options.See the
+                                  documentation for the selected output driver
+                                  for more information.
   --help                          Show this message and exit.
 ```
 
@@ -96,22 +107,32 @@ $ rio color -d uint8 -j 4 rgb.tif test.tif \
 
 ### `rio atmos`
 
+Provides a higher-level tool for general atmospheric correction of satellite imagery using
+a proven set of operations to adjust for haze.
+
 ```
-$ rio atmos --help
 Usage: rio atmos [OPTIONS] SRC_PATH DST_PATH
 
   Atmospheric correction
 
 Options:
   -a, --atmo FLOAT                How much to dampen cool colors, thus cutting
-                                  through haze. 0..1 (0 is none), default
+                                  through haze. 0..1 (0 is none), default:
                                   0.03.
   -c, --contrast FLOAT            Contrast factor to apply to the scene.
-                                  -infinity..infinity(0 is none), default 10.
+                                  -infinity..infinity(0 is none), default: 10.
   -b, --bias FLOAT                Skew (brighten/darken) the output. Lower
-                                  values make it brighter. 0..100 (50 is
-                                  none), default 15.
-  -j, --max-procs INTEGER
-  -d, --out-dtype [uint8|uint16]
+                                  values make it brighter. 0..1 (0.5 is none),
+                                  default: 0.15
+  -d, --out-dtype [uint8|uint16]  Integer data type for output data, default:
+                                  same as input
+  --as-color                      Prints the equivalent rio color command to
+                                  stdout.Does NOT run either command, SRC_PATH
+                                  will not be created
+  -j, --jobs INTEGER              Number of jobs to run simultaneously, Use -1
+                                  for all cores, default: 1
+  --co NAME=VALUE                 Driver specific creation options.See the
+                                  documentation for the selected output driver
+                                  for more information.
   --help                          Show this message and exit.
 ```
