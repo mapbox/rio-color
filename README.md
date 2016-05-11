@@ -9,6 +9,24 @@ Color-oriented operations for `rasterio`/`rio`.
 
 We want to supply a baseline selection of esthetics-oriented image operations for numpy/rasterio, exposed as much as possible through `rio`. Some functions may be trivial (gamma) or already implemented elsewhere (for example, in `skimage`), but we want versions of them that are standard and light, without big dependencies.
 
+## Install
+
+We highly recommend installing in a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/). Once activated, 
+
+```
+pip install -U pip
+pip install rio-color
+```
+
+Or if you want to install from source
+```
+git checkout https://github.com/mapbox/rio-color.git
+cd rio-color
+pip install -U pip
+pip install -r requirements-dev.txt
+pip install -e .
+```
+
 ## Python API
 
 ### `rio_color.operations`
