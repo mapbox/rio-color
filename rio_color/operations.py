@@ -50,6 +50,9 @@ def sigmoidal(arr, contrast, bias):
     if (arr.max() > 1.0 + epsilon) or (arr.min() < 0 - epsilon):
         raise ValueError("Input array must have float values between 0 and 1")
 
+    if (bias > 1.0 + epsilon) or (bias < 0 - epsilon):
+        raise ValueError("bias must be a scalar float between 0 and 1")
+
     alpha, beta = bias, contrast
     # We use the names a and b to match documentation.
 
@@ -83,12 +86,7 @@ def sigmoidal(arr, contrast, bias):
                 ) - 1)
             ) / beta
 
-    if np.any(output < 0) or np.any(output > (1 + epsilon)):
-        raise ValueError("Sigmoidal contrast output is not within the range of [0,1]")
-    elif np.isnan(output.sum()):
-        raise ValueError("Sigmoidal contrast output contains NaN")
-    else:
-        return output
+    return output
 
 
 def gamma(arr, g):

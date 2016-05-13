@@ -8,8 +8,8 @@ def test_atmos():
     i = 77
     args = {
         'atmo': 0.03,
-        'contrast': 10,
-        'bias': 15,
+        'contrast': 15,
+        'bias': 0.5,
         'out_dtype': 'uint8'}
 
     with rasterio.open('tests/rgb8.tif') as src:

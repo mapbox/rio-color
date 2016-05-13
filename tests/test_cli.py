@@ -22,7 +22,7 @@ def test_atmos_cli(tmpdir):
         atmos,
         [
             '-a', '0.03',
-            '-b', '10',
+            '-b', '0.5',
             '-c', '15',
             '-j', '1',
             'tests/rgb8.tif',
@@ -37,7 +37,7 @@ def test_atmos_cli(tmpdir):
         atmos,
         [
             '-a', '0.03',
-            '-b', '10',
+            '-b', '0.5',
             '-c', '15',
             '-j', '2',
             'tests/rgb8.tif',
@@ -160,7 +160,7 @@ def test_creation_opts(tmpdir):
         [
             '--co', 'compress=jpeg',
             '-a', '0.03',
-            '-b', '10',
+            '-b', '0.5',
             '-c', '15',
             '-j', '1',
             'tests/rgb8.tif',
