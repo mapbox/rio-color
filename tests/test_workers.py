@@ -1,4 +1,5 @@
 import rasterio
+import numpy as np
 
 from rio_color.workers import atmos_worker, color_worker
 
@@ -18,6 +19,14 @@ def test_atmos():
         assert arr.shape == (3, 32, 32)
         assert arr.max() <= 255
         max_uint8 = arr.max()
+
+    with rasterio.open('tests/rgba8.tif') as src:
+        ij, window = list(src.block_windows())[i]
+        arr2 = atmos_worker([src], window, ij, args)
+        # operates on rgb
+        assert np.allclose(arr, arr2[0:3])
+        # retains alpha band
+        assert np.allclose(src.read(4, window=window), arr2[3])
 
     with rasterio.open('tests/rgb16.tif') as src:
         ij, window = list(src.block_windows())[i]
