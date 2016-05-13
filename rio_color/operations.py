@@ -15,6 +15,8 @@ def sigmoidal(arr, contrast, bias):
 
     Parameters
     ----------
+    arr : ndarray, float, 0 .. 1
+        Array of color values to adjust
     contrast : integer
         Enhances the intensity differences between the lighter and darker
         elements of the image. For example, 0 is none, 3 is typical and
@@ -45,6 +47,12 @@ def sigmoidal(arr, contrast, bias):
             http://www.cs.dartmouth.edu/farid/downloads/tutorials/fip.pdf
 
     """
+    if (arr.max() > 1.0 + epsilon) or (arr.min() < 0 - epsilon):
+        raise ValueError("Input array must have float values between 0 and 1")
+
+    if (bias > 1.0 + epsilon) or (bias < 0 - epsilon):
+        raise ValueError("bias must be a scalar float between 0 and 1")
+
     alpha, beta = bias, contrast
     # We use the names a and b to match documentation.
 
@@ -78,12 +86,7 @@ def sigmoidal(arr, contrast, bias):
                 ) - 1)
             ) / beta
 
-    if np.any(output < 0) or np.any(output > (1 + epsilon)):
-        raise ValueError("Sigmoidal contrast output is not within the range of [0,1]")
-    elif np.isnan(output.sum()):
-        raise ValueError("Sigmoidal contrast output contains NaN")
-    else:
-        return output
+    return output
 
 
 def gamma(arr, g):
@@ -161,13 +164,14 @@ def simple_atmo(rgb, haze, contrast, bias):
     '''
     gamma_b = 1 - haze
     gamma_g = 1 - (haze / 3.0)
-    arr = np.empty_like(rgb)
+    arr = np.empty(shape=(3, rgb.shape[1], rgb.shape[2]))
 
     arr[0] = rgb[0]
     arr[1] = gamma(rgb[1], gamma_g)
     arr[2] = gamma(rgb[2], gamma_b)
 
-    output = sigmoidal(arr, contrast, bias)
+    output = rgb.copy()
+    output[0:3] = sigmoidal(arr, contrast, bias)
 
     return output
 
