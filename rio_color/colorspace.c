@@ -809,52 +809,29 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_t_9rio_color_10colorspace_st_rgb;
-struct __pyx_t_9rio_color_10colorspace_st_lch;
+struct __pyx_t_9rio_color_10colorspace_st_color;
 
 /* "rio_color/colorspace.pyx":14
  * 
  * 
- * cdef struct st_rgb:             # <<<<<<<<<<<<<<
- *     double r
- *     double g
+ * cdef struct st_color:             # <<<<<<<<<<<<<<
+ *     double one
+ *     double two
  */
-struct __pyx_t_9rio_color_10colorspace_st_rgb {
-  double r;
-  double g;
-  double b;
+struct __pyx_t_9rio_color_10colorspace_st_color {
+  double one;
+  double two;
+  double three;
 };
 
 /* "rio_color/colorspace.pyx":19
- *     double b
+ *     double three
  * 
- * ctypedef st_rgb rgb             # <<<<<<<<<<<<<<
- * 
- * cdef struct st_lch:
- */
-typedef struct __pyx_t_9rio_color_10colorspace_st_rgb __pyx_t_9rio_color_10colorspace_rgb;
-
-/* "rio_color/colorspace.pyx":21
- * ctypedef st_rgb rgb
- * 
- * cdef struct st_lch:             # <<<<<<<<<<<<<<
- *     double l
- *     double c
- */
-struct __pyx_t_9rio_color_10colorspace_st_lch {
-  double l;
-  double c;
-  double h;
-};
-
-/* "rio_color/colorspace.pyx":26
- *     double h
- * 
- * ctypedef st_lch lch             # <<<<<<<<<<<<<<
+ * ctypedef st_color color             # <<<<<<<<<<<<<<
  * 
  * 
  */
-typedef struct __pyx_t_9rio_color_10colorspace_st_lch __pyx_t_9rio_color_10colorspace_lch;
+typedef struct __pyx_t_9rio_color_10colorspace_st_color __pyx_t_9rio_color_10colorspace_color;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -939,26 +916,21 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
-/* RaiseArgTupleInvalid.proto */
-static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
-    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+/* IncludeStringH.proto */
+#include <string.h>
 
-/* RaiseDoubleKeywords.proto */
-static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
+/* BytesEquals.proto */
+static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals);
 
-/* ParseKeywords.proto */
-static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
-    PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
-    const char* function_name);
+/* UnicodeEquals.proto */
+static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int equals);
 
-/* BufferFormatCheck.proto */
-static CYTHON_INLINE int  __Pyx_GetBufferAndValidate(Py_buffer* buf, PyObject* obj,
-    __Pyx_TypeInfo* dtype, int flags, int nd, int cast, __Pyx_BufFmt_StackElem* stack);
-static CYTHON_INLINE void __Pyx_SafeReleaseBuffer(Py_buffer* info);
-static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const char* ts);
-static void __Pyx_BufFmt_Init(__Pyx_BufFmt_Context* ctx,
-                              __Pyx_BufFmt_StackElem* stack,
-                              __Pyx_TypeInfo* type); // PROTO
+/* StrEquals.proto */
+#if PY_MAJOR_VERSION >= 3
+#define __Pyx_PyString_Equals __Pyx_PyUnicode_Equals
+#else
+#define __Pyx_PyString_Equals __Pyx_PyBytes_Equals
+#endif
 
 /* PyObjectCall.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -966,6 +938,14 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 #else
 #define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
 #endif
+
+/* PyObjectCallMethO.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
+#endif
+
+/* PyObjectCallOneArg.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
 /* PyThreadStateGet.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -994,21 +974,46 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
+/* RaiseArgTupleInvalid.proto */
+static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
+    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+
+/* RaiseDoubleKeywords.proto */
+static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
+
+/* ParseKeywords.proto */
+static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
+    PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
+    const char* function_name);
+
+/* BufferFormatCheck.proto */
+static CYTHON_INLINE int  __Pyx_GetBufferAndValidate(Py_buffer* buf, PyObject* obj,
+    __Pyx_TypeInfo* dtype, int flags, int nd, int cast, __Pyx_BufFmt_StackElem* stack);
+static CYTHON_INLINE void __Pyx_SafeReleaseBuffer(Py_buffer* info);
+static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const char* ts);
+static void __Pyx_BufFmt_Init(__Pyx_BufFmt_Context* ctx,
+                              __Pyx_BufFmt_StackElem* stack,
+                              __Pyx_TypeInfo* type); // PROTO
+
 /* GetModuleGlobalName.proto */
 static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name);
-
-/* PyObjectCallMethO.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
-#endif
-
-/* PyObjectCallOneArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
 /* ExtTypeTest.proto */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
 #define __Pyx_BufPtrStrided3d(type, buf, i0, s0, i1, s1, i2, s2) (type)((char*)buf + i0 * s0 + i1 * s1 + i2 * s2)
+/* RaiseTooManyValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
+
+/* RaiseNeedMoreValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
+
+/* IterFinish.proto */
+static CYTHON_INLINE int __Pyx_IterFinish(void);
+
+/* UnpackItemEndCheck.proto */
+static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
+
 /* ArgTypeTest.proto */
 static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
     const char *name, int exact);
@@ -1033,12 +1038,6 @@ static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
 #else
     #define __Pyx_PyDict_GetItem(d, key) PyObject_GetItem(d, key)
 #endif
-
-/* RaiseTooManyValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
-
-/* RaiseNeedMoreValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
 
 /* RaiseNoneIterError.proto */
 static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void);
@@ -1276,11 +1275,21 @@ static double __pyx_v_9rio_color_10colorspace_bintercept;
 static double __pyx_v_9rio_color_10colorspace_delta;
 static double __pyx_v_9rio_color_10colorspace_t0;
 static double __pyx_v_9rio_color_10colorspace_alpha;
+static PyObject *__pyx_f_9rio_color_10colorspace_convert(double, double, double, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+static PyArrayObject *__pyx_f_9rio_color_10colorspace_convert_arr(PyArrayObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject *, double, int __pyx_skip_dispatch); /*proto*/
-static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_rgb_to_lch(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_lch_to_rgb(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_to_lch(double, double, double); /*proto*/
-static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_to_rgb(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__rgb_to_lch(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lch_to_rgb(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lch_to_xyz(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__xyz_to_lch(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__rgb_to_lab(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lab_to_rgb(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__rgb_to_xyz(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__xyz_to_lab(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lab_to_lch(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lch_to_lab(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lab_to_xyz(double, double, double); /*proto*/
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__xyz_to_rgb(double, double, double); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t = { "FLOAT_t", NULL, sizeof(__pyx_t_9rio_color_10colorspace_FLOAT_t), { 0 }, 0, 'R', 0, 0 };
 #define __Pyx_MODULE_NAME "rio_color.colorspace"
 int __pyx_module_is_main_rio_color__colorspace = 0;
@@ -1289,29 +1298,30 @@ int __pyx_module_is_main_rio_color__colorspace = 0;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
-static const char __pyx_k_b[] = "b";
-static const char __pyx_k_c[] = "c";
-static const char __pyx_k_g[] = "g";
-static const char __pyx_k_h[] = "h";
-static const char __pyx_k_l[] = "l";
-static const char __pyx_k_r[] = "r";
 static const char __pyx_k_np[] = "np";
+static const char __pyx_k_LAB[] = "LAB";
+static const char __pyx_k_LCH[] = "LCH";
+static const char __pyx_k_RGB[] = "RGB";
+static const char __pyx_k_XYZ[] = "XYZ";
 static const char __pyx_k_arr[] = "arr";
+static const char __pyx_k_dst[] = "dst";
+static const char __pyx_k_one[] = "one";
+static const char __pyx_k_src[] = "src";
+static const char __pyx_k_two[] = "two";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_color[] = "color";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
+static const char __pyx_k_three[] = "three";
+static const char __pyx_k_format[] = "format";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_satmult[] = "satmult";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_empty_like[] = "empty_like";
-static const char __pyx_k_lch_to_rgb[] = "lch_to_rgb";
-static const char __pyx_k_rgb_to_lch[] = "rgb_to_lch";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
-static const char __pyx_k_rio_color_colorspace[] = "rio_color.colorspace";
+static const char __pyx_k_Unknown_dst_colorspace[] = "{}: Unknown dst colorspace";
+static const char __pyx_k_Unknown_src_colorspace[] = "{}: Unknown src colorspace";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
-static const char __pyx_k_Users_mperry_work_rio_color_rio[] = "/Users/mperry/work/rio-color/rio_color/colorspace.pyx";
 static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static const char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
 static const char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
@@ -1320,38 +1330,37 @@ static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not F
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
+static PyObject *__pyx_n_s_LAB;
+static PyObject *__pyx_n_s_LCH;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
+static PyObject *__pyx_n_s_RGB;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_kp_s_The_0th_dimension_must_contain_3;
-static PyObject *__pyx_kp_s_Users_mperry_work_rio_color_rio;
+static PyObject *__pyx_kp_s_Unknown_dst_colorspace;
+static PyObject *__pyx_kp_s_Unknown_src_colorspace;
 static PyObject *__pyx_n_s_ValueError;
+static PyObject *__pyx_n_s_XYZ;
 static PyObject *__pyx_n_s_arr;
-static PyObject *__pyx_n_s_b;
-static PyObject *__pyx_n_s_c;
-static PyObject *__pyx_n_s_color;
+static PyObject *__pyx_n_s_dst;
 static PyObject *__pyx_n_s_empty_like;
-static PyObject *__pyx_n_s_g;
-static PyObject *__pyx_n_s_h;
+static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_import;
-static PyObject *__pyx_n_s_l;
-static PyObject *__pyx_n_s_lch_to_rgb;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
 static PyObject *__pyx_kp_u_ndarray_is_not_Fortran_contiguou;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
-static PyObject *__pyx_n_s_r;
+static PyObject *__pyx_n_s_one;
 static PyObject *__pyx_n_s_range;
-static PyObject *__pyx_n_s_rgb_to_lch;
-static PyObject *__pyx_n_s_rio_color_colorspace;
 static PyObject *__pyx_n_s_satmult;
+static PyObject *__pyx_n_s_src;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_three;
+static PyObject *__pyx_n_s_two;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
-static PyObject *__pyx_pf_9rio_color_10colorspace_rgb_to_lch(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_r, PyObject *__pyx_v_g, PyObject *__pyx_v_b); /* proto */
-static PyObject *__pyx_pf_9rio_color_10colorspace_2lch_to_rgb(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_l, PyObject *__pyx_v_c, PyObject *__pyx_v_h); /* proto */
+static PyObject *__pyx_pf_9rio_color_10colorspace_convert(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_one, double __pyx_v_two, double __pyx_v_three, PyObject *__pyx_v_src, PyObject *__pyx_v_dst); /* proto */
+static PyObject *__pyx_pf_9rio_color_10colorspace_2convert_arr(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_arr, PyObject *__pyx_v_src, PyObject *__pyx_v_dst); /* proto */
 static PyObject *__pyx_pf_9rio_color_10colorspace_4saturate_rgb(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_arr, double __pyx_v_satmult); /* proto */
-static PyObject *__pyx_pf_9rio_color_10colorspace_6arr_rgb_to_lch(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_arr); /* proto */
-static PyObject *__pyx_pf_9rio_color_10colorspace_8arr_lch_to_rgb(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_arr); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tuple_;
@@ -1362,33 +1371,1242 @@ static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_tuple__8;
-static PyObject *__pyx_tuple__9;
-static PyObject *__pyx_tuple__10;
-static PyObject *__pyx_tuple__12;
-static PyObject *__pyx_codeobj__11;
-static PyObject *__pyx_codeobj__13;
 
-/* "rio_color/colorspace.pyx":29
+/* "rio_color/colorspace.pyx":22
  * 
  * 
- * def rgb_to_lch(r, g, b):             # <<<<<<<<<<<<<<
- *     """Convert RGB colors to LCH
+ * cpdef convert(double one, double two, double three, src, dst):             # <<<<<<<<<<<<<<
+ *     cdef color color
  * 
  */
 
+static PyObject *__pyx_pw_9rio_color_10colorspace_1convert(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_9rio_color_10colorspace_convert(double __pyx_v_one, double __pyx_v_two, double __pyx_v_three, PyObject *__pyx_v_src, PyObject *__pyx_v_dst, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_RefNannySetupContext("convert", 0);
+
+  /* "rio_color/colorspace.pyx":25
+ *     cdef color color
+ * 
+ *     if src == "RGB":             # <<<<<<<<<<<<<<
+ *         if dst == "LAB":
+ *             color = _rgb_to_lab(one, two, three)
+ */
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_src, __pyx_n_s_RGB, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 25, __pyx_L1_error)
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":26
+ * 
+ *     if src == "RGB":
+ *         if dst == "LAB":             # <<<<<<<<<<<<<<
+ *             color = _rgb_to_lab(one, two, three)
+ *         elif dst == "LCH":
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_LAB, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":27
+ *     if src == "RGB":
+ *         if dst == "LAB":
+ *             color = _rgb_to_lab(one, two, three)             # <<<<<<<<<<<<<<
+ *         elif dst == "LCH":
+ *             color = _rgb_to_lch(one, two, three)
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__rgb_to_lab(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":26
+ * 
+ *     if src == "RGB":
+ *         if dst == "LAB":             # <<<<<<<<<<<<<<
+ *             color = _rgb_to_lab(one, two, three)
+ *         elif dst == "LCH":
+ */
+      goto __pyx_L4;
+    }
+
+    /* "rio_color/colorspace.pyx":28
+ *         if dst == "LAB":
+ *             color = _rgb_to_lab(one, two, three)
+ *         elif dst == "LCH":             # <<<<<<<<<<<<<<
+ *             color = _rgb_to_lch(one, two, three)
+ *         elif dst == "XYZ":
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_LCH, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 28, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":29
+ *             color = _rgb_to_lab(one, two, three)
+ *         elif dst == "LCH":
+ *             color = _rgb_to_lch(one, two, three)             # <<<<<<<<<<<<<<
+ *         elif dst == "XYZ":
+ *             color = _rgb_to_xyz(one, two, three)
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__rgb_to_lch(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":28
+ *         if dst == "LAB":
+ *             color = _rgb_to_lab(one, two, three)
+ *         elif dst == "LCH":             # <<<<<<<<<<<<<<
+ *             color = _rgb_to_lch(one, two, three)
+ *         elif dst == "XYZ":
+ */
+      goto __pyx_L4;
+    }
+
+    /* "rio_color/colorspace.pyx":30
+ *         elif dst == "LCH":
+ *             color = _rgb_to_lch(one, two, three)
+ *         elif dst == "XYZ":             # <<<<<<<<<<<<<<
+ *             color = _rgb_to_xyz(one, two, three)
+ *         else:
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_XYZ, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 30, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":31
+ *             color = _rgb_to_lch(one, two, three)
+ *         elif dst == "XYZ":
+ *             color = _rgb_to_xyz(one, two, three)             # <<<<<<<<<<<<<<
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__rgb_to_xyz(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":30
+ *         elif dst == "LCH":
+ *             color = _rgb_to_lch(one, two, three)
+ *         elif dst == "XYZ":             # <<<<<<<<<<<<<<
+ *             color = _rgb_to_xyz(one, two, three)
+ *         else:
+ */
+      goto __pyx_L4;
+    }
+
+    /* "rio_color/colorspace.pyx":33
+ *             color = _rgb_to_xyz(one, two, three)
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))             # <<<<<<<<<<<<<<
+ *     elif src == "XYZ":
+ *         if dst == "LAB":
+ */
+    /*else*/ {
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Unknown_dst_colorspace, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_4)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_4);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (!__pyx_t_4) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_dst); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
+        __Pyx_INCREF(__pyx_v_dst);
+        __Pyx_GIVEREF(__pyx_v_dst);
+        PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_dst);
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GIVEREF(__pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
+      __pyx_t_2 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __PYX_ERR(0, 33, __pyx_L1_error)
+    }
+    __pyx_L4:;
+
+    /* "rio_color/colorspace.pyx":25
+ *     cdef color color
+ * 
+ *     if src == "RGB":             # <<<<<<<<<<<<<<
+ *         if dst == "LAB":
+ *             color = _rgb_to_lab(one, two, three)
+ */
+    goto __pyx_L3;
+  }
+
+  /* "rio_color/colorspace.pyx":34
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "XYZ":             # <<<<<<<<<<<<<<
+ *         if dst == "LAB":
+ *             color = _xyz_to_lab(one, two, three)
+ */
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_src, __pyx_n_s_XYZ, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 34, __pyx_L1_error)
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":35
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "XYZ":
+ *         if dst == "LAB":             # <<<<<<<<<<<<<<
+ *             color = _xyz_to_lab(one, two, three)
+ *         elif dst == "LCH":
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_LAB, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":36
+ *     elif src == "XYZ":
+ *         if dst == "LAB":
+ *             color = _xyz_to_lab(one, two, three)             # <<<<<<<<<<<<<<
+ *         elif dst == "LCH":
+ *             color = _xyz_to_lch(one, two, three)
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__xyz_to_lab(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":35
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "XYZ":
+ *         if dst == "LAB":             # <<<<<<<<<<<<<<
+ *             color = _xyz_to_lab(one, two, three)
+ *         elif dst == "LCH":
+ */
+      goto __pyx_L5;
+    }
+
+    /* "rio_color/colorspace.pyx":37
+ *         if dst == "LAB":
+ *             color = _xyz_to_lab(one, two, three)
+ *         elif dst == "LCH":             # <<<<<<<<<<<<<<
+ *             color = _xyz_to_lch(one, two, three)
+ *         elif dst == "RGB":
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_LCH, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 37, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":38
+ *             color = _xyz_to_lab(one, two, three)
+ *         elif dst == "LCH":
+ *             color = _xyz_to_lch(one, two, three)             # <<<<<<<<<<<<<<
+ *         elif dst == "RGB":
+ *             color = _xyz_to_rgb(one, two, three)
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__xyz_to_lch(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":37
+ *         if dst == "LAB":
+ *             color = _xyz_to_lab(one, two, three)
+ *         elif dst == "LCH":             # <<<<<<<<<<<<<<
+ *             color = _xyz_to_lch(one, two, three)
+ *         elif dst == "RGB":
+ */
+      goto __pyx_L5;
+    }
+
+    /* "rio_color/colorspace.pyx":39
+ *         elif dst == "LCH":
+ *             color = _xyz_to_lch(one, two, three)
+ *         elif dst == "RGB":             # <<<<<<<<<<<<<<
+ *             color = _xyz_to_rgb(one, two, three)
+ *         else:
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_RGB, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 39, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":40
+ *             color = _xyz_to_lch(one, two, three)
+ *         elif dst == "RGB":
+ *             color = _xyz_to_rgb(one, two, three)             # <<<<<<<<<<<<<<
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__xyz_to_rgb(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":39
+ *         elif dst == "LCH":
+ *             color = _xyz_to_lch(one, two, three)
+ *         elif dst == "RGB":             # <<<<<<<<<<<<<<
+ *             color = _xyz_to_rgb(one, two, three)
+ *         else:
+ */
+      goto __pyx_L5;
+    }
+
+    /* "rio_color/colorspace.pyx":42
+ *             color = _xyz_to_rgb(one, two, three)
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))             # <<<<<<<<<<<<<<
+ *     elif src == "LAB":
+ *         if dst == "XYZ":
+ */
+    /*else*/ {
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Unknown_dst_colorspace, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_5 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (!__pyx_t_5) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_dst); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 42, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5); __pyx_t_5 = NULL;
+        __Pyx_INCREF(__pyx_v_dst);
+        __Pyx_GIVEREF(__pyx_v_dst);
+        PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_dst);
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GIVEREF(__pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
+      __pyx_t_2 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __PYX_ERR(0, 42, __pyx_L1_error)
+    }
+    __pyx_L5:;
+
+    /* "rio_color/colorspace.pyx":34
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "XYZ":             # <<<<<<<<<<<<<<
+ *         if dst == "LAB":
+ *             color = _xyz_to_lab(one, two, three)
+ */
+    goto __pyx_L3;
+  }
+
+  /* "rio_color/colorspace.pyx":43
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "LAB":             # <<<<<<<<<<<<<<
+ *         if dst == "XYZ":
+ *             color = _lab_to_xyz(one, two, three)
+ */
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_src, __pyx_n_s_LAB, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":44
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "LAB":
+ *         if dst == "XYZ":             # <<<<<<<<<<<<<<
+ *             color = _lab_to_xyz(one, two, three)
+ *         elif dst == "LCH":
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_XYZ, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":45
+ *     elif src == "LAB":
+ *         if dst == "XYZ":
+ *             color = _lab_to_xyz(one, two, three)             # <<<<<<<<<<<<<<
+ *         elif dst == "LCH":
+ *             color = _lab_to_lch(one, two, three)
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__lab_to_xyz(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":44
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "LAB":
+ *         if dst == "XYZ":             # <<<<<<<<<<<<<<
+ *             color = _lab_to_xyz(one, two, three)
+ *         elif dst == "LCH":
+ */
+      goto __pyx_L6;
+    }
+
+    /* "rio_color/colorspace.pyx":46
+ *         if dst == "XYZ":
+ *             color = _lab_to_xyz(one, two, three)
+ *         elif dst == "LCH":             # <<<<<<<<<<<<<<
+ *             color = _lab_to_lch(one, two, three)
+ *         elif dst == "RGB":
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_LCH, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":47
+ *             color = _lab_to_xyz(one, two, three)
+ *         elif dst == "LCH":
+ *             color = _lab_to_lch(one, two, three)             # <<<<<<<<<<<<<<
+ *         elif dst == "RGB":
+ *             color = _lab_to_rgb(one, two, three)
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__lab_to_lch(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":46
+ *         if dst == "XYZ":
+ *             color = _lab_to_xyz(one, two, three)
+ *         elif dst == "LCH":             # <<<<<<<<<<<<<<
+ *             color = _lab_to_lch(one, two, three)
+ *         elif dst == "RGB":
+ */
+      goto __pyx_L6;
+    }
+
+    /* "rio_color/colorspace.pyx":48
+ *         elif dst == "LCH":
+ *             color = _lab_to_lch(one, two, three)
+ *         elif dst == "RGB":             # <<<<<<<<<<<<<<
+ *             color = _lab_to_rgb(one, two, three)
+ *         else:
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_RGB, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 48, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":49
+ *             color = _lab_to_lch(one, two, three)
+ *         elif dst == "RGB":
+ *             color = _lab_to_rgb(one, two, three)             # <<<<<<<<<<<<<<
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__lab_to_rgb(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":48
+ *         elif dst == "LCH":
+ *             color = _lab_to_lch(one, two, three)
+ *         elif dst == "RGB":             # <<<<<<<<<<<<<<
+ *             color = _lab_to_rgb(one, two, three)
+ *         else:
+ */
+      goto __pyx_L6;
+    }
+
+    /* "rio_color/colorspace.pyx":51
+ *             color = _lab_to_rgb(one, two, three)
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))             # <<<<<<<<<<<<<<
+ *     elif src == "LCH":
+ *         if dst == "LAB":
+ */
+    /*else*/ {
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Unknown_dst_colorspace, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_4)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_4);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (!__pyx_t_4) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_dst); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 51, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
+        __Pyx_INCREF(__pyx_v_dst);
+        __Pyx_GIVEREF(__pyx_v_dst);
+        PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_dst);
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GIVEREF(__pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
+      __pyx_t_2 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __PYX_ERR(0, 51, __pyx_L1_error)
+    }
+    __pyx_L6:;
+
+    /* "rio_color/colorspace.pyx":43
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "LAB":             # <<<<<<<<<<<<<<
+ *         if dst == "XYZ":
+ *             color = _lab_to_xyz(one, two, three)
+ */
+    goto __pyx_L3;
+  }
+
+  /* "rio_color/colorspace.pyx":52
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "LCH":             # <<<<<<<<<<<<<<
+ *         if dst == "LAB":
+ *             color = _lch_to_lab(one, two, three)
+ */
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_src, __pyx_n_s_LCH, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 52, __pyx_L1_error)
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":53
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "LCH":
+ *         if dst == "LAB":             # <<<<<<<<<<<<<<
+ *             color = _lch_to_lab(one, two, three)
+ *         elif dst == "XYZ":
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_LAB, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 53, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":54
+ *     elif src == "LCH":
+ *         if dst == "LAB":
+ *             color = _lch_to_lab(one, two, three)             # <<<<<<<<<<<<<<
+ *         elif dst == "XYZ":
+ *             color = _lch_to_xyz(one, two, three)
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__lch_to_lab(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":53
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "LCH":
+ *         if dst == "LAB":             # <<<<<<<<<<<<<<
+ *             color = _lch_to_lab(one, two, three)
+ *         elif dst == "XYZ":
+ */
+      goto __pyx_L7;
+    }
+
+    /* "rio_color/colorspace.pyx":55
+ *         if dst == "LAB":
+ *             color = _lch_to_lab(one, two, three)
+ *         elif dst == "XYZ":             # <<<<<<<<<<<<<<
+ *             color = _lch_to_xyz(one, two, three)
+ *         elif dst == "RGB":
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_XYZ, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 55, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":56
+ *             color = _lch_to_lab(one, two, three)
+ *         elif dst == "XYZ":
+ *             color = _lch_to_xyz(one, two, three)             # <<<<<<<<<<<<<<
+ *         elif dst == "RGB":
+ *             color = _lch_to_rgb(one, two, three)
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__lch_to_xyz(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":55
+ *         if dst == "LAB":
+ *             color = _lch_to_lab(one, two, three)
+ *         elif dst == "XYZ":             # <<<<<<<<<<<<<<
+ *             color = _lch_to_xyz(one, two, three)
+ *         elif dst == "RGB":
+ */
+      goto __pyx_L7;
+    }
+
+    /* "rio_color/colorspace.pyx":57
+ *         elif dst == "XYZ":
+ *             color = _lch_to_xyz(one, two, three)
+ *         elif dst == "RGB":             # <<<<<<<<<<<<<<
+ *             color = _lch_to_rgb(one, two, three)
+ *         else:
+ */
+    __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_dst, __pyx_n_s_RGB, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 57, __pyx_L1_error)
+    if (__pyx_t_1) {
+
+      /* "rio_color/colorspace.pyx":58
+ *             color = _lch_to_xyz(one, two, three)
+ *         elif dst == "RGB":
+ *             color = _lch_to_rgb(one, two, three)             # <<<<<<<<<<<<<<
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ */
+      __pyx_v_color = __pyx_f_9rio_color_10colorspace__lch_to_rgb(__pyx_v_one, __pyx_v_two, __pyx_v_three);
+
+      /* "rio_color/colorspace.pyx":57
+ *         elif dst == "XYZ":
+ *             color = _lch_to_xyz(one, two, three)
+ *         elif dst == "RGB":             # <<<<<<<<<<<<<<
+ *             color = _lch_to_rgb(one, two, three)
+ *         else:
+ */
+      goto __pyx_L7;
+    }
+
+    /* "rio_color/colorspace.pyx":60
+ *             color = _lch_to_rgb(one, two, three)
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))             # <<<<<<<<<<<<<<
+ *     else:
+ *         raise ValueError('{}: Unknown src colorspace'.format(src))
+ */
+    /*else*/ {
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Unknown_dst_colorspace, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_5 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (!__pyx_t_5) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_dst); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5); __pyx_t_5 = NULL;
+        __Pyx_INCREF(__pyx_v_dst);
+        __Pyx_GIVEREF(__pyx_v_dst);
+        PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_dst);
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GIVEREF(__pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
+      __pyx_t_2 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __PYX_ERR(0, 60, __pyx_L1_error)
+    }
+    __pyx_L7:;
+
+    /* "rio_color/colorspace.pyx":52
+ *         else:
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     elif src == "LCH":             # <<<<<<<<<<<<<<
+ *         if dst == "LAB":
+ *             color = _lch_to_lab(one, two, three)
+ */
+    goto __pyx_L3;
+  }
+
+  /* "rio_color/colorspace.pyx":62
+ *             raise ValueError('{}: Unknown dst colorspace'.format(dst))
+ *     else:
+ *         raise ValueError('{}: Unknown src colorspace'.format(src))             # <<<<<<<<<<<<<<
+ * 
+ *     return color.one, color.two, color.three
+ */
+  /*else*/ {
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Unknown_src_colorspace, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+      }
+    }
+    if (!__pyx_t_4) {
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_src); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+    } else {
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 62, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
+      __Pyx_INCREF(__pyx_v_src);
+      __Pyx_GIVEREF(__pyx_v_src);
+      PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_src);
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
+    __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 62, __pyx_L1_error)
+  }
+  __pyx_L3:;
+
+  /* "rio_color/colorspace.pyx":64
+ *         raise ValueError('{}: Unknown src colorspace'.format(src))
+ * 
+ *     return color.one, color.two, color.three             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_color.one); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_color.two); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_color.three); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_t_5);
+  __pyx_t_2 = 0;
+  __pyx_t_3 = 0;
+  __pyx_t_5 = 0;
+  __pyx_r = __pyx_t_4;
+  __pyx_t_4 = 0;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":22
+ * 
+ * 
+ * cpdef convert(double one, double two, double three, src, dst):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("rio_color.colorspace.convert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 /* Python wrapper */
-static PyObject *__pyx_pw_9rio_color_10colorspace_1rgb_to_lch(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_9rio_color_10colorspace_rgb_to_lch[] = "Convert RGB colors to LCH\n\n    Parameters\n    ----------\n    r: float\n        0 to 1, Red\n    g: float\n        0 to 1, Blue\n    b: float\n        0 to 1, Blue\n\n    Returns\n    -------\n    L, C, H tuple (Lightness, Chroma, Hue)\n    H is in radians\n    ";
-static PyMethodDef __pyx_mdef_9rio_color_10colorspace_1rgb_to_lch = {"rgb_to_lch", (PyCFunction)__pyx_pw_9rio_color_10colorspace_1rgb_to_lch, METH_VARARGS|METH_KEYWORDS, __pyx_doc_9rio_color_10colorspace_rgb_to_lch};
-static PyObject *__pyx_pw_9rio_color_10colorspace_1rgb_to_lch(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_r = 0;
-  PyObject *__pyx_v_g = 0;
-  PyObject *__pyx_v_b = 0;
+static PyObject *__pyx_pw_9rio_color_10colorspace_1convert(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_9rio_color_10colorspace_1convert(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_one;
+  double __pyx_v_two;
+  double __pyx_v_three;
+  PyObject *__pyx_v_src = 0;
+  PyObject *__pyx_v_dst = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("rgb_to_lch (wrapper)", 0);
+  __Pyx_RefNannySetupContext("convert (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_r,&__pyx_n_s_g,&__pyx_n_s_b,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_one,&__pyx_n_s_two,&__pyx_n_s_three,&__pyx_n_s_src,&__pyx_n_s_dst,0};
+    PyObject* values[5] = {0,0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_one)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_two)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("convert", 1, 5, 5, 1); __PYX_ERR(0, 22, __pyx_L3_error)
+        }
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_three)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("convert", 1, 5, 5, 2); __PYX_ERR(0, 22, __pyx_L3_error)
+        }
+        case  3:
+        if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_src)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("convert", 1, 5, 5, 3); __PYX_ERR(0, 22, __pyx_L3_error)
+        }
+        case  4:
+        if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_dst)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("convert", 1, 5, 5, 4); __PYX_ERR(0, 22, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "convert") < 0)) __PYX_ERR(0, 22, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+    }
+    __pyx_v_one = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_one == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 22, __pyx_L3_error)
+    __pyx_v_two = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_two == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 22, __pyx_L3_error)
+    __pyx_v_three = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_three == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 22, __pyx_L3_error)
+    __pyx_v_src = values[3];
+    __pyx_v_dst = values[4];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("convert", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 22, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("rio_color.colorspace.convert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_9rio_color_10colorspace_convert(__pyx_self, __pyx_v_one, __pyx_v_two, __pyx_v_three, __pyx_v_src, __pyx_v_dst);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9rio_color_10colorspace_convert(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_one, double __pyx_v_two, double __pyx_v_three, PyObject *__pyx_v_src, PyObject *__pyx_v_dst) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("convert", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_9rio_color_10colorspace_convert(__pyx_v_one, __pyx_v_two, __pyx_v_three, __pyx_v_src, __pyx_v_dst, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("rio_color.colorspace.convert", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":67
+ * 
+ * 
+ * cpdef np.ndarray[FLOAT_t, ndim=3] convert_arr(np.ndarray[FLOAT_t, ndim=3] arr, src, dst):             # <<<<<<<<<<<<<<
+ *     cdef double one, two, three
+ *     cdef size_t i, j
+ */
+
+static PyObject *__pyx_pw_9rio_color_10colorspace_3convert_arr(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyArrayObject *__pyx_f_9rio_color_10colorspace_convert_arr(PyArrayObject *__pyx_v_arr, PyObject *__pyx_v_src, PyObject *__pyx_v_dst, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  double __pyx_v_one;
+  double __pyx_v_two;
+  double __pyx_v_three;
+  size_t __pyx_v_i;
+  size_t __pyx_v_j;
+  PyArrayObject *__pyx_v_out = 0;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
+  __Pyx_Buffer __pyx_pybuffer_arr;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_out;
+  __Pyx_Buffer __pyx_pybuffer_out;
+  PyArrayObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyArrayObject *__pyx_t_6 = NULL;
+  npy_intp __pyx_t_7;
+  size_t __pyx_t_8;
+  npy_intp __pyx_t_9;
+  size_t __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
+  size_t __pyx_t_12;
+  size_t __pyx_t_13;
+  Py_ssize_t __pyx_t_14;
+  size_t __pyx_t_15;
+  size_t __pyx_t_16;
+  Py_ssize_t __pyx_t_17;
+  size_t __pyx_t_18;
+  size_t __pyx_t_19;
+  PyObject *__pyx_t_20 = NULL;
+  PyObject *(*__pyx_t_21)(PyObject *);
+  double __pyx_t_22;
+  double __pyx_t_23;
+  double __pyx_t_24;
+  Py_ssize_t __pyx_t_25;
+  size_t __pyx_t_26;
+  size_t __pyx_t_27;
+  Py_ssize_t __pyx_t_28;
+  size_t __pyx_t_29;
+  size_t __pyx_t_30;
+  Py_ssize_t __pyx_t_31;
+  size_t __pyx_t_32;
+  size_t __pyx_t_33;
+  __Pyx_RefNannySetupContext("convert_arr", 0);
+  __pyx_pybuffer_out.pybuffer.buf = NULL;
+  __pyx_pybuffer_out.refcount = 0;
+  __pyx_pybuffernd_out.data = NULL;
+  __pyx_pybuffernd_out.rcbuffer = &__pyx_pybuffer_out;
+  __pyx_pybuffer_arr.pybuffer.buf = NULL;
+  __pyx_pybuffer_arr.refcount = 0;
+  __pyx_pybuffernd_arr.data = NULL;
+  __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  }
+  __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
+
+  /* "rio_color/colorspace.pyx":71
+ *     cdef size_t i, j
+ *     cdef color color
+ *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
+ *         raise ValueError("The 0th dimension must contain 3 bands")
+ * 
+ */
+  __pyx_t_1 = (((__pyx_v_arr->dimensions[0]) != 3) != 0);
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":72
+ *     cdef color color
+ *     if arr.shape[0] != 3:
+ *         raise ValueError("The 0th dimension must contain 3 bands")             # <<<<<<<<<<<<<<
+ * 
+ *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
+ */
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 72, __pyx_L1_error)
+
+    /* "rio_color/colorspace.pyx":71
+ *     cdef size_t i, j
+ *     cdef color color
+ *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
+ *         raise ValueError("The 0th dimension must contain 3 bands")
+ * 
+ */
+  }
+
+  /* "rio_color/colorspace.pyx":74
+ *         raise ValueError("The 0th dimension must contain 3 bands")
+ * 
+ *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)             # <<<<<<<<<<<<<<
+ * 
+ *     for i in range(arr.shape[1]):
+ */
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_4))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_4, function);
+    }
+  }
+  if (!__pyx_t_3) {
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_arr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+  } else {
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    __Pyx_INCREF(((PyObject *)__pyx_v_arr));
+    __Pyx_GIVEREF(((PyObject *)__pyx_v_arr));
+    PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_arr));
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_6 = ((PyArrayObject *)__pyx_t_2);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_out.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 3, 0, __pyx_stack) == -1)) {
+      __pyx_v_out = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_out.rcbuffer->pybuffer.buf = NULL;
+      __PYX_ERR(0, 74, __pyx_L1_error)
+    } else {__pyx_pybuffernd_out.diminfo[0].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_out.diminfo[0].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_out.diminfo[1].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_out.diminfo[1].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_out.diminfo[2].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_out.diminfo[2].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[2];
+    }
+  }
+  __pyx_t_6 = 0;
+  __pyx_v_out = ((PyArrayObject *)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "rio_color/colorspace.pyx":76
+ *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
+ * 
+ *     for i in range(arr.shape[1]):             # <<<<<<<<<<<<<<
+ *         for j in range(arr.shape[2]):
+ *             one = arr[0, i, j]
+ */
+  __pyx_t_7 = (__pyx_v_arr->dimensions[1]);
+  for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+    __pyx_v_i = __pyx_t_8;
+
+    /* "rio_color/colorspace.pyx":77
+ * 
+ *     for i in range(arr.shape[1]):
+ *         for j in range(arr.shape[2]):             # <<<<<<<<<<<<<<
+ *             one = arr[0, i, j]
+ *             two = arr[1, i, j]
+ */
+    __pyx_t_9 = (__pyx_v_arr->dimensions[2]);
+    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
+      __pyx_v_j = __pyx_t_10;
+
+      /* "rio_color/colorspace.pyx":78
+ *     for i in range(arr.shape[1]):
+ *         for j in range(arr.shape[2]):
+ *             one = arr[0, i, j]             # <<<<<<<<<<<<<<
+ *             two = arr[1, i, j]
+ *             three = arr[2, i, j]
+ */
+      __pyx_t_11 = 0;
+      __pyx_t_12 = __pyx_v_i;
+      __pyx_t_13 = __pyx_v_j;
+      __pyx_v_one = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_13, __pyx_pybuffernd_arr.diminfo[2].strides));
+
+      /* "rio_color/colorspace.pyx":79
+ *         for j in range(arr.shape[2]):
+ *             one = arr[0, i, j]
+ *             two = arr[1, i, j]             # <<<<<<<<<<<<<<
+ *             three = arr[2, i, j]
+ *             one, two, three = convert(one, two, three, src, dst)
+ */
+      __pyx_t_14 = 1;
+      __pyx_t_15 = __pyx_v_i;
+      __pyx_t_16 = __pyx_v_j;
+      __pyx_v_two = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_16, __pyx_pybuffernd_arr.diminfo[2].strides));
+
+      /* "rio_color/colorspace.pyx":80
+ *             one = arr[0, i, j]
+ *             two = arr[1, i, j]
+ *             three = arr[2, i, j]             # <<<<<<<<<<<<<<
+ *             one, two, three = convert(one, two, three, src, dst)
+ *             out[0, i, j] = one
+ */
+      __pyx_t_17 = 2;
+      __pyx_t_18 = __pyx_v_i;
+      __pyx_t_19 = __pyx_v_j;
+      __pyx_v_three = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_19, __pyx_pybuffernd_arr.diminfo[2].strides));
+
+      /* "rio_color/colorspace.pyx":81
+ *             two = arr[1, i, j]
+ *             three = arr[2, i, j]
+ *             one, two, three = convert(one, two, three, src, dst)             # <<<<<<<<<<<<<<
+ *             out[0, i, j] = one
+ *             out[1, i, j] = two
+ */
+      __pyx_t_2 = __pyx_f_9rio_color_10colorspace_convert(__pyx_v_one, __pyx_v_two, __pyx_v_three, __pyx_v_src, __pyx_v_dst, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
+        PyObject* sequence = __pyx_t_2;
+        #if CYTHON_COMPILING_IN_CPYTHON
+        Py_ssize_t size = Py_SIZE(sequence);
+        #else
+        Py_ssize_t size = PySequence_Size(sequence);
+        #endif
+        if (unlikely(size != 3)) {
+          if (size > 3) __Pyx_RaiseTooManyValuesError(3);
+          else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
+          __PYX_ERR(0, 81, __pyx_L1_error)
+        }
+        #if CYTHON_COMPILING_IN_CPYTHON
+        if (likely(PyTuple_CheckExact(sequence))) {
+          __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0); 
+          __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
+          __pyx_t_3 = PyTuple_GET_ITEM(sequence, 2); 
+        } else {
+          __pyx_t_4 = PyList_GET_ITEM(sequence, 0); 
+          __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
+          __pyx_t_3 = PyList_GET_ITEM(sequence, 2); 
+        }
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_3);
+        #else
+        __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 81, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_3 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        #endif
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      } else {
+        Py_ssize_t index = -1;
+        __pyx_t_20 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 81, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_20);
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_21 = Py_TYPE(__pyx_t_20)->tp_iternext;
+        index = 0; __pyx_t_4 = __pyx_t_21(__pyx_t_20); if (unlikely(!__pyx_t_4)) goto __pyx_L8_unpacking_failed;
+        __Pyx_GOTREF(__pyx_t_4);
+        index = 1; __pyx_t_5 = __pyx_t_21(__pyx_t_20); if (unlikely(!__pyx_t_5)) goto __pyx_L8_unpacking_failed;
+        __Pyx_GOTREF(__pyx_t_5);
+        index = 2; __pyx_t_3 = __pyx_t_21(__pyx_t_20); if (unlikely(!__pyx_t_3)) goto __pyx_L8_unpacking_failed;
+        __Pyx_GOTREF(__pyx_t_3);
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_21(__pyx_t_20), 3) < 0) __PYX_ERR(0, 81, __pyx_L1_error)
+        __pyx_t_21 = NULL;
+        __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
+        goto __pyx_L9_unpacking_done;
+        __pyx_L8_unpacking_failed:;
+        __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
+        __pyx_t_21 = NULL;
+        if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
+        __PYX_ERR(0, 81, __pyx_L1_error)
+        __pyx_L9_unpacking_done:;
+      }
+      __pyx_t_22 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_22 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_23 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_23 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_24 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_24 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_v_one = __pyx_t_22;
+      __pyx_v_two = __pyx_t_23;
+      __pyx_v_three = __pyx_t_24;
+
+      /* "rio_color/colorspace.pyx":82
+ *             three = arr[2, i, j]
+ *             one, two, three = convert(one, two, three, src, dst)
+ *             out[0, i, j] = one             # <<<<<<<<<<<<<<
+ *             out[1, i, j] = two
+ *             out[2, i, j] = three
+ */
+      __pyx_t_25 = 0;
+      __pyx_t_26 = __pyx_v_i;
+      __pyx_t_27 = __pyx_v_j;
+      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_27, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_v_one;
+
+      /* "rio_color/colorspace.pyx":83
+ *             one, two, three = convert(one, two, three, src, dst)
+ *             out[0, i, j] = one
+ *             out[1, i, j] = two             # <<<<<<<<<<<<<<
+ *             out[2, i, j] = three
+ * 
+ */
+      __pyx_t_28 = 1;
+      __pyx_t_29 = __pyx_v_i;
+      __pyx_t_30 = __pyx_v_j;
+      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_29, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_30, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_v_two;
+
+      /* "rio_color/colorspace.pyx":84
+ *             out[0, i, j] = one
+ *             out[1, i, j] = two
+ *             out[2, i, j] = three             # <<<<<<<<<<<<<<
+ * 
+ *     return out
+ */
+      __pyx_t_31 = 2;
+      __pyx_t_32 = __pyx_v_i;
+      __pyx_t_33 = __pyx_v_j;
+      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_33, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_v_three;
+    }
+  }
+
+  /* "rio_color/colorspace.pyx":86
+ *             out[2, i, j] = three
+ * 
+ *     return out             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_out));
+  __pyx_r = ((PyArrayObject *)__pyx_v_out);
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":67
+ * 
+ * 
+ * cpdef np.ndarray[FLOAT_t, ndim=3] convert_arr(np.ndarray[FLOAT_t, ndim=3] arr, src, dst):             # <<<<<<<<<<<<<<
+ *     cdef double one, two, three
+ *     cdef size_t i, j
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_20);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_out.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_AddTraceback("rio_color.colorspace.convert_arr", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  goto __pyx_L2;
+  __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_out.rcbuffer->pybuffer);
+  __pyx_L2:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_out);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9rio_color_10colorspace_3convert_arr(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_9rio_color_10colorspace_3convert_arr(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyArrayObject *__pyx_v_arr = 0;
+  PyObject *__pyx_v_src = 0;
+  PyObject *__pyx_v_dst = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("convert_arr (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_arr,&__pyx_n_s_src,&__pyx_n_s_dst,0};
     PyObject* values[3] = {0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
@@ -1403,21 +2621,21 @@ static PyObject *__pyx_pw_9rio_color_10colorspace_1rgb_to_lch(PyObject *__pyx_se
       kw_args = PyDict_Size(__pyx_kwds);
       switch (pos_args) {
         case  0:
-        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_r)) != 0)) kw_args--;
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_arr)) != 0)) kw_args--;
         else goto __pyx_L5_argtuple_error;
         case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_g)) != 0)) kw_args--;
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_src)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rgb_to_lch", 1, 3, 3, 1); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_arr", 1, 3, 3, 1); __PYX_ERR(0, 67, __pyx_L3_error)
         }
         case  2:
-        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_dst)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rgb_to_lch", 1, 3, 3, 2); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("convert_arr", 1, 3, 3, 2); __PYX_ERR(0, 67, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "rgb_to_lch") < 0)) __PYX_ERR(0, 29, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "convert_arr") < 0)) __PYX_ERR(0, 67, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -1426,255 +2644,74 @@ static PyObject *__pyx_pw_9rio_color_10colorspace_1rgb_to_lch(PyObject *__pyx_se
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_r = values[0];
-    __pyx_v_g = values[1];
-    __pyx_v_b = values[2];
+    __pyx_v_arr = ((PyArrayObject *)values[0]);
+    __pyx_v_src = values[1];
+    __pyx_v_dst = values[2];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("rgb_to_lch", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 29, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("convert_arr", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 67, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("rio_color.colorspace.rgb_to_lch", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("rio_color.colorspace.convert_arr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9rio_color_10colorspace_rgb_to_lch(__pyx_self, __pyx_v_r, __pyx_v_g, __pyx_v_b);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arr), __pyx_ptype_5numpy_ndarray, 1, "arr", 0))) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_r = __pyx_pf_9rio_color_10colorspace_2convert_arr(__pyx_self, __pyx_v_arr, __pyx_v_src, __pyx_v_dst);
 
   /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9rio_color_10colorspace_rgb_to_lch(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_r, PyObject *__pyx_v_g, PyObject *__pyx_v_b) {
-  __pyx_t_9rio_color_10colorspace_lch __pyx_v_color;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  double __pyx_t_1;
-  double __pyx_t_2;
-  double __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  __Pyx_RefNannySetupContext("rgb_to_lch", 0);
-
-  /* "rio_color/colorspace.pyx":47
- *     """
- *     cdef lch color
- *     color = _rgb_to_lch(r, g, b)             # <<<<<<<<<<<<<<
- *     return color.l, color.c, color.h
- * 
- */
-  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_r); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
-  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_v_g); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_b); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
-  __pyx_v_color = __pyx_f_9rio_color_10colorspace__rgb_to_lch(__pyx_t_1, __pyx_t_2, __pyx_t_3);
-
-  /* "rio_color/colorspace.pyx":48
- *     cdef lch color
- *     color = _rgb_to_lch(r, g, b)
- *     return color.l, color.c, color.h             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_color.l); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 48, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_color.c); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 48, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_color.h); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 48, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_5);
-  __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_t_6);
-  __pyx_t_4 = 0;
-  __pyx_t_5 = 0;
-  __pyx_t_6 = 0;
-  __pyx_r = __pyx_t_7;
-  __pyx_t_7 = 0;
   goto __pyx_L0;
-
-  /* "rio_color/colorspace.pyx":29
- * 
- * 
- * def rgb_to_lch(r, g, b):             # <<<<<<<<<<<<<<
- *     """Convert RGB colors to LCH
- * 
- */
-
-  /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("rio_color.colorspace.rgb_to_lch", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":51
- * 
- * 
- * def lch_to_rgb(l, c, h):             # <<<<<<<<<<<<<<
- *     """Convert LCH colors to RGB
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9rio_color_10colorspace_3lch_to_rgb(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_9rio_color_10colorspace_2lch_to_rgb[] = "Convert LCH colors to RGB\n\n    Parameters\n    ----------\n    L: float\n        Lightness\n    C: float\n        Chroma\n    H: float\n        Hue, radians\n\n    Returns\n    -------\n    r, g, b tuple (Red, Green and Blue)\n    scaled float 0..1\n    ";
-static PyMethodDef __pyx_mdef_9rio_color_10colorspace_3lch_to_rgb = {"lch_to_rgb", (PyCFunction)__pyx_pw_9rio_color_10colorspace_3lch_to_rgb, METH_VARARGS|METH_KEYWORDS, __pyx_doc_9rio_color_10colorspace_2lch_to_rgb};
-static PyObject *__pyx_pw_9rio_color_10colorspace_3lch_to_rgb(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_l = 0;
-  PyObject *__pyx_v_c = 0;
-  PyObject *__pyx_v_h = 0;
-  PyObject *__pyx_r = 0;
+static PyObject *__pyx_pf_9rio_color_10colorspace_2convert_arr(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_arr, PyObject *__pyx_v_src, PyObject *__pyx_v_dst) {
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
+  __Pyx_Buffer __pyx_pybuffer_arr;
+  PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("lch_to_rgb (wrapper)", 0);
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("convert_arr", 0);
+  __pyx_pybuffer_arr.pybuffer.buf = NULL;
+  __pyx_pybuffer_arr.refcount = 0;
+  __pyx_pybuffernd_arr.data = NULL;
+  __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_l,&__pyx_n_s_c,&__pyx_n_s_h,0};
-    PyObject* values[3] = {0,0,0};
-    if (unlikely(__pyx_kwds)) {
-      Py_ssize_t kw_args;
-      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
-      switch (pos_args) {
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      kw_args = PyDict_Size(__pyx_kwds);
-      switch (pos_args) {
-        case  0:
-        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_l)) != 0)) kw_args--;
-        else goto __pyx_L5_argtuple_error;
-        case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_c)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("lch_to_rgb", 1, 3, 3, 1); __PYX_ERR(0, 51, __pyx_L3_error)
-        }
-        case  2:
-        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_h)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("lch_to_rgb", 1, 3, 3, 2); __PYX_ERR(0, 51, __pyx_L3_error)
-        }
-      }
-      if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "lch_to_rgb") < 0)) __PYX_ERR(0, 51, __pyx_L3_error)
-      }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
-      goto __pyx_L5_argtuple_error;
-    } else {
-      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-    }
-    __pyx_v_l = values[0];
-    __pyx_v_c = values[1];
-    __pyx_v_h = values[2];
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 67, __pyx_L1_error)
   }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("lch_to_rgb", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 51, __pyx_L3_error)
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("rio_color.colorspace.lch_to_rgb", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_9rio_color_10colorspace_2lch_to_rgb(__pyx_self, __pyx_v_l, __pyx_v_c, __pyx_v_h);
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9rio_color_10colorspace_2lch_to_rgb(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_l, PyObject *__pyx_v_c, PyObject *__pyx_v_h) {
-  __pyx_t_9rio_color_10colorspace_rgb __pyx_v_color;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  double __pyx_t_1;
-  double __pyx_t_2;
-  double __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  __Pyx_RefNannySetupContext("lch_to_rgb", 0);
-
-  /* "rio_color/colorspace.pyx":69
- *     """
- *     cdef rgb color
- *     color = _lch_to_rgb(l, c, h)             # <<<<<<<<<<<<<<
- *     return color.r, color.g, color.b
- * 
- */
-  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_l); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
-  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_v_c); if (unlikely((__pyx_t_2 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_h); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
-  __pyx_v_color = __pyx_f_9rio_color_10colorspace__lch_to_rgb(__pyx_t_1, __pyx_t_2, __pyx_t_3);
-
-  /* "rio_color/colorspace.pyx":70
- *     cdef rgb color
- *     color = _lch_to_rgb(l, c, h)
- *     return color.r, color.g, color.b             # <<<<<<<<<<<<<<
- * 
- * 
- */
+  __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_color.r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_color.g); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyFloat_FromDouble(__pyx_v_color.b); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_5);
-  __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_t_6);
-  __pyx_t_4 = 0;
-  __pyx_t_5 = 0;
-  __pyx_t_6 = 0;
-  __pyx_r = __pyx_t_7;
-  __pyx_t_7 = 0;
+  __pyx_t_1 = ((PyObject *)__pyx_f_9rio_color_10colorspace_convert_arr(__pyx_v_arr, __pyx_v_src, __pyx_v_dst, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
-
-  /* "rio_color/colorspace.pyx":51
- * 
- * 
- * def lch_to_rgb(l, c, h):             # <<<<<<<<<<<<<<
- *     """Convert LCH colors to RGB
- * 
- */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("rio_color.colorspace.lch_to_rgb", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_1);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_AddTraceback("rio_color.colorspace.convert_arr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
+  goto __pyx_L2;
   __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
+  __pyx_L2:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":73
+/* "rio_color/colorspace.pyx":89
  * 
  * 
  * cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, double satmult):             # <<<<<<<<<<<<<<
@@ -1689,8 +2726,8 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
   double __pyx_v_b;
   size_t __pyx_v_i;
   size_t __pyx_v_j;
-  __pyx_t_9rio_color_10colorspace_lch __pyx_v_c_lch;
-  __pyx_t_9rio_color_10colorspace_rgb __pyx_v_c_rgb;
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_c_lch;
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_c_rgb;
   PyArrayObject *__pyx_v_out = 0;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
   __Pyx_Buffer __pyx_pybuffer_arr;
@@ -1738,13 +2775,13 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
   __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 73, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 89, __pyx_L1_error)
   }
   __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
 
-  /* "rio_color/colorspace.pyx":80
- *     cdef lch c_lch
- *     cdef rgb c_rgb
+  /* "rio_color/colorspace.pyx":97
+ *     cdef color c_rgb
+ * 
  *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
  *         raise ValueError("The 0th dimension must contain 3 bands")
  * 
@@ -1752,38 +2789,38 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
   __pyx_t_1 = (((__pyx_v_arr->dimensions[0]) != 3) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":81
- *     cdef rgb c_rgb
+    /* "rio_color/colorspace.pyx":98
+ * 
  *     if arr.shape[0] != 3:
  *         raise ValueError("The 0th dimension must contain 3 bands")             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 81, __pyx_L1_error)
+    __PYX_ERR(0, 98, __pyx_L1_error)
 
-    /* "rio_color/colorspace.pyx":80
- *     cdef lch c_lch
- *     cdef rgb c_rgb
+    /* "rio_color/colorspace.pyx":97
+ *     cdef color c_rgb
+ * 
  *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
  *         raise ValueError("The 0th dimension must contain 3 bands")
  * 
  */
   }
 
-  /* "rio_color/colorspace.pyx":83
+  /* "rio_color/colorspace.pyx":100
  *         raise ValueError("The 0th dimension must contain 3 bands")
  * 
  *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)             # <<<<<<<<<<<<<<
  * 
  *     for i in range(arr.shape[1]):
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -1797,27 +2834,27 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_arr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_arr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
     __Pyx_INCREF(((PyObject *)__pyx_v_arr));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_arr));
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_arr));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 83, __pyx_L1_error)
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 100, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_2);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_out.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 3, 0, __pyx_stack) == -1)) {
       __pyx_v_out = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_out.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 83, __pyx_L1_error)
+      __PYX_ERR(0, 100, __pyx_L1_error)
     } else {__pyx_pybuffernd_out.diminfo[0].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_out.diminfo[0].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_out.diminfo[1].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_out.diminfo[1].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_out.diminfo[2].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_out.diminfo[2].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[2];
     }
   }
@@ -1825,7 +2862,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
   __pyx_v_out = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "rio_color/colorspace.pyx":85
+  /* "rio_color/colorspace.pyx":102
  *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
  * 
  *     for i in range(arr.shape[1]):             # <<<<<<<<<<<<<<
@@ -1836,7 +2873,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "rio_color/colorspace.pyx":86
+    /* "rio_color/colorspace.pyx":103
  * 
  *     for i in range(arr.shape[1]):
  *         for j in range(arr.shape[2]):             # <<<<<<<<<<<<<<
@@ -1847,7 +2884,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
     for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
       __pyx_v_j = __pyx_t_10;
 
-      /* "rio_color/colorspace.pyx":87
+      /* "rio_color/colorspace.pyx":104
  *     for i in range(arr.shape[1]):
  *         for j in range(arr.shape[2]):
  *             r = arr[0, i, j]             # <<<<<<<<<<<<<<
@@ -1859,7 +2896,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
       __pyx_t_13 = __pyx_v_j;
       __pyx_v_r = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_13, __pyx_pybuffernd_arr.diminfo[2].strides));
 
-      /* "rio_color/colorspace.pyx":88
+      /* "rio_color/colorspace.pyx":105
  *         for j in range(arr.shape[2]):
  *             r = arr[0, i, j]
  *             g = arr[1, i, j]             # <<<<<<<<<<<<<<
@@ -1871,7 +2908,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
       __pyx_t_16 = __pyx_v_j;
       __pyx_v_g = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_16, __pyx_pybuffernd_arr.diminfo[2].strides));
 
-      /* "rio_color/colorspace.pyx":89
+      /* "rio_color/colorspace.pyx":106
  *             r = arr[0, i, j]
  *             g = arr[1, i, j]
  *             b = arr[2, i, j]             # <<<<<<<<<<<<<<
@@ -1883,67 +2920,67 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
       __pyx_t_19 = __pyx_v_j;
       __pyx_v_b = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_19, __pyx_pybuffernd_arr.diminfo[2].strides));
 
-      /* "rio_color/colorspace.pyx":91
+      /* "rio_color/colorspace.pyx":108
  *             b = arr[2, i, j]
  * 
  *             c_lch = _rgb_to_lch(r, g, b)             # <<<<<<<<<<<<<<
- *             c_lch.c *= satmult
- *             c_rgb = _lch_to_rgb(c_lch.l, c_lch.c, c_lch.h)
+ *             c_lch.two *= satmult
+ *             c_rgb = _lch_to_rgb(c_lch.one, c_lch.two, c_lch.three)
  */
       __pyx_v_c_lch = __pyx_f_9rio_color_10colorspace__rgb_to_lch(__pyx_v_r, __pyx_v_g, __pyx_v_b);
 
-      /* "rio_color/colorspace.pyx":92
+      /* "rio_color/colorspace.pyx":109
  * 
  *             c_lch = _rgb_to_lch(r, g, b)
- *             c_lch.c *= satmult             # <<<<<<<<<<<<<<
- *             c_rgb = _lch_to_rgb(c_lch.l, c_lch.c, c_lch.h)
+ *             c_lch.two *= satmult             # <<<<<<<<<<<<<<
+ *             c_rgb = _lch_to_rgb(c_lch.one, c_lch.two, c_lch.three)
  * 
  */
-      __pyx_v_c_lch.c = (__pyx_v_c_lch.c * __pyx_v_satmult);
+      __pyx_v_c_lch.two = (__pyx_v_c_lch.two * __pyx_v_satmult);
 
-      /* "rio_color/colorspace.pyx":93
+      /* "rio_color/colorspace.pyx":110
  *             c_lch = _rgb_to_lch(r, g, b)
- *             c_lch.c *= satmult
- *             c_rgb = _lch_to_rgb(c_lch.l, c_lch.c, c_lch.h)             # <<<<<<<<<<<<<<
+ *             c_lch.two *= satmult
+ *             c_rgb = _lch_to_rgb(c_lch.one, c_lch.two, c_lch.three)             # <<<<<<<<<<<<<<
  * 
- *             out[0, i, j] = c_rgb.r
+ *             out[0, i, j] = c_rgb.one
  */
-      __pyx_v_c_rgb = __pyx_f_9rio_color_10colorspace__lch_to_rgb(__pyx_v_c_lch.l, __pyx_v_c_lch.c, __pyx_v_c_lch.h);
+      __pyx_v_c_rgb = __pyx_f_9rio_color_10colorspace__lch_to_rgb(__pyx_v_c_lch.one, __pyx_v_c_lch.two, __pyx_v_c_lch.three);
 
-      /* "rio_color/colorspace.pyx":95
- *             c_rgb = _lch_to_rgb(c_lch.l, c_lch.c, c_lch.h)
+      /* "rio_color/colorspace.pyx":112
+ *             c_rgb = _lch_to_rgb(c_lch.one, c_lch.two, c_lch.three)
  * 
- *             out[0, i, j] = c_rgb.r             # <<<<<<<<<<<<<<
- *             out[1, i, j] = c_rgb.g
- *             out[2, i, j] = c_rgb.b
+ *             out[0, i, j] = c_rgb.one             # <<<<<<<<<<<<<<
+ *             out[1, i, j] = c_rgb.two
+ *             out[2, i, j] = c_rgb.three
  */
-      __pyx_t_20 = __pyx_v_c_rgb.r;
+      __pyx_t_20 = __pyx_v_c_rgb.one;
       __pyx_t_21 = 0;
       __pyx_t_22 = __pyx_v_i;
       __pyx_t_23 = __pyx_v_j;
       *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_23, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_t_20;
 
-      /* "rio_color/colorspace.pyx":96
+      /* "rio_color/colorspace.pyx":113
  * 
- *             out[0, i, j] = c_rgb.r
- *             out[1, i, j] = c_rgb.g             # <<<<<<<<<<<<<<
- *             out[2, i, j] = c_rgb.b
+ *             out[0, i, j] = c_rgb.one
+ *             out[1, i, j] = c_rgb.two             # <<<<<<<<<<<<<<
+ *             out[2, i, j] = c_rgb.three
  * 
  */
-      __pyx_t_20 = __pyx_v_c_rgb.g;
+      __pyx_t_20 = __pyx_v_c_rgb.two;
       __pyx_t_24 = 1;
       __pyx_t_25 = __pyx_v_i;
       __pyx_t_26 = __pyx_v_j;
       *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_t_20;
 
-      /* "rio_color/colorspace.pyx":97
- *             out[0, i, j] = c_rgb.r
- *             out[1, i, j] = c_rgb.g
- *             out[2, i, j] = c_rgb.b             # <<<<<<<<<<<<<<
+      /* "rio_color/colorspace.pyx":114
+ *             out[0, i, j] = c_rgb.one
+ *             out[1, i, j] = c_rgb.two
+ *             out[2, i, j] = c_rgb.three             # <<<<<<<<<<<<<<
  * 
  *     return out
  */
-      __pyx_t_20 = __pyx_v_c_rgb.b;
+      __pyx_t_20 = __pyx_v_c_rgb.three;
       __pyx_t_27 = 2;
       __pyx_t_28 = __pyx_v_i;
       __pyx_t_29 = __pyx_v_j;
@@ -1951,8 +2988,8 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
     }
   }
 
-  /* "rio_color/colorspace.pyx":99
- *             out[2, i, j] = c_rgb.b
+  /* "rio_color/colorspace.pyx":116
+ *             out[2, i, j] = c_rgb.three
  * 
  *     return out             # <<<<<<<<<<<<<<
  * 
@@ -1963,7 +3000,7 @@ static PyArrayObject *__pyx_f_9rio_color_10colorspace_saturate_rgb(PyArrayObject
   __pyx_r = ((PyArrayObject *)__pyx_v_out);
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":73
+  /* "rio_color/colorspace.pyx":89
  * 
  * 
  * cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, double satmult):             # <<<<<<<<<<<<<<
@@ -2026,11 +3063,11 @@ static PyObject *__pyx_pw_9rio_color_10colorspace_5saturate_rgb(PyObject *__pyx_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_satmult)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("saturate_rgb", 1, 2, 2, 1); __PYX_ERR(0, 73, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("saturate_rgb", 1, 2, 2, 1); __PYX_ERR(0, 89, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "saturate_rgb") < 0)) __PYX_ERR(0, 73, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "saturate_rgb") < 0)) __PYX_ERR(0, 89, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2039,17 +3076,17 @@ static PyObject *__pyx_pw_9rio_color_10colorspace_5saturate_rgb(PyObject *__pyx_
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_arr = ((PyArrayObject *)values[0]);
-    __pyx_v_satmult = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_satmult == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L3_error)
+    __pyx_v_satmult = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_satmult == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("saturate_rgb", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 73, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("saturate_rgb", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 89, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("rio_color.colorspace.saturate_rgb", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arr), __pyx_ptype_5numpy_ndarray, 1, "arr", 0))) __PYX_ERR(0, 73, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arr), __pyx_ptype_5numpy_ndarray, 1, "arr", 0))) __PYX_ERR(0, 89, __pyx_L1_error)
   __pyx_r = __pyx_pf_9rio_color_10colorspace_4saturate_rgb(__pyx_self, __pyx_v_arr, __pyx_v_satmult);
 
   /* function exit code */
@@ -2074,11 +3111,11 @@ static PyObject *__pyx_pf_9rio_color_10colorspace_4saturate_rgb(CYTHON_UNUSED Py
   __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 73, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 89, __pyx_L1_error)
   }
   __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_9rio_color_10colorspace_saturate_rgb(__pyx_v_arr, __pyx_v_satmult, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_9rio_color_10colorspace_saturate_rgb(__pyx_v_arr, __pyx_v_satmult, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2104,762 +3141,381 @@ static PyObject *__pyx_pf_9rio_color_10colorspace_4saturate_rgb(CYTHON_UNUSED Py
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":102
+/* "rio_color/colorspace.pyx":128
+ * # Conversions composed of multiple steps
  * 
- * 
- * cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr):             # <<<<<<<<<<<<<<
- *     cdef double r, g, b
- *     cdef size_t i, j
+ * cdef color _rgb_to_lch(double r, double g, double b):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _rgb_to_xyz(r, g, b)
  */
 
-static PyObject *__pyx_pw_9rio_color_10colorspace_7arr_rgb_to_lch(PyObject *__pyx_self, PyObject *__pyx_v_arr); /*proto*/
-static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_rgb_to_lch(PyArrayObject *__pyx_v_arr, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  double __pyx_v_r;
-  double __pyx_v_g;
-  double __pyx_v_b;
-  size_t __pyx_v_i;
-  size_t __pyx_v_j;
-  __pyx_t_9rio_color_10colorspace_lch __pyx_v_color;
-  PyArrayObject *__pyx_v_out = 0;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
-  __Pyx_Buffer __pyx_pybuffer_arr;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_out;
-  __Pyx_Buffer __pyx_pybuffer_out;
-  PyArrayObject *__pyx_r = NULL;
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__rgb_to_lch(double __pyx_v_r, double __pyx_v_g, double __pyx_v_b) {
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyArrayObject *__pyx_t_6 = NULL;
-  npy_intp __pyx_t_7;
-  size_t __pyx_t_8;
-  npy_intp __pyx_t_9;
-  size_t __pyx_t_10;
-  Py_ssize_t __pyx_t_11;
-  size_t __pyx_t_12;
-  size_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  size_t __pyx_t_15;
-  size_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
-  size_t __pyx_t_18;
-  size_t __pyx_t_19;
-  double __pyx_t_20;
-  Py_ssize_t __pyx_t_21;
-  size_t __pyx_t_22;
-  size_t __pyx_t_23;
-  Py_ssize_t __pyx_t_24;
-  size_t __pyx_t_25;
-  size_t __pyx_t_26;
-  Py_ssize_t __pyx_t_27;
-  size_t __pyx_t_28;
-  size_t __pyx_t_29;
-  __Pyx_RefNannySetupContext("arr_rgb_to_lch", 0);
-  __pyx_pybuffer_out.pybuffer.buf = NULL;
-  __pyx_pybuffer_out.refcount = 0;
-  __pyx_pybuffernd_out.data = NULL;
-  __pyx_pybuffernd_out.rcbuffer = &__pyx_pybuffer_out;
-  __pyx_pybuffer_arr.pybuffer.buf = NULL;
-  __pyx_pybuffer_arr.refcount = 0;
-  __pyx_pybuffernd_arr.data = NULL;
-  __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 102, __pyx_L1_error)
-  }
-  __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
+  __Pyx_RefNannySetupContext("_rgb_to_lch", 0);
 
-  /* "rio_color/colorspace.pyx":106
- *     cdef size_t i, j
- *     cdef lch color
- *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
- *         raise ValueError("The 0th dimension must contain 3 bands")
- * 
+  /* "rio_color/colorspace.pyx":130
+ * cdef color _rgb_to_lch(double r, double g, double b):
+ *     cdef color color
+ *     color = _rgb_to_xyz(r, g, b)             # <<<<<<<<<<<<<<
+ *     color = _xyz_to_lab(color.one, color.two, color.three)
+ *     color = _lab_to_lch(color.one, color.two, color.three)
  */
-  __pyx_t_1 = (((__pyx_v_arr->dimensions[0]) != 3) != 0);
-  if (__pyx_t_1) {
-
-    /* "rio_color/colorspace.pyx":107
- *     cdef lch color
- *     if arr.shape[0] != 3:
- *         raise ValueError("The 0th dimension must contain 3 bands")             # <<<<<<<<<<<<<<
- * 
- *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
- */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 107, __pyx_L1_error)
-
-    /* "rio_color/colorspace.pyx":106
- *     cdef size_t i, j
- *     cdef lch color
- *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
- *         raise ValueError("The 0th dimension must contain 3 bands")
- * 
- */
-  }
-
-  /* "rio_color/colorspace.pyx":109
- *         raise ValueError("The 0th dimension must contain 3 bands")
- * 
- *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)             # <<<<<<<<<<<<<<
- * 
- *     for i in range(arr.shape[1]):
- */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
-    }
-  }
-  if (!__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_arr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-  } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 109, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
-    __Pyx_INCREF(((PyObject *)__pyx_v_arr));
-    __Pyx_GIVEREF(((PyObject *)__pyx_v_arr));
-    PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_arr));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 109, __pyx_L1_error)
-  __pyx_t_6 = ((PyArrayObject *)__pyx_t_2);
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_out.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 3, 0, __pyx_stack) == -1)) {
-      __pyx_v_out = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_out.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 109, __pyx_L1_error)
-    } else {__pyx_pybuffernd_out.diminfo[0].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_out.diminfo[0].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_out.diminfo[1].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_out.diminfo[1].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_out.diminfo[2].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_out.diminfo[2].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[2];
-    }
-  }
-  __pyx_t_6 = 0;
-  __pyx_v_out = ((PyArrayObject *)__pyx_t_2);
-  __pyx_t_2 = 0;
-
-  /* "rio_color/colorspace.pyx":111
- *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
- * 
- *     for i in range(arr.shape[1]):             # <<<<<<<<<<<<<<
- *         for j in range(arr.shape[2]):
- *             r = arr[0, i, j]
- */
-  __pyx_t_7 = (__pyx_v_arr->dimensions[1]);
-  for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-    __pyx_v_i = __pyx_t_8;
-
-    /* "rio_color/colorspace.pyx":112
- * 
- *     for i in range(arr.shape[1]):
- *         for j in range(arr.shape[2]):             # <<<<<<<<<<<<<<
- *             r = arr[0, i, j]
- *             g = arr[1, i, j]
- */
-    __pyx_t_9 = (__pyx_v_arr->dimensions[2]);
-    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-      __pyx_v_j = __pyx_t_10;
-
-      /* "rio_color/colorspace.pyx":113
- *     for i in range(arr.shape[1]):
- *         for j in range(arr.shape[2]):
- *             r = arr[0, i, j]             # <<<<<<<<<<<<<<
- *             g = arr[1, i, j]
- *             b = arr[2, i, j]
- */
-      __pyx_t_11 = 0;
-      __pyx_t_12 = __pyx_v_i;
-      __pyx_t_13 = __pyx_v_j;
-      __pyx_v_r = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_13, __pyx_pybuffernd_arr.diminfo[2].strides));
-
-      /* "rio_color/colorspace.pyx":114
- *         for j in range(arr.shape[2]):
- *             r = arr[0, i, j]
- *             g = arr[1, i, j]             # <<<<<<<<<<<<<<
- *             b = arr[2, i, j]
- *             color = _rgb_to_lch(r, g, b)
- */
-      __pyx_t_14 = 1;
-      __pyx_t_15 = __pyx_v_i;
-      __pyx_t_16 = __pyx_v_j;
-      __pyx_v_g = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_16, __pyx_pybuffernd_arr.diminfo[2].strides));
-
-      /* "rio_color/colorspace.pyx":115
- *             r = arr[0, i, j]
- *             g = arr[1, i, j]
- *             b = arr[2, i, j]             # <<<<<<<<<<<<<<
- *             color = _rgb_to_lch(r, g, b)
- *             out[0, i, j] = color.l
- */
-      __pyx_t_17 = 2;
-      __pyx_t_18 = __pyx_v_i;
-      __pyx_t_19 = __pyx_v_j;
-      __pyx_v_b = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_19, __pyx_pybuffernd_arr.diminfo[2].strides));
-
-      /* "rio_color/colorspace.pyx":116
- *             g = arr[1, i, j]
- *             b = arr[2, i, j]
- *             color = _rgb_to_lch(r, g, b)             # <<<<<<<<<<<<<<
- *             out[0, i, j] = color.l
- *             out[1, i, j] = color.c
- */
-      __pyx_v_color = __pyx_f_9rio_color_10colorspace__rgb_to_lch(__pyx_v_r, __pyx_v_g, __pyx_v_b);
-
-      /* "rio_color/colorspace.pyx":117
- *             b = arr[2, i, j]
- *             color = _rgb_to_lch(r, g, b)
- *             out[0, i, j] = color.l             # <<<<<<<<<<<<<<
- *             out[1, i, j] = color.c
- *             out[2, i, j] = color.h
- */
-      __pyx_t_20 = __pyx_v_color.l;
-      __pyx_t_21 = 0;
-      __pyx_t_22 = __pyx_v_i;
-      __pyx_t_23 = __pyx_v_j;
-      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_23, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_t_20;
-
-      /* "rio_color/colorspace.pyx":118
- *             color = _rgb_to_lch(r, g, b)
- *             out[0, i, j] = color.l
- *             out[1, i, j] = color.c             # <<<<<<<<<<<<<<
- *             out[2, i, j] = color.h
- * 
- */
-      __pyx_t_20 = __pyx_v_color.c;
-      __pyx_t_24 = 1;
-      __pyx_t_25 = __pyx_v_i;
-      __pyx_t_26 = __pyx_v_j;
-      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_t_20;
-
-      /* "rio_color/colorspace.pyx":119
- *             out[0, i, j] = color.l
- *             out[1, i, j] = color.c
- *             out[2, i, j] = color.h             # <<<<<<<<<<<<<<
- * 
- *     return out
- */
-      __pyx_t_20 = __pyx_v_color.h;
-      __pyx_t_27 = 2;
-      __pyx_t_28 = __pyx_v_i;
-      __pyx_t_29 = __pyx_v_j;
-      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_29, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_t_20;
-    }
-  }
-
-  /* "rio_color/colorspace.pyx":121
- *             out[2, i, j] = color.h
- * 
- *     return out             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_out));
-  __pyx_r = ((PyArrayObject *)__pyx_v_out);
-  goto __pyx_L0;
-
-  /* "rio_color/colorspace.pyx":102
- * 
- * 
- * cpdef np.ndarray[FLOAT_t, ndim=3] arr_rgb_to_lch(np.ndarray[FLOAT_t, ndim=3] arr):             # <<<<<<<<<<<<<<
- *     cdef double r, g, b
- *     cdef size_t i, j
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
-    __Pyx_PyThreadState_declare
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_out.rcbuffer->pybuffer);
-  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("rio_color.colorspace.arr_rgb_to_lch", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  goto __pyx_L2;
-  __pyx_L0:;
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_out.rcbuffer->pybuffer);
-  __pyx_L2:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_out);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static PyObject *__pyx_pw_9rio_color_10colorspace_7arr_rgb_to_lch(PyObject *__pyx_self, PyObject *__pyx_v_arr); /*proto*/
-static PyObject *__pyx_pw_9rio_color_10colorspace_7arr_rgb_to_lch(PyObject *__pyx_self, PyObject *__pyx_v_arr) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("arr_rgb_to_lch (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arr), __pyx_ptype_5numpy_ndarray, 1, "arr", 0))) __PYX_ERR(0, 102, __pyx_L1_error)
-  __pyx_r = __pyx_pf_9rio_color_10colorspace_6arr_rgb_to_lch(__pyx_self, ((PyArrayObject *)__pyx_v_arr));
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_9rio_color_10colorspace_6arr_rgb_to_lch(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_arr) {
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
-  __Pyx_Buffer __pyx_pybuffer_arr;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("arr_rgb_to_lch", 0);
-  __pyx_pybuffer_arr.pybuffer.buf = NULL;
-  __pyx_pybuffer_arr.refcount = 0;
-  __pyx_pybuffernd_arr.data = NULL;
-  __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 102, __pyx_L1_error)
-  }
-  __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_9rio_color_10colorspace_arr_rgb_to_lch(__pyx_v_arr, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
-    __Pyx_PyThreadState_declare
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
-  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("rio_color.colorspace.arr_rgb_to_lch", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  goto __pyx_L2;
-  __pyx_L0:;
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
-  __pyx_L2:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "rio_color/colorspace.pyx":124
- * 
- * 
- * cpdef np.ndarray[FLOAT_t, ndim=3] arr_lch_to_rgb(np.ndarray[FLOAT_t, ndim=3] arr):             # <<<<<<<<<<<<<<
- *     cdef double l, c, h
- *     cdef size_t i, j
- */
-
-static PyObject *__pyx_pw_9rio_color_10colorspace_9arr_lch_to_rgb(PyObject *__pyx_self, PyObject *__pyx_v_arr); /*proto*/
-static PyArrayObject *__pyx_f_9rio_color_10colorspace_arr_lch_to_rgb(PyArrayObject *__pyx_v_arr, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  double __pyx_v_l;
-  double __pyx_v_c;
-  double __pyx_v_h;
-  size_t __pyx_v_i;
-  size_t __pyx_v_j;
-  __pyx_t_9rio_color_10colorspace_rgb __pyx_v_color;
-  PyArrayObject *__pyx_v_out = 0;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
-  __Pyx_Buffer __pyx_pybuffer_arr;
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_out;
-  __Pyx_Buffer __pyx_pybuffer_out;
-  PyArrayObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyArrayObject *__pyx_t_6 = NULL;
-  npy_intp __pyx_t_7;
-  size_t __pyx_t_8;
-  npy_intp __pyx_t_9;
-  size_t __pyx_t_10;
-  Py_ssize_t __pyx_t_11;
-  size_t __pyx_t_12;
-  size_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  size_t __pyx_t_15;
-  size_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
-  size_t __pyx_t_18;
-  size_t __pyx_t_19;
-  double __pyx_t_20;
-  Py_ssize_t __pyx_t_21;
-  size_t __pyx_t_22;
-  size_t __pyx_t_23;
-  Py_ssize_t __pyx_t_24;
-  size_t __pyx_t_25;
-  size_t __pyx_t_26;
-  Py_ssize_t __pyx_t_27;
-  size_t __pyx_t_28;
-  size_t __pyx_t_29;
-  __Pyx_RefNannySetupContext("arr_lch_to_rgb", 0);
-  __pyx_pybuffer_out.pybuffer.buf = NULL;
-  __pyx_pybuffer_out.refcount = 0;
-  __pyx_pybuffernd_out.data = NULL;
-  __pyx_pybuffernd_out.rcbuffer = &__pyx_pybuffer_out;
-  __pyx_pybuffer_arr.pybuffer.buf = NULL;
-  __pyx_pybuffer_arr.refcount = 0;
-  __pyx_pybuffernd_arr.data = NULL;
-  __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 124, __pyx_L1_error)
-  }
-  __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
-
-  /* "rio_color/colorspace.pyx":128
- *     cdef size_t i, j
- *     cdef rgb color
- *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
- *         raise ValueError("The 0th dimension must contain 3 bands")
- * 
- */
-  __pyx_t_1 = (((__pyx_v_arr->dimensions[0]) != 3) != 0);
-  if (__pyx_t_1) {
-
-    /* "rio_color/colorspace.pyx":129
- *     cdef rgb color
- *     if arr.shape[0] != 3:
- *         raise ValueError("The 0th dimension must contain 3 bands")             # <<<<<<<<<<<<<<
- * 
- *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
- */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 129, __pyx_L1_error)
-
-    /* "rio_color/colorspace.pyx":128
- *     cdef size_t i, j
- *     cdef rgb color
- *     if arr.shape[0] != 3:             # <<<<<<<<<<<<<<
- *         raise ValueError("The 0th dimension must contain 3 bands")
- * 
- */
-  }
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__rgb_to_xyz(__pyx_v_r, __pyx_v_g, __pyx_v_b);
 
   /* "rio_color/colorspace.pyx":131
- *         raise ValueError("The 0th dimension must contain 3 bands")
- * 
- *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)             # <<<<<<<<<<<<<<
- * 
- *     for i in range(arr.shape[1]):
+ *     cdef color color
+ *     color = _rgb_to_xyz(r, g, b)
+ *     color = _xyz_to_lab(color.one, color.two, color.three)             # <<<<<<<<<<<<<<
+ *     color = _lab_to_lch(color.one, color.two, color.three)
+ *     return color
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 131, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
-    }
-  }
-  if (!__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_arr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-  } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 131, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
-    __Pyx_INCREF(((PyObject *)__pyx_v_arr));
-    __Pyx_GIVEREF(((PyObject *)__pyx_v_arr));
-    PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_arr));
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 131, __pyx_L1_error)
-  __pyx_t_6 = ((PyArrayObject *)__pyx_t_2);
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_out.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 3, 0, __pyx_stack) == -1)) {
-      __pyx_v_out = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_out.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 131, __pyx_L1_error)
-    } else {__pyx_pybuffernd_out.diminfo[0].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_out.diminfo[0].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_out.diminfo[1].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_out.diminfo[1].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_out.diminfo[2].strides = __pyx_pybuffernd_out.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_out.diminfo[2].shape = __pyx_pybuffernd_out.rcbuffer->pybuffer.shape[2];
-    }
-  }
-  __pyx_t_6 = 0;
-  __pyx_v_out = ((PyArrayObject *)__pyx_t_2);
-  __pyx_t_2 = 0;
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__xyz_to_lab(__pyx_v_color.one, __pyx_v_color.two, __pyx_v_color.three);
+
+  /* "rio_color/colorspace.pyx":132
+ *     color = _rgb_to_xyz(r, g, b)
+ *     color = _xyz_to_lab(color.one, color.two, color.three)
+ *     color = _lab_to_lch(color.one, color.two, color.three)             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__lab_to_lch(__pyx_v_color.one, __pyx_v_color.two, __pyx_v_color.three);
 
   /* "rio_color/colorspace.pyx":133
- *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
+ *     color = _xyz_to_lab(color.one, color.two, color.three)
+ *     color = _lab_to_lch(color.one, color.two, color.three)
+ *     return color             # <<<<<<<<<<<<<<
  * 
- *     for i in range(arr.shape[1]):             # <<<<<<<<<<<<<<
- *         for j in range(arr.shape[2]):
- *             l = arr[0, i, j]
- */
-  __pyx_t_7 = (__pyx_v_arr->dimensions[1]);
-  for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-    __pyx_v_i = __pyx_t_8;
-
-    /* "rio_color/colorspace.pyx":134
- * 
- *     for i in range(arr.shape[1]):
- *         for j in range(arr.shape[2]):             # <<<<<<<<<<<<<<
- *             l = arr[0, i, j]
- *             c = arr[1, i, j]
- */
-    __pyx_t_9 = (__pyx_v_arr->dimensions[2]);
-    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-      __pyx_v_j = __pyx_t_10;
-
-      /* "rio_color/colorspace.pyx":135
- *     for i in range(arr.shape[1]):
- *         for j in range(arr.shape[2]):
- *             l = arr[0, i, j]             # <<<<<<<<<<<<<<
- *             c = arr[1, i, j]
- *             h = arr[2, i, j]
- */
-      __pyx_t_11 = 0;
-      __pyx_t_12 = __pyx_v_i;
-      __pyx_t_13 = __pyx_v_j;
-      __pyx_v_l = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_13, __pyx_pybuffernd_arr.diminfo[2].strides));
-
-      /* "rio_color/colorspace.pyx":136
- *         for j in range(arr.shape[2]):
- *             l = arr[0, i, j]
- *             c = arr[1, i, j]             # <<<<<<<<<<<<<<
- *             h = arr[2, i, j]
- *             color = _lch_to_rgb(l, c, h)
- */
-      __pyx_t_14 = 1;
-      __pyx_t_15 = __pyx_v_i;
-      __pyx_t_16 = __pyx_v_j;
-      __pyx_v_c = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_16, __pyx_pybuffernd_arr.diminfo[2].strides));
-
-      /* "rio_color/colorspace.pyx":137
- *             l = arr[0, i, j]
- *             c = arr[1, i, j]
- *             h = arr[2, i, j]             # <<<<<<<<<<<<<<
- *             color = _lch_to_rgb(l, c, h)
- *             out[0, i, j] = color.r
- */
-      __pyx_t_17 = 2;
-      __pyx_t_18 = __pyx_v_i;
-      __pyx_t_19 = __pyx_v_j;
-      __pyx_v_h = (*__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_arr.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_arr.diminfo[1].strides, __pyx_t_19, __pyx_pybuffernd_arr.diminfo[2].strides));
-
-      /* "rio_color/colorspace.pyx":138
- *             c = arr[1, i, j]
- *             h = arr[2, i, j]
- *             color = _lch_to_rgb(l, c, h)             # <<<<<<<<<<<<<<
- *             out[0, i, j] = color.r
- *             out[1, i, j] = color.g
- */
-      __pyx_v_color = __pyx_f_9rio_color_10colorspace__lch_to_rgb(__pyx_v_l, __pyx_v_c, __pyx_v_h);
-
-      /* "rio_color/colorspace.pyx":139
- *             h = arr[2, i, j]
- *             color = _lch_to_rgb(l, c, h)
- *             out[0, i, j] = color.r             # <<<<<<<<<<<<<<
- *             out[1, i, j] = color.g
- *             out[2, i, j] = color.b
- */
-      __pyx_t_20 = __pyx_v_color.r;
-      __pyx_t_21 = 0;
-      __pyx_t_22 = __pyx_v_i;
-      __pyx_t_23 = __pyx_v_j;
-      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_23, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_t_20;
-
-      /* "rio_color/colorspace.pyx":140
- *             color = _lch_to_rgb(l, c, h)
- *             out[0, i, j] = color.r
- *             out[1, i, j] = color.g             # <<<<<<<<<<<<<<
- *             out[2, i, j] = color.b
  * 
  */
-      __pyx_t_20 = __pyx_v_color.g;
-      __pyx_t_24 = 1;
-      __pyx_t_25 = __pyx_v_i;
-      __pyx_t_26 = __pyx_v_j;
-      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_t_20;
-
-      /* "rio_color/colorspace.pyx":141
- *             out[0, i, j] = color.r
- *             out[1, i, j] = color.g
- *             out[2, i, j] = color.b             # <<<<<<<<<<<<<<
- * 
- *     return out
- */
-      __pyx_t_20 = __pyx_v_color.b;
-      __pyx_t_27 = 2;
-      __pyx_t_28 = __pyx_v_i;
-      __pyx_t_29 = __pyx_v_j;
-      *__Pyx_BufPtrStrided3d(__pyx_t_9rio_color_10colorspace_FLOAT_t *, __pyx_pybuffernd_out.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_out.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_out.diminfo[1].strides, __pyx_t_29, __pyx_pybuffernd_out.diminfo[2].strides) = __pyx_t_20;
-    }
-  }
-
-  /* "rio_color/colorspace.pyx":143
- *             out[2, i, j] = color.b
- * 
- *     return out             # <<<<<<<<<<<<<<
- * 
- * # Constants
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_out));
-  __pyx_r = ((PyArrayObject *)__pyx_v_out);
+  __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":124
+  /* "rio_color/colorspace.pyx":128
+ * # Conversions composed of multiple steps
  * 
- * 
- * cpdef np.ndarray[FLOAT_t, ndim=3] arr_lch_to_rgb(np.ndarray[FLOAT_t, ndim=3] arr):             # <<<<<<<<<<<<<<
- *     cdef double l, c, h
- *     cdef size_t i, j
+ * cdef color _rgb_to_lch(double r, double g, double b):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _rgb_to_xyz(r, g, b)
  */
 
   /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
-    __Pyx_PyThreadState_declare
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_out.rcbuffer->pybuffer);
-  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("rio_color.colorspace.arr_lch_to_rgb", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  goto __pyx_L2;
   __pyx_L0:;
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_out.rcbuffer->pybuffer);
-  __pyx_L2:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_out);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* Python wrapper */
-static PyObject *__pyx_pw_9rio_color_10colorspace_9arr_lch_to_rgb(PyObject *__pyx_self, PyObject *__pyx_v_arr); /*proto*/
-static PyObject *__pyx_pw_9rio_color_10colorspace_9arr_lch_to_rgb(PyObject *__pyx_self, PyObject *__pyx_v_arr) {
-  PyObject *__pyx_r = 0;
+/* "rio_color/colorspace.pyx":136
+ * 
+ * 
+ * cdef color _lch_to_rgb(double L, double C, double H):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _lch_to_lab(L, C, H)
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lch_to_rgb(double __pyx_v_L, double __pyx_v_C, double __pyx_v_H) {
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("arr_lch_to_rgb (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arr), __pyx_ptype_5numpy_ndarray, 1, "arr", 0))) __PYX_ERR(0, 124, __pyx_L1_error)
-  __pyx_r = __pyx_pf_9rio_color_10colorspace_8arr_lch_to_rgb(__pyx_self, ((PyArrayObject *)__pyx_v_arr));
+  __Pyx_RefNannySetupContext("_lch_to_rgb", 0);
 
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
+  /* "rio_color/colorspace.pyx":138
+ * cdef color _lch_to_rgb(double L, double C, double H):
+ *     cdef color color
+ *     color = _lch_to_lab(L, C, H)             # <<<<<<<<<<<<<<
+ *     color = _lab_to_xyz(color.one, color.two, color.three)
+ *     color = _xyz_to_rgb(color.one, color.two, color.three)
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__lch_to_lab(__pyx_v_L, __pyx_v_C, __pyx_v_H);
 
-static PyObject *__pyx_pf_9rio_color_10colorspace_8arr_lch_to_rgb(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_arr) {
-  __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
-  __Pyx_Buffer __pyx_pybuffer_arr;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("arr_lch_to_rgb", 0);
-  __pyx_pybuffer_arr.pybuffer.buf = NULL;
-  __pyx_pybuffer_arr.refcount = 0;
-  __pyx_pybuffernd_arr.data = NULL;
-  __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
-  {
-    __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_9rio_color_10colorspace_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(0, 124, __pyx_L1_error)
-  }
-  __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_9rio_color_10colorspace_arr_lch_to_rgb(__pyx_v_arr, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 124, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
+  /* "rio_color/colorspace.pyx":139
+ *     cdef color color
+ *     color = _lch_to_lab(L, C, H)
+ *     color = _lab_to_xyz(color.one, color.two, color.three)             # <<<<<<<<<<<<<<
+ *     color = _xyz_to_rgb(color.one, color.two, color.three)
+ *     return color
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__lab_to_xyz(__pyx_v_color.one, __pyx_v_color.two, __pyx_v_color.three);
 
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
-    __Pyx_PyThreadState_declare
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
-    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
-  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("rio_color.colorspace.arr_lch_to_rgb", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  goto __pyx_L2;
-  __pyx_L0:;
-  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
-  __pyx_L2:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "rio_color/colorspace.pyx":152
- * 
- * 
- * cdef lch _rgb_to_lch(double r, double g, double b):             # <<<<<<<<<<<<<<
- *     cdef lch color
+  /* "rio_color/colorspace.pyx":140
+ *     color = _lch_to_lab(L, C, H)
+ *     color = _lab_to_xyz(color.one, color.two, color.three)
+ *     color = _xyz_to_rgb(color.one, color.two, color.three)             # <<<<<<<<<<<<<<
+ *     return color
  * 
  */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__xyz_to_rgb(__pyx_v_color.one, __pyx_v_color.two, __pyx_v_color.three);
 
-static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_to_lch(double __pyx_v_r, double __pyx_v_g, double __pyx_v_b) {
-  __pyx_t_9rio_color_10colorspace_lch __pyx_v_color;
+  /* "rio_color/colorspace.pyx":141
+ *     color = _lab_to_xyz(color.one, color.two, color.three)
+ *     color = _xyz_to_rgb(color.one, color.two, color.three)
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":136
+ * 
+ * 
+ * cdef color _lch_to_rgb(double L, double C, double H):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _lch_to_lab(L, C, H)
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":144
+ * 
+ * 
+ * cdef color _lch_to_xyz(double L, double C, double H):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _lch_to_lab(L, C, H)
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lch_to_xyz(double __pyx_v_L, double __pyx_v_C, double __pyx_v_H) {
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("_lch_to_xyz", 0);
+
+  /* "rio_color/colorspace.pyx":146
+ * cdef color _lch_to_xyz(double L, double C, double H):
+ *     cdef color color
+ *     color = _lch_to_lab(L, C, H)             # <<<<<<<<<<<<<<
+ *     color = _lab_to_xyz(color.one, color.two, color.three)
+ *     return color
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__lch_to_lab(__pyx_v_L, __pyx_v_C, __pyx_v_H);
+
+  /* "rio_color/colorspace.pyx":147
+ *     cdef color color
+ *     color = _lch_to_lab(L, C, H)
+ *     color = _lab_to_xyz(color.one, color.two, color.three)             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__lab_to_xyz(__pyx_v_color.one, __pyx_v_color.two, __pyx_v_color.three);
+
+  /* "rio_color/colorspace.pyx":148
+ *     color = _lch_to_lab(L, C, H)
+ *     color = _lab_to_xyz(color.one, color.two, color.three)
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":144
+ * 
+ * 
+ * cdef color _lch_to_xyz(double L, double C, double H):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _lch_to_lab(L, C, H)
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":151
+ * 
+ * 
+ * cdef color _xyz_to_lch(double x, double y, double z):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _xyz_to_lab(x, y, z)
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__xyz_to_lch(double __pyx_v_x, double __pyx_v_y, double __pyx_v_z) {
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("_xyz_to_lch", 0);
+
+  /* "rio_color/colorspace.pyx":153
+ * cdef color _xyz_to_lch(double x, double y, double z):
+ *     cdef color color
+ *     color = _xyz_to_lab(x, y, z)             # <<<<<<<<<<<<<<
+ *     color = _lab_to_lch(color.one, color.two, color.three)
+ *     return color
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__xyz_to_lab(__pyx_v_x, __pyx_v_y, __pyx_v_z);
+
+  /* "rio_color/colorspace.pyx":154
+ *     cdef color color
+ *     color = _xyz_to_lab(x, y, z)
+ *     color = _lab_to_lch(color.one, color.two, color.three)             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__lab_to_lch(__pyx_v_color.one, __pyx_v_color.two, __pyx_v_color.three);
+
+  /* "rio_color/colorspace.pyx":155
+ *     color = _xyz_to_lab(x, y, z)
+ *     color = _lab_to_lch(color.one, color.two, color.three)
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":151
+ * 
+ * 
+ * cdef color _xyz_to_lch(double x, double y, double z):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _xyz_to_lab(x, y, z)
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":158
+ * 
+ * 
+ * cdef color _rgb_to_lab(double r, double g, double b):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _rgb_to_xyz(r, g, b)
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__rgb_to_lab(double __pyx_v_r, double __pyx_v_g, double __pyx_v_b) {
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("_rgb_to_lab", 0);
+
+  /* "rio_color/colorspace.pyx":160
+ * cdef color _rgb_to_lab(double r, double g, double b):
+ *     cdef color color
+ *     color = _rgb_to_xyz(r, g, b)             # <<<<<<<<<<<<<<
+ *     color = _xyz_to_lab(color.one, color.two, color.three)
+ *     return color
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__rgb_to_xyz(__pyx_v_r, __pyx_v_g, __pyx_v_b);
+
+  /* "rio_color/colorspace.pyx":161
+ *     cdef color color
+ *     color = _rgb_to_xyz(r, g, b)
+ *     color = _xyz_to_lab(color.one, color.two, color.three)             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__xyz_to_lab(__pyx_v_color.one, __pyx_v_color.two, __pyx_v_color.three);
+
+  /* "rio_color/colorspace.pyx":162
+ *     color = _rgb_to_xyz(r, g, b)
+ *     color = _xyz_to_lab(color.one, color.two, color.three)
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":158
+ * 
+ * 
+ * cdef color _rgb_to_lab(double r, double g, double b):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _rgb_to_xyz(r, g, b)
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":165
+ * 
+ * 
+ * cdef color _lab_to_rgb(double L, double a, double b):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _lab_to_xyz(L, a, b)
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lab_to_rgb(double __pyx_v_L, double __pyx_v_a, double __pyx_v_b) {
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("_lab_to_rgb", 0);
+
+  /* "rio_color/colorspace.pyx":167
+ * cdef color _lab_to_rgb(double L, double a, double b):
+ *     cdef color color
+ *     color = _lab_to_xyz(L, a, b)             # <<<<<<<<<<<<<<
+ *     color = _xyz_to_rgb(color.one, color.two, color.three)
+ *     return color
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__lab_to_xyz(__pyx_v_L, __pyx_v_a, __pyx_v_b);
+
+  /* "rio_color/colorspace.pyx":168
+ *     cdef color color
+ *     color = _lab_to_xyz(L, a, b)
+ *     color = _xyz_to_rgb(color.one, color.two, color.three)             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color = __pyx_f_9rio_color_10colorspace__xyz_to_rgb(__pyx_v_color.one, __pyx_v_color.two, __pyx_v_color.three);
+
+  /* "rio_color/colorspace.pyx":169
+ *     color = _lab_to_xyz(L, a, b)
+ *     color = _xyz_to_rgb(color.one, color.two, color.three)
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":165
+ * 
+ * 
+ * cdef color _lab_to_rgb(double L, double a, double b):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ *     color = _lab_to_xyz(L, a, b)
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":174
+ * # Direct conversions
+ * 
+ * cdef color _rgb_to_xyz(double r, double g, double b):             # <<<<<<<<<<<<<<
+ *     cdef double rl, gl, bl
+ *     cdef color color
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__rgb_to_xyz(double __pyx_v_r, double __pyx_v_g, double __pyx_v_b) {
   double __pyx_v_rl;
   double __pyx_v_gl;
   double __pyx_v_bl;
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
   double __pyx_v_x;
   double __pyx_v_y;
   double __pyx_v_z;
-  double __pyx_v_fx;
-  double __pyx_v_fy;
-  double __pyx_v_fz;
-  double __pyx_v_a;
-  __pyx_t_9rio_color_10colorspace_lch __pyx_r;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  __Pyx_RefNannySetupContext("_rgb_to_lch", 0);
+  __Pyx_RefNannySetupContext("_rgb_to_xyz", 0);
 
-  /* "rio_color/colorspace.pyx":158
+  /* "rio_color/colorspace.pyx":181
  *     # if simplified:
  *     # Use gamma = 2.2, "simplified sRGB"
  *     rl = r ** 2.2             # <<<<<<<<<<<<<<
@@ -2868,7 +3524,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
  */
   __pyx_v_rl = pow(__pyx_v_r, 2.2);
 
-  /* "rio_color/colorspace.pyx":159
+  /* "rio_color/colorspace.pyx":182
  *     # Use gamma = 2.2, "simplified sRGB"
  *     rl = r ** 2.2
  *     gl = g ** 2.2             # <<<<<<<<<<<<<<
@@ -2877,7 +3533,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
  */
   __pyx_v_gl = pow(__pyx_v_g, 2.2);
 
-  /* "rio_color/colorspace.pyx":160
+  /* "rio_color/colorspace.pyx":183
  *     rl = r ** 2.2
  *     gl = g ** 2.2
  *     bl = b ** 2.2             # <<<<<<<<<<<<<<
@@ -2886,7 +3542,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
  */
   __pyx_v_bl = pow(__pyx_v_b, 2.2);
 
-  /* "rio_color/colorspace.pyx":164
+  /* "rio_color/colorspace.pyx":187
  *     # matrix mult for srgb->xyz,
  *     # includes adjustment for d65 reference white
  *     x = ((rl * 0.4124) + (gl * 0.3576) + (bl * 0.1805)) / 0.95047             # <<<<<<<<<<<<<<
@@ -2895,7 +3551,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
  */
   __pyx_v_x = ((((__pyx_v_rl * 0.4124) + (__pyx_v_gl * 0.3576)) + (__pyx_v_bl * 0.1805)) / 0.95047);
 
-  /* "rio_color/colorspace.pyx":165
+  /* "rio_color/colorspace.pyx":188
  *     # includes adjustment for d65 reference white
  *     x = ((rl * 0.4124) + (gl * 0.3576) + (bl * 0.1805)) / 0.95047
  *     y = ((rl * 0.2126) + (gl * 0.7152) + (bl * 0.0722))             # <<<<<<<<<<<<<<
@@ -2904,16 +3560,88 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
  */
   __pyx_v_y = (((__pyx_v_rl * 0.2126) + (__pyx_v_gl * 0.7152)) + (__pyx_v_bl * 0.0722));
 
-  /* "rio_color/colorspace.pyx":166
+  /* "rio_color/colorspace.pyx":189
  *     x = ((rl * 0.4124) + (gl * 0.3576) + (bl * 0.1805)) / 0.95047
  *     y = ((rl * 0.2126) + (gl * 0.7152) + (bl * 0.0722))
  *     z = ((rl * 0.0193) + (gl * 0.1192) + (bl * 0.9505)) / 1.08883             # <<<<<<<<<<<<<<
  * 
- *     # convert XYZ to LAB colorspace
+ *     color.one = x
  */
   __pyx_v_z = ((((__pyx_v_rl * 0.0193) + (__pyx_v_gl * 0.1192)) + (__pyx_v_bl * 0.9505)) / 1.08883);
 
-  /* "rio_color/colorspace.pyx":169
+  /* "rio_color/colorspace.pyx":191
+ *     z = ((rl * 0.0193) + (gl * 0.1192) + (bl * 0.9505)) / 1.08883
+ * 
+ *     color.one = x             # <<<<<<<<<<<<<<
+ *     color.two = y
+ *     color.three = z
+ */
+  __pyx_v_color.one = __pyx_v_x;
+
+  /* "rio_color/colorspace.pyx":192
+ * 
+ *     color.one = x
+ *     color.two = y             # <<<<<<<<<<<<<<
+ *     color.three = z
+ *     return color
+ */
+  __pyx_v_color.two = __pyx_v_y;
+
+  /* "rio_color/colorspace.pyx":193
+ *     color.one = x
+ *     color.two = y
+ *     color.three = z             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color.three = __pyx_v_z;
+
+  /* "rio_color/colorspace.pyx":194
+ *     color.two = y
+ *     color.three = z
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":174
+ * # Direct conversions
+ * 
+ * cdef color _rgb_to_xyz(double r, double g, double b):             # <<<<<<<<<<<<<<
+ *     cdef double rl, gl, bl
+ *     cdef color color
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":197
+ * 
+ * 
+ * cdef color _xyz_to_lab(double x, double y, double z):             # <<<<<<<<<<<<<<
+ *     cdef double fx, fy, fz
+ *     cdef double L, a, b
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__xyz_to_lab(double __pyx_v_x, double __pyx_v_y, double __pyx_v_z) {
+  double __pyx_v_fx;
+  double __pyx_v_fy;
+  double __pyx_v_fz;
+  double __pyx_v_L;
+  double __pyx_v_a;
+  double __pyx_v_b;
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("_xyz_to_lab", 0);
+
+  /* "rio_color/colorspace.pyx":203
  * 
  *     # convert XYZ to LAB colorspace
  *     if x > t0:             # <<<<<<<<<<<<<<
@@ -2923,7 +3651,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
   __pyx_t_1 = ((__pyx_v_x > __pyx_v_9rio_color_10colorspace_t0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":170
+    /* "rio_color/colorspace.pyx":204
  *     # convert XYZ to LAB colorspace
  *     if x > t0:
  *         fx = x ** 0.3333333333333333             # <<<<<<<<<<<<<<
@@ -2932,7 +3660,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
  */
     __pyx_v_fx = pow(__pyx_v_x, 0.3333333333333333);
 
-    /* "rio_color/colorspace.pyx":169
+    /* "rio_color/colorspace.pyx":203
  * 
  *     # convert XYZ to LAB colorspace
  *     if x > t0:             # <<<<<<<<<<<<<<
@@ -2942,7 +3670,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
     goto __pyx_L3;
   }
 
-  /* "rio_color/colorspace.pyx":172
+  /* "rio_color/colorspace.pyx":206
  *         fx = x ** 0.3333333333333333
  *     else:
  *         fx = (alpha * x) + bintercept             # <<<<<<<<<<<<<<
@@ -2954,7 +3682,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
   }
   __pyx_L3:;
 
-  /* "rio_color/colorspace.pyx":174
+  /* "rio_color/colorspace.pyx":208
  *         fx = (alpha * x) + bintercept
  * 
  *     if y > t0:             # <<<<<<<<<<<<<<
@@ -2964,7 +3692,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
   __pyx_t_1 = ((__pyx_v_y > __pyx_v_9rio_color_10colorspace_t0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":175
+    /* "rio_color/colorspace.pyx":209
  * 
  *     if y > t0:
  *         fy = y ** 0.3333333333333333             # <<<<<<<<<<<<<<
@@ -2973,7 +3701,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
  */
     __pyx_v_fy = pow(__pyx_v_y, 0.3333333333333333);
 
-    /* "rio_color/colorspace.pyx":174
+    /* "rio_color/colorspace.pyx":208
  *         fx = (alpha * x) + bintercept
  * 
  *     if y > t0:             # <<<<<<<<<<<<<<
@@ -2983,7 +3711,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
     goto __pyx_L4;
   }
 
-  /* "rio_color/colorspace.pyx":177
+  /* "rio_color/colorspace.pyx":211
  *         fy = y ** 0.3333333333333333
  *     else:
  *         fy = (alpha * y) + bintercept             # <<<<<<<<<<<<<<
@@ -2995,7 +3723,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
   }
   __pyx_L4:;
 
-  /* "rio_color/colorspace.pyx":179
+  /* "rio_color/colorspace.pyx":213
  *         fy = (alpha * y) + bintercept
  * 
  *     if z > t0:             # <<<<<<<<<<<<<<
@@ -3005,7 +3733,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
   __pyx_t_1 = ((__pyx_v_z > __pyx_v_9rio_color_10colorspace_t0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":180
+    /* "rio_color/colorspace.pyx":214
  * 
  *     if z > t0:
  *         fz = z ** 0.3333333333333333             # <<<<<<<<<<<<<<
@@ -3014,7 +3742,7 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
  */
     __pyx_v_fz = pow(__pyx_v_z, 0.3333333333333333);
 
-    /* "rio_color/colorspace.pyx":179
+    /* "rio_color/colorspace.pyx":213
  *         fy = (alpha * y) + bintercept
  * 
  *     if z > t0:             # <<<<<<<<<<<<<<
@@ -3024,66 +3752,140 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
     goto __pyx_L5;
   }
 
-  /* "rio_color/colorspace.pyx":182
+  /* "rio_color/colorspace.pyx":216
  *         fz = z ** 0.3333333333333333
  *     else:
  *         fz = (alpha * z) + bintercept             # <<<<<<<<<<<<<<
  * 
- *     color.l = (116 * fy) - 16
+ *     L = (116 * fy) - 16
  */
   /*else*/ {
     __pyx_v_fz = ((__pyx_v_9rio_color_10colorspace_alpha * __pyx_v_z) + __pyx_v_9rio_color_10colorspace_bintercept);
   }
   __pyx_L5:;
 
-  /* "rio_color/colorspace.pyx":184
+  /* "rio_color/colorspace.pyx":218
  *         fz = (alpha * z) + bintercept
  * 
- *     color.l = (116 * fy) - 16             # <<<<<<<<<<<<<<
+ *     L = (116 * fy) - 16             # <<<<<<<<<<<<<<
  *     a = 500 * (fx - fy)
  *     b = 200 * (fy - fz)
  */
-  __pyx_v_color.l = ((116.0 * __pyx_v_fy) - 16.0);
+  __pyx_v_L = ((116.0 * __pyx_v_fy) - 16.0);
 
-  /* "rio_color/colorspace.pyx":185
+  /* "rio_color/colorspace.pyx":219
  * 
- *     color.l = (116 * fy) - 16
+ *     L = (116 * fy) - 16
  *     a = 500 * (fx - fy)             # <<<<<<<<<<<<<<
  *     b = 200 * (fy - fz)
  * 
  */
   __pyx_v_a = (500.0 * (__pyx_v_fx - __pyx_v_fy));
 
-  /* "rio_color/colorspace.pyx":186
- *     color.l = (116 * fy) - 16
+  /* "rio_color/colorspace.pyx":220
+ *     L = (116 * fy) - 16
  *     a = 500 * (fx - fy)
  *     b = 200 * (fy - fz)             # <<<<<<<<<<<<<<
  * 
- *     color.c = ((a * a) + (b * b)) ** 0.5
+ *     color.one = L
  */
   __pyx_v_b = (200.0 * (__pyx_v_fy - __pyx_v_fz));
 
-  /* "rio_color/colorspace.pyx":188
+  /* "rio_color/colorspace.pyx":222
  *     b = 200 * (fy - fz)
  * 
- *     color.c = ((a * a) + (b * b)) ** 0.5             # <<<<<<<<<<<<<<
- *     color.h = atan2(b, a)
- * 
+ *     color.one = L             # <<<<<<<<<<<<<<
+ *     color.two = a
+ *     color.three = b
  */
-  __pyx_v_color.c = pow(((__pyx_v_a * __pyx_v_a) + (__pyx_v_b * __pyx_v_b)), 0.5);
+  __pyx_v_color.one = __pyx_v_L;
 
-  /* "rio_color/colorspace.pyx":189
+  /* "rio_color/colorspace.pyx":223
  * 
- *     color.c = ((a * a) + (b * b)) ** 0.5
- *     color.h = atan2(b, a)             # <<<<<<<<<<<<<<
- * 
+ *     color.one = L
+ *     color.two = a             # <<<<<<<<<<<<<<
+ *     color.three = b
  *     return color
  */
-  __pyx_v_color.h = atan2(__pyx_v_b, __pyx_v_a);
+  __pyx_v_color.two = __pyx_v_a;
 
-  /* "rio_color/colorspace.pyx":191
- *     color.h = atan2(b, a)
+  /* "rio_color/colorspace.pyx":224
+ *     color.one = L
+ *     color.two = a
+ *     color.three = b             # <<<<<<<<<<<<<<
+ *     return color
  * 
+ */
+  __pyx_v_color.three = __pyx_v_b;
+
+  /* "rio_color/colorspace.pyx":225
+ *     color.two = a
+ *     color.three = b
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * cdef color _lab_to_lch(double L, double a, double b):
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":197
+ * 
+ * 
+ * cdef color _xyz_to_lab(double x, double y, double z):             # <<<<<<<<<<<<<<
+ *     cdef double fx, fy, fz
+ *     cdef double L, a, b
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":227
+ *     return color
+ * 
+ * cdef color _lab_to_lch(double L, double a, double b):             # <<<<<<<<<<<<<<
+ *     cdef color color
+ * 
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lab_to_lch(double __pyx_v_L, double __pyx_v_a, double __pyx_v_b) {
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("_lab_to_lch", 0);
+
+  /* "rio_color/colorspace.pyx":230
+ *     cdef color color
+ * 
+ *     color.one = L             # <<<<<<<<<<<<<<
+ *     color.two = ((a * a) + (b * b)) ** 0.5
+ *     color.three = atan2(b, a)
+ */
+  __pyx_v_color.one = __pyx_v_L;
+
+  /* "rio_color/colorspace.pyx":231
+ * 
+ *     color.one = L
+ *     color.two = ((a * a) + (b * b)) ** 0.5             # <<<<<<<<<<<<<<
+ *     color.three = atan2(b, a)
+ *     return color
+ */
+  __pyx_v_color.two = pow(((__pyx_v_a * __pyx_v_a) + (__pyx_v_b * __pyx_v_b)), 0.5);
+
+  /* "rio_color/colorspace.pyx":232
+ *     color.one = L
+ *     color.two = ((a * a) + (b * b)) ** 0.5
+ *     color.three = atan2(b, a)             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color.three = atan2(__pyx_v_b, __pyx_v_a);
+
+  /* "rio_color/colorspace.pyx":233
+ *     color.two = ((a * a) + (b * b)) ** 0.5
+ *     color.three = atan2(b, a)
  *     return color             # <<<<<<<<<<<<<<
  * 
  * 
@@ -3091,11 +3893,11 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":152
+  /* "rio_color/colorspace.pyx":227
+ *     return color
  * 
- * 
- * cdef lch _rgb_to_lch(double r, double g, double b):             # <<<<<<<<<<<<<<
- *     cdef lch color
+ * cdef color _lab_to_lch(double L, double a, double b):             # <<<<<<<<<<<<<<
+ *     cdef color color
  * 
  */
 
@@ -3105,34 +3907,24 @@ static __pyx_t_9rio_color_10colorspace_lch __pyx_f_9rio_color_10colorspace__rgb_
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":194
+/* "rio_color/colorspace.pyx":236
  * 
  * 
- * cdef rgb _lch_to_rgb(double L, double C, double H):             # <<<<<<<<<<<<<<
+ * cdef color _lch_to_lab(double L, double C, double H):             # <<<<<<<<<<<<<<
  *     cdef double a, b
- *     cdef rgb color
+ *     cdef color color
  */
 
-static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_to_rgb(double __pyx_v_L, double __pyx_v_C, double __pyx_v_H) {
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lch_to_lab(double __pyx_v_L, double __pyx_v_C, double __pyx_v_H) {
   double __pyx_v_a;
   double __pyx_v_b;
-  __pyx_t_9rio_color_10colorspace_rgb __pyx_v_color;
-  double __pyx_v_tx;
-  double __pyx_v_x;
-  double __pyx_v_ty;
-  double __pyx_v_y;
-  double __pyx_v_tz;
-  double __pyx_v_z;
-  double __pyx_v_rlin;
-  double __pyx_v_glin;
-  double __pyx_v_blin;
-  __pyx_t_9rio_color_10colorspace_rgb __pyx_r;
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  __Pyx_RefNannySetupContext("_lch_to_rgb", 0);
+  __Pyx_RefNannySetupContext("_lch_to_lab", 0);
 
-  /* "rio_color/colorspace.pyx":198
- *     cdef rgb color
+  /* "rio_color/colorspace.pyx":240
+ *     cdef color color
  * 
  *     a = C * cos(H)             # <<<<<<<<<<<<<<
  *     b = C * sin(H)
@@ -3140,17 +3932,89 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_a = (__pyx_v_C * cos(__pyx_v_H));
 
-  /* "rio_color/colorspace.pyx":199
+  /* "rio_color/colorspace.pyx":241
  * 
  *     a = C * cos(H)
  *     b = C * sin(H)             # <<<<<<<<<<<<<<
  * 
- *     tx = ((L + 16) / 116.0) + (a / 500.0)
+ *     color.one = L
  */
   __pyx_v_b = (__pyx_v_C * sin(__pyx_v_H));
 
-  /* "rio_color/colorspace.pyx":201
+  /* "rio_color/colorspace.pyx":243
  *     b = C * sin(H)
+ * 
+ *     color.one = L             # <<<<<<<<<<<<<<
+ *     color.two = a
+ *     color.three = b
+ */
+  __pyx_v_color.one = __pyx_v_L;
+
+  /* "rio_color/colorspace.pyx":244
+ * 
+ *     color.one = L
+ *     color.two = a             # <<<<<<<<<<<<<<
+ *     color.three = b
+ *     return color
+ */
+  __pyx_v_color.two = __pyx_v_a;
+
+  /* "rio_color/colorspace.pyx":245
+ *     color.one = L
+ *     color.two = a
+ *     color.three = b             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color.three = __pyx_v_b;
+
+  /* "rio_color/colorspace.pyx":246
+ *     color.two = a
+ *     color.three = b
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":236
+ * 
+ * 
+ * cdef color _lch_to_lab(double L, double C, double H):             # <<<<<<<<<<<<<<
+ *     cdef double a, b
+ *     cdef color color
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":249
+ * 
+ * 
+ * cdef color _lab_to_xyz(double L, double a, double b):             # <<<<<<<<<<<<<<
+ *     cdef double x, y, z
+ *     cdef color color
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__lab_to_xyz(double __pyx_v_L, double __pyx_v_a, double __pyx_v_b) {
+  double __pyx_v_x;
+  double __pyx_v_y;
+  double __pyx_v_z;
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  double __pyx_v_tx;
+  double __pyx_v_ty;
+  double __pyx_v_tz;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("_lab_to_xyz", 0);
+
+  /* "rio_color/colorspace.pyx":253
+ *     cdef color color
  * 
  *     tx = ((L + 16) / 116.0) + (a / 500.0)             # <<<<<<<<<<<<<<
  *     if tx > delta:
@@ -3158,7 +4022,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_tx = (((__pyx_v_L + 16.0) / 116.0) + (__pyx_v_a / 500.0));
 
-  /* "rio_color/colorspace.pyx":202
+  /* "rio_color/colorspace.pyx":254
  * 
  *     tx = ((L + 16) / 116.0) + (a / 500.0)
  *     if tx > delta:             # <<<<<<<<<<<<<<
@@ -3168,7 +4032,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_tx > __pyx_v_9rio_color_10colorspace_delta) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":203
+    /* "rio_color/colorspace.pyx":255
  *     tx = ((L + 16) / 116.0) + (a / 500.0)
  *     if tx > delta:
  *         x = tx ** 3             # <<<<<<<<<<<<<<
@@ -3177,7 +4041,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_x = pow(__pyx_v_tx, 3.0);
 
-    /* "rio_color/colorspace.pyx":202
+    /* "rio_color/colorspace.pyx":254
  * 
  *     tx = ((L + 16) / 116.0) + (a / 500.0)
  *     if tx > delta:             # <<<<<<<<<<<<<<
@@ -3187,7 +4051,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
     goto __pyx_L3;
   }
 
-  /* "rio_color/colorspace.pyx":205
+  /* "rio_color/colorspace.pyx":257
  *         x = tx ** 3
  *     else:
  *         x = 3 * delta * delta * (tx - bintercept)             # <<<<<<<<<<<<<<
@@ -3199,7 +4063,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   }
   __pyx_L3:;
 
-  /* "rio_color/colorspace.pyx":207
+  /* "rio_color/colorspace.pyx":259
  *         x = 3 * delta * delta * (tx - bintercept)
  * 
  *     ty = (L + 16) / 116.0             # <<<<<<<<<<<<<<
@@ -3208,7 +4072,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_ty = ((__pyx_v_L + 16.0) / 116.0);
 
-  /* "rio_color/colorspace.pyx":208
+  /* "rio_color/colorspace.pyx":260
  * 
  *     ty = (L + 16) / 116.0
  *     if ty > delta:             # <<<<<<<<<<<<<<
@@ -3218,7 +4082,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_ty > __pyx_v_9rio_color_10colorspace_delta) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":209
+    /* "rio_color/colorspace.pyx":261
  *     ty = (L + 16) / 116.0
  *     if ty > delta:
  *         y = ty ** 3             # <<<<<<<<<<<<<<
@@ -3227,7 +4091,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_y = pow(__pyx_v_ty, 3.0);
 
-    /* "rio_color/colorspace.pyx":208
+    /* "rio_color/colorspace.pyx":260
  * 
  *     ty = (L + 16) / 116.0
  *     if ty > delta:             # <<<<<<<<<<<<<<
@@ -3237,7 +4101,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
     goto __pyx_L4;
   }
 
-  /* "rio_color/colorspace.pyx":211
+  /* "rio_color/colorspace.pyx":263
  *         y = ty ** 3
  *     else:
  *         y = 3 * delta * delta * (ty - bintercept)             # <<<<<<<<<<<<<<
@@ -3249,7 +4113,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   }
   __pyx_L4:;
 
-  /* "rio_color/colorspace.pyx":213
+  /* "rio_color/colorspace.pyx":265
  *         y = 3 * delta * delta * (ty - bintercept)
  * 
  *     tz = ((L + 16) / 116.0) - (b / 200.0)             # <<<<<<<<<<<<<<
@@ -3258,7 +4122,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_tz = (((__pyx_v_L + 16.0) / 116.0) - (__pyx_v_b / 200.0));
 
-  /* "rio_color/colorspace.pyx":214
+  /* "rio_color/colorspace.pyx":266
  * 
  *     tz = ((L + 16) / 116.0) - (b / 200.0)
  *     if tz > delta:             # <<<<<<<<<<<<<<
@@ -3268,7 +4132,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_tz > __pyx_v_9rio_color_10colorspace_delta) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":215
+    /* "rio_color/colorspace.pyx":267
  *     tz = ((L + 16) / 116.0) - (b / 200.0)
  *     if tz > delta:
  *         z = tz ** 3             # <<<<<<<<<<<<<<
@@ -3277,7 +4141,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_z = pow(__pyx_v_tz, 3.0);
 
-    /* "rio_color/colorspace.pyx":214
+    /* "rio_color/colorspace.pyx":266
  * 
  *     tz = ((L + 16) / 116.0) - (b / 200.0)
  *     if tz > delta:             # <<<<<<<<<<<<<<
@@ -3287,19 +4151,88 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
     goto __pyx_L5;
   }
 
-  /* "rio_color/colorspace.pyx":217
+  /* "rio_color/colorspace.pyx":269
  *         z = tz ** 3
  *     else:
  *         z = 3 * delta * delta * (tz - bintercept)             # <<<<<<<<<<<<<<
  * 
- *     # uses reference white d65
+ *     color.one = x
  */
   /*else*/ {
     __pyx_v_z = (((3.0 * __pyx_v_9rio_color_10colorspace_delta) * __pyx_v_9rio_color_10colorspace_delta) * (__pyx_v_tz - __pyx_v_9rio_color_10colorspace_bintercept));
   }
   __pyx_L5:;
 
-  /* "rio_color/colorspace.pyx":220
+  /* "rio_color/colorspace.pyx":271
+ *         z = 3 * delta * delta * (tz - bintercept)
+ * 
+ *     color.one = x             # <<<<<<<<<<<<<<
+ *     color.two = y
+ *     color.three = z
+ */
+  __pyx_v_color.one = __pyx_v_x;
+
+  /* "rio_color/colorspace.pyx":272
+ * 
+ *     color.one = x
+ *     color.two = y             # <<<<<<<<<<<<<<
+ *     color.three = z
+ *     return color
+ */
+  __pyx_v_color.two = __pyx_v_y;
+
+  /* "rio_color/colorspace.pyx":273
+ *     color.one = x
+ *     color.two = y
+ *     color.three = z             # <<<<<<<<<<<<<<
+ *     return color
+ * 
+ */
+  __pyx_v_color.three = __pyx_v_z;
+
+  /* "rio_color/colorspace.pyx":274
+ *     color.two = y
+ *     color.three = z
+ *     return color             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_color;
+  goto __pyx_L0;
+
+  /* "rio_color/colorspace.pyx":249
+ * 
+ * 
+ * cdef color _lab_to_xyz(double L, double a, double b):             # <<<<<<<<<<<<<<
+ *     cdef double x, y, z
+ *     cdef color color
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rio_color/colorspace.pyx":277
+ * 
+ * 
+ * cdef color _xyz_to_rgb(double x, double y, double z):             # <<<<<<<<<<<<<<
+ *     cdef double rlin, glin, blin
+ *     cdef color color
+ */
+
+static __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10colorspace__xyz_to_rgb(double __pyx_v_x, double __pyx_v_y, double __pyx_v_z) {
+  double __pyx_v_rlin;
+  double __pyx_v_glin;
+  double __pyx_v_blin;
+  __pyx_t_9rio_color_10colorspace_color __pyx_v_color;
+  __pyx_t_9rio_color_10colorspace_color __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("_xyz_to_rgb", 0);
+
+  /* "rio_color/colorspace.pyx":282
  * 
  *     # uses reference white d65
  *     x = x * 0.95047             # <<<<<<<<<<<<<<
@@ -3308,7 +4241,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_x = (__pyx_v_x * 0.95047);
 
-  /* "rio_color/colorspace.pyx":221
+  /* "rio_color/colorspace.pyx":283
  *     # uses reference white d65
  *     x = x * 0.95047
  *     z = z * 1.08883             # <<<<<<<<<<<<<<
@@ -3317,7 +4250,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_z = (__pyx_v_z * 1.08883);
 
-  /* "rio_color/colorspace.pyx":225
+  /* "rio_color/colorspace.pyx":287
  *     # XYZ to sRGB
  *     # expanded matrix multiplication
  *     rlin = (x * 3.2406) + (y * -1.5372) + (z * -0.4986)             # <<<<<<<<<<<<<<
@@ -3326,7 +4259,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_rlin = (((__pyx_v_x * 3.2406) + (__pyx_v_y * -1.5372)) + (__pyx_v_z * -0.4986));
 
-  /* "rio_color/colorspace.pyx":226
+  /* "rio_color/colorspace.pyx":288
  *     # expanded matrix multiplication
  *     rlin = (x * 3.2406) + (y * -1.5372) + (z * -0.4986)
  *     glin = (x * -0.9689) + (y * 1.8758) + (z * 0.0415)             # <<<<<<<<<<<<<<
@@ -3335,7 +4268,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_glin = (((__pyx_v_x * -0.9689) + (__pyx_v_y * 1.8758)) + (__pyx_v_z * 0.0415));
 
-  /* "rio_color/colorspace.pyx":227
+  /* "rio_color/colorspace.pyx":289
  *     rlin = (x * 3.2406) + (y * -1.5372) + (z * -0.4986)
  *     glin = (x * -0.9689) + (y * 1.8758) + (z * 0.0415)
  *     blin = (x * 0.0557) + (y * -0.2040) + (z * 1.0570)             # <<<<<<<<<<<<<<
@@ -3344,7 +4277,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
   __pyx_v_blin = (((__pyx_v_x * 0.0557) + (__pyx_v_y * -0.2040)) + (__pyx_v_z * 1.0570));
 
-  /* "rio_color/colorspace.pyx":230
+  /* "rio_color/colorspace.pyx":292
  * 
  *     # constrain to 0..1 to deal with any float drift
  *     if rlin > 1.0:             # <<<<<<<<<<<<<<
@@ -3354,7 +4287,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_rlin > 1.0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":231
+    /* "rio_color/colorspace.pyx":293
  *     # constrain to 0..1 to deal with any float drift
  *     if rlin > 1.0:
  *         rlin = 1.0             # <<<<<<<<<<<<<<
@@ -3363,17 +4296,17 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_rlin = 1.0;
 
-    /* "rio_color/colorspace.pyx":230
+    /* "rio_color/colorspace.pyx":292
  * 
  *     # constrain to 0..1 to deal with any float drift
  *     if rlin > 1.0:             # <<<<<<<<<<<<<<
  *         rlin = 1.0
  *     elif rlin < 0.0:
  */
-    goto __pyx_L6;
+    goto __pyx_L3;
   }
 
-  /* "rio_color/colorspace.pyx":232
+  /* "rio_color/colorspace.pyx":294
  *     if rlin > 1.0:
  *         rlin = 1.0
  *     elif rlin < 0.0:             # <<<<<<<<<<<<<<
@@ -3383,7 +4316,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_rlin < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":233
+    /* "rio_color/colorspace.pyx":295
  *         rlin = 1.0
  *     elif rlin < 0.0:
  *         rlin = 0.0             # <<<<<<<<<<<<<<
@@ -3392,7 +4325,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_rlin = 0.0;
 
-    /* "rio_color/colorspace.pyx":232
+    /* "rio_color/colorspace.pyx":294
  *     if rlin > 1.0:
  *         rlin = 1.0
  *     elif rlin < 0.0:             # <<<<<<<<<<<<<<
@@ -3400,9 +4333,9 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  *     if glin > 1.0:
  */
   }
-  __pyx_L6:;
+  __pyx_L3:;
 
-  /* "rio_color/colorspace.pyx":234
+  /* "rio_color/colorspace.pyx":296
  *     elif rlin < 0.0:
  *         rlin = 0.0
  *     if glin > 1.0:             # <<<<<<<<<<<<<<
@@ -3412,7 +4345,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_glin > 1.0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":235
+    /* "rio_color/colorspace.pyx":297
  *         rlin = 0.0
  *     if glin > 1.0:
  *         glin = 1.0             # <<<<<<<<<<<<<<
@@ -3421,17 +4354,17 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_glin = 1.0;
 
-    /* "rio_color/colorspace.pyx":234
+    /* "rio_color/colorspace.pyx":296
  *     elif rlin < 0.0:
  *         rlin = 0.0
  *     if glin > 1.0:             # <<<<<<<<<<<<<<
  *         glin = 1.0
  *     elif glin < 0.0:
  */
-    goto __pyx_L7;
+    goto __pyx_L4;
   }
 
-  /* "rio_color/colorspace.pyx":236
+  /* "rio_color/colorspace.pyx":298
  *     if glin > 1.0:
  *         glin = 1.0
  *     elif glin < 0.0:             # <<<<<<<<<<<<<<
@@ -3441,7 +4374,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_glin < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":237
+    /* "rio_color/colorspace.pyx":299
  *         glin = 1.0
  *     elif glin < 0.0:
  *         glin = 0.0             # <<<<<<<<<<<<<<
@@ -3450,7 +4383,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_glin = 0.0;
 
-    /* "rio_color/colorspace.pyx":236
+    /* "rio_color/colorspace.pyx":298
  *     if glin > 1.0:
  *         glin = 1.0
  *     elif glin < 0.0:             # <<<<<<<<<<<<<<
@@ -3458,9 +4391,9 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  *     if blin > 1.0:
  */
   }
-  __pyx_L7:;
+  __pyx_L4:;
 
-  /* "rio_color/colorspace.pyx":238
+  /* "rio_color/colorspace.pyx":300
  *     elif glin < 0.0:
  *         glin = 0.0
  *     if blin > 1.0:             # <<<<<<<<<<<<<<
@@ -3470,7 +4403,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_blin > 1.0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":239
+    /* "rio_color/colorspace.pyx":301
  *         glin = 0.0
  *     if blin > 1.0:
  *         blin = 1.0             # <<<<<<<<<<<<<<
@@ -3479,17 +4412,17 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_blin = 1.0;
 
-    /* "rio_color/colorspace.pyx":238
+    /* "rio_color/colorspace.pyx":300
  *     elif glin < 0.0:
  *         glin = 0.0
  *     if blin > 1.0:             # <<<<<<<<<<<<<<
  *         blin = 1.0
  *     elif blin < 0.0:
  */
-    goto __pyx_L8;
+    goto __pyx_L5;
   }
 
-  /* "rio_color/colorspace.pyx":240
+  /* "rio_color/colorspace.pyx":302
  *     if blin > 1.0:
  *         blin = 1.0
  *     elif blin < 0.0:             # <<<<<<<<<<<<<<
@@ -3499,7 +4432,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
   __pyx_t_1 = ((__pyx_v_blin < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":241
+    /* "rio_color/colorspace.pyx":303
  *         blin = 1.0
  *     elif blin < 0.0:
  *         blin = 0.0             # <<<<<<<<<<<<<<
@@ -3508,7 +4441,7 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  */
     __pyx_v_blin = 0.0;
 
-    /* "rio_color/colorspace.pyx":240
+    /* "rio_color/colorspace.pyx":302
  *     if blin > 1.0:
  *         blin = 1.0
  *     elif blin < 0.0:             # <<<<<<<<<<<<<<
@@ -3516,49 +4449,49 @@ static __pyx_t_9rio_color_10colorspace_rgb __pyx_f_9rio_color_10colorspace__lch_
  * 
  */
   }
-  __pyx_L8:;
+  __pyx_L5:;
 
-  /* "rio_color/colorspace.pyx":245
+  /* "rio_color/colorspace.pyx":307
  *     # includes gamma exponentiation
  *     # Use simplified sRGB with gamma = 2.2
- *     color.r = rlin ** (1 / 2.2)             # <<<<<<<<<<<<<<
- *     color.g = glin ** (1 / 2.2)
- *     color.b = blin ** (1 / 2.2)
+ *     color.one = rlin ** (1 / 2.2)             # <<<<<<<<<<<<<<
+ *     color.two = glin ** (1 / 2.2)
+ *     color.three = blin ** (1 / 2.2)
  */
-  __pyx_v_color.r = pow(__pyx_v_rlin, (1.0 / 2.2));
+  __pyx_v_color.one = pow(__pyx_v_rlin, (1.0 / 2.2));
 
-  /* "rio_color/colorspace.pyx":246
+  /* "rio_color/colorspace.pyx":308
  *     # Use simplified sRGB with gamma = 2.2
- *     color.r = rlin ** (1 / 2.2)
- *     color.g = glin ** (1 / 2.2)             # <<<<<<<<<<<<<<
- *     color.b = blin ** (1 / 2.2)
+ *     color.one = rlin ** (1 / 2.2)
+ *     color.two = glin ** (1 / 2.2)             # <<<<<<<<<<<<<<
+ *     color.three = blin ** (1 / 2.2)
  * 
  */
-  __pyx_v_color.g = pow(__pyx_v_glin, (1.0 / 2.2));
+  __pyx_v_color.two = pow(__pyx_v_glin, (1.0 / 2.2));
 
-  /* "rio_color/colorspace.pyx":247
- *     color.r = rlin ** (1 / 2.2)
- *     color.g = glin ** (1 / 2.2)
- *     color.b = blin ** (1 / 2.2)             # <<<<<<<<<<<<<<
+  /* "rio_color/colorspace.pyx":309
+ *     color.one = rlin ** (1 / 2.2)
+ *     color.two = glin ** (1 / 2.2)
+ *     color.three = blin ** (1 / 2.2)             # <<<<<<<<<<<<<<
  * 
  *     return color
  */
-  __pyx_v_color.b = pow(__pyx_v_blin, (1.0 / 2.2));
+  __pyx_v_color.three = pow(__pyx_v_blin, (1.0 / 2.2));
 
-  /* "rio_color/colorspace.pyx":249
- *     color.b = blin ** (1 / 2.2)
+  /* "rio_color/colorspace.pyx":311
+ *     color.three = blin ** (1 / 2.2)
  * 
  *     return color             # <<<<<<<<<<<<<<
  */
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":194
+  /* "rio_color/colorspace.pyx":277
  * 
  * 
- * cdef rgb _lch_to_rgb(double L, double C, double H):             # <<<<<<<<<<<<<<
- *     cdef double a, b
- *     cdef rgb color
+ * cdef color _xyz_to_rgb(double x, double y, double z):             # <<<<<<<<<<<<<<
+ *     cdef double rlin, glin, blin
+ *     cdef color color
  */
 
   /* function exit code */
@@ -3736,7 +4669,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 218, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 218, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3792,7 +4725,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             info.buf = PyArray_DATA(self)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 222, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4101,7 +5034,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 259, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 259, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4916,7 +5849,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 799, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 799, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4984,7 +5917,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 803, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 803, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5093,7 +6026,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 823, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 823, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -5690,9 +6623,9 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
 }
 
 static PyMethodDef __pyx_methods[] = {
+  {"convert", (PyCFunction)__pyx_pw_9rio_color_10colorspace_1convert, METH_VARARGS|METH_KEYWORDS, 0},
+  {"convert_arr", (PyCFunction)__pyx_pw_9rio_color_10colorspace_3convert_arr, METH_VARARGS|METH_KEYWORDS, 0},
   {"saturate_rgb", (PyCFunction)__pyx_pw_9rio_color_10colorspace_5saturate_rgb, METH_VARARGS|METH_KEYWORDS, __pyx_doc_9rio_color_10colorspace_4saturate_rgb},
-  {"arr_rgb_to_lch", (PyCFunction)__pyx_pw_9rio_color_10colorspace_7arr_rgb_to_lch, METH_O, 0},
-  {"arr_lch_to_rgb", (PyCFunction)__pyx_pw_9rio_color_10colorspace_9arr_lch_to_rgb, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -5717,38 +6650,39 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_Format_string_allocated_too_shor, __pyx_k_Format_string_allocated_too_shor, sizeof(__pyx_k_Format_string_allocated_too_shor), 0, 1, 0, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor_2, __pyx_k_Format_string_allocated_too_shor_2, sizeof(__pyx_k_Format_string_allocated_too_shor_2), 0, 1, 0, 0},
+  {&__pyx_n_s_LAB, __pyx_k_LAB, sizeof(__pyx_k_LAB), 0, 0, 1, 1},
+  {&__pyx_n_s_LCH, __pyx_k_LCH, sizeof(__pyx_k_LCH), 0, 0, 1, 1},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
+  {&__pyx_n_s_RGB, __pyx_k_RGB, sizeof(__pyx_k_RGB), 0, 0, 1, 1},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_kp_s_The_0th_dimension_must_contain_3, __pyx_k_The_0th_dimension_must_contain_3, sizeof(__pyx_k_The_0th_dimension_must_contain_3), 0, 0, 1, 0},
-  {&__pyx_kp_s_Users_mperry_work_rio_color_rio, __pyx_k_Users_mperry_work_rio_color_rio, sizeof(__pyx_k_Users_mperry_work_rio_color_rio), 0, 0, 1, 0},
+  {&__pyx_kp_s_Unknown_dst_colorspace, __pyx_k_Unknown_dst_colorspace, sizeof(__pyx_k_Unknown_dst_colorspace), 0, 0, 1, 0},
+  {&__pyx_kp_s_Unknown_src_colorspace, __pyx_k_Unknown_src_colorspace, sizeof(__pyx_k_Unknown_src_colorspace), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
+  {&__pyx_n_s_XYZ, __pyx_k_XYZ, sizeof(__pyx_k_XYZ), 0, 0, 1, 1},
   {&__pyx_n_s_arr, __pyx_k_arr, sizeof(__pyx_k_arr), 0, 0, 1, 1},
-  {&__pyx_n_s_b, __pyx_k_b, sizeof(__pyx_k_b), 0, 0, 1, 1},
-  {&__pyx_n_s_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 0, 1, 1},
-  {&__pyx_n_s_color, __pyx_k_color, sizeof(__pyx_k_color), 0, 0, 1, 1},
+  {&__pyx_n_s_dst, __pyx_k_dst, sizeof(__pyx_k_dst), 0, 0, 1, 1},
   {&__pyx_n_s_empty_like, __pyx_k_empty_like, sizeof(__pyx_k_empty_like), 0, 0, 1, 1},
-  {&__pyx_n_s_g, __pyx_k_g, sizeof(__pyx_k_g), 0, 0, 1, 1},
-  {&__pyx_n_s_h, __pyx_k_h, sizeof(__pyx_k_h), 0, 0, 1, 1},
+  {&__pyx_n_s_format, __pyx_k_format, sizeof(__pyx_k_format), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
-  {&__pyx_n_s_l, __pyx_k_l, sizeof(__pyx_k_l), 0, 0, 1, 1},
-  {&__pyx_n_s_lch_to_rgb, __pyx_k_lch_to_rgb, sizeof(__pyx_k_lch_to_rgb), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_kp_u_ndarray_is_not_C_contiguous, __pyx_k_ndarray_is_not_C_contiguous, sizeof(__pyx_k_ndarray_is_not_C_contiguous), 0, 1, 0, 0},
   {&__pyx_kp_u_ndarray_is_not_Fortran_contiguou, __pyx_k_ndarray_is_not_Fortran_contiguou, sizeof(__pyx_k_ndarray_is_not_Fortran_contiguou), 0, 1, 0, 0},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
-  {&__pyx_n_s_r, __pyx_k_r, sizeof(__pyx_k_r), 0, 0, 1, 1},
+  {&__pyx_n_s_one, __pyx_k_one, sizeof(__pyx_k_one), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
-  {&__pyx_n_s_rgb_to_lch, __pyx_k_rgb_to_lch, sizeof(__pyx_k_rgb_to_lch), 0, 0, 1, 1},
-  {&__pyx_n_s_rio_color_colorspace, __pyx_k_rio_color_colorspace, sizeof(__pyx_k_rio_color_colorspace), 0, 0, 1, 1},
   {&__pyx_n_s_satmult, __pyx_k_satmult, sizeof(__pyx_k_satmult), 0, 0, 1, 1},
+  {&__pyx_n_s_src, __pyx_k_src, sizeof(__pyx_k_src), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_three, __pyx_k_three, sizeof(__pyx_k_three), 0, 0, 1, 1},
+  {&__pyx_n_s_two, __pyx_k_two, sizeof(__pyx_k_two), 0, 0, 1, 1},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 81, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 76, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 799, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -5759,38 +6693,27 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "rio_color/colorspace.pyx":81
- *     cdef rgb c_rgb
+  /* "rio_color/colorspace.pyx":72
+ *     cdef color color
  *     if arr.shape[0] != 3:
  *         raise ValueError("The 0th dimension must contain 3 bands")             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_The_0th_dimension_must_contain_3); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_The_0th_dimension_must_contain_3); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "rio_color/colorspace.pyx":107
- *     cdef lch color
+  /* "rio_color/colorspace.pyx":98
+ * 
  *     if arr.shape[0] != 3:
  *         raise ValueError("The 0th dimension must contain 3 bands")             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_The_0th_dimension_must_contain_3); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_The_0th_dimension_must_contain_3); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
-
-  /* "rio_color/colorspace.pyx":129
- *     cdef rgb color
- *     if arr.shape[0] != 3:
- *         raise ValueError("The 0th dimension must contain 3 bands")             # <<<<<<<<<<<<<<
- * 
- *     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
- */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_The_0th_dimension_must_contain_3); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 129, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
 
   /* "../../env/mapbox34/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":218
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
@@ -5799,9 +6722,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 218, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
 
   /* "../../env/mapbox34/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":222
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
@@ -5810,9 +6733,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             info.buf = PyArray_DATA(self)
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 222, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__5);
-  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
 
   /* "../../env/mapbox34/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":259
  *                 if ((descr.byteorder == c'>' and little_endian) or
@@ -5821,9 +6744,9 @@ static int __Pyx_InitCachedConstants(void) {
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 259, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 259, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
 
   /* "../../env/mapbox34/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":799
  * 
@@ -5832,9 +6755,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 799, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__7);
-  __Pyx_GIVEREF(__pyx_tuple__7);
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 799, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__6);
+  __Pyx_GIVEREF(__pyx_tuple__6);
 
   /* "../../env/mapbox34/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":803
  *         if ((child.byteorder == c'>' and little_endian) or
@@ -5843,9 +6766,9 @@ static int __Pyx_InitCachedConstants(void) {
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 803, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 803, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__7);
+  __Pyx_GIVEREF(__pyx_tuple__7);
 
   /* "../../env/mapbox34/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":823
  *             t = child.type_num
@@ -5854,33 +6777,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 823, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__9);
-  __Pyx_GIVEREF(__pyx_tuple__9);
-
-  /* "rio_color/colorspace.pyx":29
- * 
- * 
- * def rgb_to_lch(r, g, b):             # <<<<<<<<<<<<<<
- *     """Convert RGB colors to LCH
- * 
- */
-  __pyx_tuple__10 = PyTuple_Pack(4, __pyx_n_s_r, __pyx_n_s_g, __pyx_n_s_b, __pyx_n_s_color); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__10);
-  __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_mperry_work_rio_color_rio, __pyx_n_s_rgb_to_lch, 29, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 29, __pyx_L1_error)
-
-  /* "rio_color/colorspace.pyx":51
- * 
- * 
- * def lch_to_rgb(l, c, h):             # <<<<<<<<<<<<<<
- *     """Convert LCH colors to RGB
- * 
- */
-  __pyx_tuple__12 = PyTuple_Pack(4, __pyx_n_s_l, __pyx_n_s_c, __pyx_n_s_h, __pyx_n_s_color); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 51, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_mperry_work_rio_color_rio, __pyx_n_s_lch_to_rgb, 51, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 823, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6011,31 +6910,7 @@ PyMODINIT_FUNC PyInit_colorspace(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "rio_color/colorspace.pyx":29
- * 
- * 
- * def rgb_to_lch(r, g, b):             # <<<<<<<<<<<<<<
- *     """Convert RGB colors to LCH
- * 
- */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_9rio_color_10colorspace_1rgb_to_lch, NULL, __pyx_n_s_rio_color_colorspace); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rgb_to_lch, __pyx_t_1) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "rio_color/colorspace.pyx":51
- * 
- * 
- * def lch_to_rgb(l, c, h):             # <<<<<<<<<<<<<<
- *     """Convert LCH colors to RGB
- * 
- */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_9rio_color_10colorspace_3lch_to_rgb, NULL, __pyx_n_s_rio_color_colorspace); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_lch_to_rgb, __pyx_t_1) < 0) __PYX_ERR(0, 51, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "rio_color/colorspace.pyx":146
+  /* "rio_color/colorspace.pyx":120
  * 
  * # Constants
  * cdef double bintercept = 4.0 / 29  # 0.137931             # <<<<<<<<<<<<<<
@@ -6044,7 +6919,7 @@ PyMODINIT_FUNC PyInit_colorspace(void)
  */
   __pyx_v_9rio_color_10colorspace_bintercept = (4.0 / 29.0);
 
-  /* "rio_color/colorspace.pyx":147
+  /* "rio_color/colorspace.pyx":121
  * # Constants
  * cdef double bintercept = 4.0 / 29  # 0.137931
  * cdef double delta = 6.0 / 29  # 0.206896             # <<<<<<<<<<<<<<
@@ -6053,7 +6928,7 @@ PyMODINIT_FUNC PyInit_colorspace(void)
  */
   __pyx_v_9rio_color_10colorspace_delta = (6.0 / 29.0);
 
-  /* "rio_color/colorspace.pyx":148
+  /* "rio_color/colorspace.pyx":122
  * cdef double bintercept = 4.0 / 29  # 0.137931
  * cdef double delta = 6.0 / 29  # 0.206896
  * cdef double t0 = delta ** 3  # 0.008856             # <<<<<<<<<<<<<<
@@ -6062,7 +6937,7 @@ PyMODINIT_FUNC PyInit_colorspace(void)
  */
   __pyx_v_9rio_color_10colorspace_t0 = pow(__pyx_v_9rio_color_10colorspace_delta, 3.0);
 
-  /* "rio_color/colorspace.pyx":149
+  /* "rio_color/colorspace.pyx":123
  * cdef double delta = 6.0 / 29  # 0.206896
  * cdef double t0 = delta ** 3  # 0.008856
  * cdef double alpha = (delta ** -2) / 3  # 7.787037             # <<<<<<<<<<<<<<
@@ -6143,8 +7018,392 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
     return result;
 }
 
+/* BytesEquals */
+static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals) {
+#if CYTHON_COMPILING_IN_PYPY
+    return PyObject_RichCompareBool(s1, s2, equals);
+#else
+    if (s1 == s2) {
+        return (equals == Py_EQ);
+    } else if (PyBytes_CheckExact(s1) & PyBytes_CheckExact(s2)) {
+        const char *ps1, *ps2;
+        Py_ssize_t length = PyBytes_GET_SIZE(s1);
+        if (length != PyBytes_GET_SIZE(s2))
+            return (equals == Py_NE);
+        ps1 = PyBytes_AS_STRING(s1);
+        ps2 = PyBytes_AS_STRING(s2);
+        if (ps1[0] != ps2[0]) {
+            return (equals == Py_NE);
+        } else if (length == 1) {
+            return (equals == Py_EQ);
+        } else {
+            int result = memcmp(ps1, ps2, (size_t)length);
+            return (equals == Py_EQ) ? (result == 0) : (result != 0);
+        }
+    } else if ((s1 == Py_None) & PyBytes_CheckExact(s2)) {
+        return (equals == Py_NE);
+    } else if ((s2 == Py_None) & PyBytes_CheckExact(s1)) {
+        return (equals == Py_NE);
+    } else {
+        int result;
+        PyObject* py_result = PyObject_RichCompare(s1, s2, equals);
+        if (!py_result)
+            return -1;
+        result = __Pyx_PyObject_IsTrue(py_result);
+        Py_DECREF(py_result);
+        return result;
+    }
+#endif
+}
+
+/* UnicodeEquals */
+static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int equals) {
+#if CYTHON_COMPILING_IN_PYPY
+    return PyObject_RichCompareBool(s1, s2, equals);
+#else
+#if PY_MAJOR_VERSION < 3
+    PyObject* owned_ref = NULL;
+#endif
+    int s1_is_unicode, s2_is_unicode;
+    if (s1 == s2) {
+        goto return_eq;
+    }
+    s1_is_unicode = PyUnicode_CheckExact(s1);
+    s2_is_unicode = PyUnicode_CheckExact(s2);
+#if PY_MAJOR_VERSION < 3
+    if ((s1_is_unicode & (!s2_is_unicode)) && PyString_CheckExact(s2)) {
+        owned_ref = PyUnicode_FromObject(s2);
+        if (unlikely(!owned_ref))
+            return -1;
+        s2 = owned_ref;
+        s2_is_unicode = 1;
+    } else if ((s2_is_unicode & (!s1_is_unicode)) && PyString_CheckExact(s1)) {
+        owned_ref = PyUnicode_FromObject(s1);
+        if (unlikely(!owned_ref))
+            return -1;
+        s1 = owned_ref;
+        s1_is_unicode = 1;
+    } else if (((!s2_is_unicode) & (!s1_is_unicode))) {
+        return __Pyx_PyBytes_Equals(s1, s2, equals);
+    }
+#endif
+    if (s1_is_unicode & s2_is_unicode) {
+        Py_ssize_t length;
+        int kind;
+        void *data1, *data2;
+        if (unlikely(__Pyx_PyUnicode_READY(s1) < 0) || unlikely(__Pyx_PyUnicode_READY(s2) < 0))
+            return -1;
+        length = __Pyx_PyUnicode_GET_LENGTH(s1);
+        if (length != __Pyx_PyUnicode_GET_LENGTH(s2)) {
+            goto return_ne;
+        }
+        kind = __Pyx_PyUnicode_KIND(s1);
+        if (kind != __Pyx_PyUnicode_KIND(s2)) {
+            goto return_ne;
+        }
+        data1 = __Pyx_PyUnicode_DATA(s1);
+        data2 = __Pyx_PyUnicode_DATA(s2);
+        if (__Pyx_PyUnicode_READ(kind, data1, 0) != __Pyx_PyUnicode_READ(kind, data2, 0)) {
+            goto return_ne;
+        } else if (length == 1) {
+            goto return_eq;
+        } else {
+            int result = memcmp(data1, data2, (size_t)(length * kind));
+            #if PY_MAJOR_VERSION < 3
+            Py_XDECREF(owned_ref);
+            #endif
+            return (equals == Py_EQ) ? (result == 0) : (result != 0);
+        }
+    } else if ((s1 == Py_None) & s2_is_unicode) {
+        goto return_ne;
+    } else if ((s2 == Py_None) & s1_is_unicode) {
+        goto return_ne;
+    } else {
+        int result;
+        PyObject* py_result = PyObject_RichCompare(s1, s2, equals);
+        if (!py_result)
+            return -1;
+        result = __Pyx_PyObject_IsTrue(py_result);
+        Py_DECREF(py_result);
+        return result;
+    }
+return_eq:
+    #if PY_MAJOR_VERSION < 3
+    Py_XDECREF(owned_ref);
+    #endif
+    return (equals == Py_EQ);
+return_ne:
+    #if PY_MAJOR_VERSION < 3
+    Py_XDECREF(owned_ref);
+    #endif
+    return (equals == Py_NE);
+#endif
+}
+
+/* PyObjectCall */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    PyObject *result;
+    ternaryfunc call = func->ob_type->tp_call;
+    if (unlikely(!call))
+        return PyObject_Call(func, arg, kw);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = (*call)(func, arg, kw);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+/* PyObjectCallMethO */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
+    PyObject *self, *result;
+    PyCFunction cfunc;
+    cfunc = PyCFunction_GET_FUNCTION(func);
+    self = PyCFunction_GET_SELF(func);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = cfunc(self, arg);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+/* PyObjectCallOneArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_New(1);
+    if (unlikely(!args)) return NULL;
+    Py_INCREF(arg);
+    PyTuple_SET_ITEM(args, 0, arg);
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || PyObject_TypeCheck(func, __pyx_CyFunctionType))) {
+#else
+    if (likely(PyCFunction_Check(func))) {
+#endif
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
+            return __Pyx_PyObject_CallMethO(func, arg);
+        }
+    }
+    return __Pyx__PyObject_CallOneArg(func, arg);
+}
+#else
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_Pack(1, arg);
+    if (unlikely(!args)) return NULL;
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+#endif
+
+/* PyErrFetchRestore */
+  #if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+}
+#endif
+
+/* RaiseException */
+  #if PY_MAJOR_VERSION < 3
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb,
+                        CYTHON_UNUSED PyObject *cause) {
+    __Pyx_PyThreadState_declare
+    Py_XINCREF(type);
+    if (!value || value == Py_None)
+        value = NULL;
+    else
+        Py_INCREF(value);
+    if (!tb || tb == Py_None)
+        tb = NULL;
+    else {
+        Py_INCREF(tb);
+        if (!PyTraceBack_Check(tb)) {
+            PyErr_SetString(PyExc_TypeError,
+                "raise: arg 3 must be a traceback or None");
+            goto raise_error;
+        }
+    }
+    if (PyType_Check(type)) {
+#if CYTHON_COMPILING_IN_PYPY
+        if (!value) {
+            Py_INCREF(Py_None);
+            value = Py_None;
+        }
+#endif
+        PyErr_NormalizeException(&type, &value, &tb);
+    } else {
+        if (value) {
+            PyErr_SetString(PyExc_TypeError,
+                "instance exception may not have a separate value");
+            goto raise_error;
+        }
+        value = type;
+        type = (PyObject*) Py_TYPE(type);
+        Py_INCREF(type);
+        if (!PyType_IsSubtype((PyTypeObject *)type, (PyTypeObject *)PyExc_BaseException)) {
+            PyErr_SetString(PyExc_TypeError,
+                "raise: exception class must be a subclass of BaseException");
+            goto raise_error;
+        }
+    }
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrRestore(type, value, tb);
+    return;
+raise_error:
+    Py_XDECREF(value);
+    Py_XDECREF(type);
+    Py_XDECREF(tb);
+    return;
+}
+#else
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause) {
+    PyObject* owned_instance = NULL;
+    if (tb == Py_None) {
+        tb = 0;
+    } else if (tb && !PyTraceBack_Check(tb)) {
+        PyErr_SetString(PyExc_TypeError,
+            "raise: arg 3 must be a traceback or None");
+        goto bad;
+    }
+    if (value == Py_None)
+        value = 0;
+    if (PyExceptionInstance_Check(type)) {
+        if (value) {
+            PyErr_SetString(PyExc_TypeError,
+                "instance exception may not have a separate value");
+            goto bad;
+        }
+        value = type;
+        type = (PyObject*) Py_TYPE(value);
+    } else if (PyExceptionClass_Check(type)) {
+        PyObject *instance_class = NULL;
+        if (value && PyExceptionInstance_Check(value)) {
+            instance_class = (PyObject*) Py_TYPE(value);
+            if (instance_class != type) {
+                int is_subclass = PyObject_IsSubclass(instance_class, type);
+                if (!is_subclass) {
+                    instance_class = NULL;
+                } else if (unlikely(is_subclass == -1)) {
+                    goto bad;
+                } else {
+                    type = instance_class;
+                }
+            }
+        }
+        if (!instance_class) {
+            PyObject *args;
+            if (!value)
+                args = PyTuple_New(0);
+            else if (PyTuple_Check(value)) {
+                Py_INCREF(value);
+                args = value;
+            } else
+                args = PyTuple_Pack(1, value);
+            if (!args)
+                goto bad;
+            owned_instance = PyObject_Call(type, args, NULL);
+            Py_DECREF(args);
+            if (!owned_instance)
+                goto bad;
+            value = owned_instance;
+            if (!PyExceptionInstance_Check(value)) {
+                PyErr_Format(PyExc_TypeError,
+                             "calling %R should have returned an instance of "
+                             "BaseException, not %R",
+                             type, Py_TYPE(value));
+                goto bad;
+            }
+        }
+    } else {
+        PyErr_SetString(PyExc_TypeError,
+            "raise: exception class must be a subclass of BaseException");
+        goto bad;
+    }
+#if PY_VERSION_HEX >= 0x03030000
+    if (cause) {
+#else
+    if (cause && cause != Py_None) {
+#endif
+        PyObject *fixed_cause;
+        if (cause == Py_None) {
+            fixed_cause = NULL;
+        } else if (PyExceptionClass_Check(cause)) {
+            fixed_cause = PyObject_CallObject(cause, NULL);
+            if (fixed_cause == NULL)
+                goto bad;
+        } else if (PyExceptionInstance_Check(cause)) {
+            fixed_cause = cause;
+            Py_INCREF(fixed_cause);
+        } else {
+            PyErr_SetString(PyExc_TypeError,
+                            "exception causes must derive from "
+                            "BaseException");
+            goto bad;
+        }
+        PyException_SetCause(value, fixed_cause);
+    }
+    PyErr_SetObject(type, value);
+    if (tb) {
+#if CYTHON_COMPILING_IN_PYPY
+        PyObject *tmp_type, *tmp_value, *tmp_tb;
+        PyErr_Fetch(&tmp_type, &tmp_value, &tmp_tb);
+        Py_INCREF(tb);
+        PyErr_Restore(tmp_type, tmp_value, tb);
+        Py_XDECREF(tmp_tb);
+#else
+        PyThreadState *tstate = PyThreadState_GET();
+        PyObject* tmp_tb = tstate->curexc_traceback;
+        if (tb != tmp_tb) {
+            Py_INCREF(tb);
+            tstate->curexc_traceback = tb;
+            Py_XDECREF(tmp_tb);
+        }
+#endif
+    }
+bad:
+    Py_XDECREF(owned_instance);
+    return;
+}
+#endif
+
 /* RaiseArgTupleInvalid */
-static void __Pyx_RaiseArgtupleInvalid(
+    static void __Pyx_RaiseArgtupleInvalid(
     const char* func_name,
     int exact,
     Py_ssize_t num_min,
@@ -6170,7 +7429,7 @@ static void __Pyx_RaiseArgtupleInvalid(
 }
 
 /* RaiseDoubleKeywords */
-static void __Pyx_RaiseDoubleKeywordsError(
+    static void __Pyx_RaiseDoubleKeywordsError(
     const char* func_name,
     PyObject* kw_name)
 {
@@ -6184,7 +7443,7 @@ static void __Pyx_RaiseDoubleKeywordsError(
 }
 
 /* ParseKeywords */
-static int __Pyx_ParseOptionalKeywords(
+    static int __Pyx_ParseOptionalKeywords(
     PyObject *kwds,
     PyObject **argnames[],
     PyObject *kwds2,
@@ -6286,7 +7545,7 @@ bad:
 }
 
 /* BufferFormatCheck */
-static CYTHON_INLINE int __Pyx_IsLittleEndian(void) {
+    static CYTHON_INLINE int __Pyx_IsLittleEndian(void) {
   unsigned int n = 1;
   return *(unsigned char*)(&n) != 0;
 }
@@ -6835,215 +8094,8 @@ static CYTHON_INLINE void __Pyx_SafeReleaseBuffer(Py_buffer* info) {
   __Pyx_ReleaseBuffer(info);
 }
 
-/* PyObjectCall */
-  #if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
-    PyObject *result;
-    ternaryfunc call = func->ob_type->tp_call;
-    if (unlikely(!call))
-        return PyObject_Call(func, arg, kw);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = (*call)(func, arg, kw);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
-
-/* PyErrFetchRestore */
-  #if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->curexc_type;
-    tmp_value = tstate->curexc_value;
-    tmp_tb = tstate->curexc_traceback;
-    tstate->curexc_type = type;
-    tstate->curexc_value = value;
-    tstate->curexc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->curexc_type;
-    *value = tstate->curexc_value;
-    *tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
-}
-#endif
-
-/* RaiseException */
-  #if PY_MAJOR_VERSION < 3
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb,
-                        CYTHON_UNUSED PyObject *cause) {
-    __Pyx_PyThreadState_declare
-    Py_XINCREF(type);
-    if (!value || value == Py_None)
-        value = NULL;
-    else
-        Py_INCREF(value);
-    if (!tb || tb == Py_None)
-        tb = NULL;
-    else {
-        Py_INCREF(tb);
-        if (!PyTraceBack_Check(tb)) {
-            PyErr_SetString(PyExc_TypeError,
-                "raise: arg 3 must be a traceback or None");
-            goto raise_error;
-        }
-    }
-    if (PyType_Check(type)) {
-#if CYTHON_COMPILING_IN_PYPY
-        if (!value) {
-            Py_INCREF(Py_None);
-            value = Py_None;
-        }
-#endif
-        PyErr_NormalizeException(&type, &value, &tb);
-    } else {
-        if (value) {
-            PyErr_SetString(PyExc_TypeError,
-                "instance exception may not have a separate value");
-            goto raise_error;
-        }
-        value = type;
-        type = (PyObject*) Py_TYPE(type);
-        Py_INCREF(type);
-        if (!PyType_IsSubtype((PyTypeObject *)type, (PyTypeObject *)PyExc_BaseException)) {
-            PyErr_SetString(PyExc_TypeError,
-                "raise: exception class must be a subclass of BaseException");
-            goto raise_error;
-        }
-    }
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrRestore(type, value, tb);
-    return;
-raise_error:
-    Py_XDECREF(value);
-    Py_XDECREF(type);
-    Py_XDECREF(tb);
-    return;
-}
-#else
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause) {
-    PyObject* owned_instance = NULL;
-    if (tb == Py_None) {
-        tb = 0;
-    } else if (tb && !PyTraceBack_Check(tb)) {
-        PyErr_SetString(PyExc_TypeError,
-            "raise: arg 3 must be a traceback or None");
-        goto bad;
-    }
-    if (value == Py_None)
-        value = 0;
-    if (PyExceptionInstance_Check(type)) {
-        if (value) {
-            PyErr_SetString(PyExc_TypeError,
-                "instance exception may not have a separate value");
-            goto bad;
-        }
-        value = type;
-        type = (PyObject*) Py_TYPE(value);
-    } else if (PyExceptionClass_Check(type)) {
-        PyObject *instance_class = NULL;
-        if (value && PyExceptionInstance_Check(value)) {
-            instance_class = (PyObject*) Py_TYPE(value);
-            if (instance_class != type) {
-                int is_subclass = PyObject_IsSubclass(instance_class, type);
-                if (!is_subclass) {
-                    instance_class = NULL;
-                } else if (unlikely(is_subclass == -1)) {
-                    goto bad;
-                } else {
-                    type = instance_class;
-                }
-            }
-        }
-        if (!instance_class) {
-            PyObject *args;
-            if (!value)
-                args = PyTuple_New(0);
-            else if (PyTuple_Check(value)) {
-                Py_INCREF(value);
-                args = value;
-            } else
-                args = PyTuple_Pack(1, value);
-            if (!args)
-                goto bad;
-            owned_instance = PyObject_Call(type, args, NULL);
-            Py_DECREF(args);
-            if (!owned_instance)
-                goto bad;
-            value = owned_instance;
-            if (!PyExceptionInstance_Check(value)) {
-                PyErr_Format(PyExc_TypeError,
-                             "calling %R should have returned an instance of "
-                             "BaseException, not %R",
-                             type, Py_TYPE(value));
-                goto bad;
-            }
-        }
-    } else {
-        PyErr_SetString(PyExc_TypeError,
-            "raise: exception class must be a subclass of BaseException");
-        goto bad;
-    }
-#if PY_VERSION_HEX >= 0x03030000
-    if (cause) {
-#else
-    if (cause && cause != Py_None) {
-#endif
-        PyObject *fixed_cause;
-        if (cause == Py_None) {
-            fixed_cause = NULL;
-        } else if (PyExceptionClass_Check(cause)) {
-            fixed_cause = PyObject_CallObject(cause, NULL);
-            if (fixed_cause == NULL)
-                goto bad;
-        } else if (PyExceptionInstance_Check(cause)) {
-            fixed_cause = cause;
-            Py_INCREF(fixed_cause);
-        } else {
-            PyErr_SetString(PyExc_TypeError,
-                            "exception causes must derive from "
-                            "BaseException");
-            goto bad;
-        }
-        PyException_SetCause(value, fixed_cause);
-    }
-    PyErr_SetObject(type, value);
-    if (tb) {
-#if CYTHON_COMPILING_IN_PYPY
-        PyObject *tmp_type, *tmp_value, *tmp_tb;
-        PyErr_Fetch(&tmp_type, &tmp_value, &tmp_tb);
-        Py_INCREF(tb);
-        PyErr_Restore(tmp_type, tmp_value, tb);
-        Py_XDECREF(tmp_tb);
-#else
-        PyThreadState *tstate = PyThreadState_GET();
-        PyObject* tmp_tb = tstate->curexc_traceback;
-        if (tb != tmp_tb) {
-            Py_INCREF(tb);
-            tstate->curexc_traceback = tb;
-            Py_XDECREF(tmp_tb);
-        }
-#endif
-    }
-bad:
-    Py_XDECREF(owned_instance);
-    return;
-}
-#endif
-
 /* GetModuleGlobalName */
-    static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
+      static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
     PyObject *result;
 #if CYTHON_COMPILING_IN_CPYTHON
     result = PyDict_GetItem(__pyx_d, name);
@@ -7060,61 +8112,6 @@ bad:
     return result;
 }
 
-/* PyObjectCallMethO */
-      #if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
-    PyObject *self, *result;
-    PyCFunction cfunc;
-    cfunc = PyCFunction_GET_FUNCTION(func);
-    self = PyCFunction_GET_SELF(func);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = cfunc(self, arg);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
-
-/* PyObjectCallOneArg */
-      #if CYTHON_COMPILING_IN_CPYTHON
-static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_New(1);
-    if (unlikely(!args)) return NULL;
-    Py_INCREF(arg);
-    PyTuple_SET_ITEM(args, 0, arg);
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-#ifdef __Pyx_CyFunction_USED
-    if (likely(PyCFunction_Check(func) || PyObject_TypeCheck(func, __pyx_CyFunctionType))) {
-#else
-    if (likely(PyCFunction_Check(func))) {
-#endif
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
-            return __Pyx_PyObject_CallMethO(func, arg);
-        }
-    }
-    return __Pyx__PyObject_CallOneArg(func, arg);
-}
-#else
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_Pack(1, arg);
-    if (unlikely(!args)) return NULL;
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-#endif
-
 /* ExtTypeTest */
         static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
     if (unlikely(!type)) {
@@ -7125,6 +8122,66 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
         return 1;
     PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
                  Py_TYPE(obj)->tp_name, type->tp_name);
+    return 0;
+}
+
+/* RaiseTooManyValuesToUnpack */
+        static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
+    PyErr_Format(PyExc_ValueError,
+                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
+}
+
+/* RaiseNeedMoreValuesToUnpack */
+        static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
+    PyErr_Format(PyExc_ValueError,
+                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
+                 index, (index == 1) ? "" : "s");
+}
+
+/* IterFinish */
+        static CYTHON_INLINE int __Pyx_IterFinish(void) {
+#if CYTHON_COMPILING_IN_CPYTHON
+    PyThreadState *tstate = PyThreadState_GET();
+    PyObject* exc_type = tstate->curexc_type;
+    if (unlikely(exc_type)) {
+        if (likely(exc_type == PyExc_StopIteration) || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration)) {
+            PyObject *exc_value, *exc_tb;
+            exc_value = tstate->curexc_value;
+            exc_tb = tstate->curexc_traceback;
+            tstate->curexc_type = 0;
+            tstate->curexc_value = 0;
+            tstate->curexc_traceback = 0;
+            Py_DECREF(exc_type);
+            Py_XDECREF(exc_value);
+            Py_XDECREF(exc_tb);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+    return 0;
+#else
+    if (unlikely(PyErr_Occurred())) {
+        if (likely(PyErr_ExceptionMatches(PyExc_StopIteration))) {
+            PyErr_Clear();
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+    return 0;
+#endif
+}
+
+/* UnpackItemEndCheck */
+        static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
+    if (unlikely(retval)) {
+        Py_DECREF(retval);
+        __Pyx_RaiseTooManyValuesError(expected);
+        return -1;
+    } else {
+        return __Pyx_IterFinish();
+    }
     return 0;
 }
 
@@ -7153,19 +8210,6 @@ static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, in
     }
     __Pyx_RaiseArgumentTypeInvalid(name, obj, type);
     return 0;
-}
-
-/* RaiseTooManyValuesToUnpack */
-        static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
-    PyErr_Format(PyExc_ValueError,
-                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
-}
-
-/* RaiseNeedMoreValuesToUnpack */
-        static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
-    PyErr_Format(PyExc_ValueError,
-                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
-                 index, (index == 1) ? "" : "s");
 }
 
 /* RaiseNoneIterError */
