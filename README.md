@@ -49,7 +49,9 @@ pip install -e .
 
 #### `rio_color.operations`
 
-The following functions accept and return numpy `ndarrays`. The arrays are assumed to be scaled 0 to 1. In some cases, the input array is assumed to be in a certain colorspace with the axis order as (bands, columns, rows); other image processing software may use the (columns, rows, bands) axis order.
+The following functions accept and return numpy `ndarrays`. The arrays are assumed to be scaled 0 to 1. In some cases, the input array is assumed to be in the RGB colorspace.
+
+All arrays use rasterio ordering with the shape as (bands, columns, rows). Be aware that other image processing software may use the (columns, rows, bands) axis order.
 
 * `sigmoidal(arr, contrast, bias)`
 * `gamma(arr, g)`
