@@ -2,10 +2,13 @@ import numpy as np
 import pytest
 
 # public 3d array funcs
-from rio_color.colorspace import arr_rgb_to_lch, arr_lch_to_rgb, saturate_rgb
+from rio_color.colorspace import convert_arr, saturate_rgb
 
-# public single-arg wrappers
-from rio_color.colorspace import rgb_to_lch, lch_to_rgb
+# public scalar func
+from rio_color.colorspace import convert
+
+# enums required to define src and dst for convert and convert_arr
+from rio_color.colorspace import ColorSpace as cs
 
 
 tests = (
@@ -28,19 +31,22 @@ def _make_array(x, y, z, dtype='float64'):
 
 def test_rgb2lch():
     for rgb, ex_lch in tests:
-        assert ex_lch == tuple(round(x, test_tol) for x in rgb_to_lch(*rgb))
+        assert ex_lch == tuple(round(x, test_tol)
+                               for x in convert(*rgb, src=cs.rgb, dst=cs.lch))
 
 
 def test_roundtrip():
     for rgb, _ in tests:
         assert tuple(round(x, test_tol) for x in rgb) == \
-            tuple(round(x, test_tol) for x in lch_to_rgb(*rgb_to_lch(*rgb)))
+            tuple(round(x, test_tol) for x in convert(
+                *convert(*rgb, src=cs.rgb, dst=cs.lch), src=cs.lch, dst=cs.rgb))
 
 
 def test_lch2rgb():
     for ex_rgb, lch in tests:
         assert tuple(round(x, test_tol) for x in ex_rgb) == \
-            tuple(round(x, test_tol) for x in lch_to_rgb(*lch))
+            tuple(round(x, test_tol)
+                  for x in convert(*lch, src=cs.lch, dst=cs.rgb))
 
 
 def test_arr_rgb():
@@ -48,14 +54,15 @@ def test_arr_rgb():
         rgb = _make_array(*rgb)
         ex_lch = _make_array(*ex_lch)
         assert np.allclose(
-            arr_rgb_to_lch(rgb), ex_lch, atol=(test_tol / 10.0))
+            convert_arr(rgb, cs.rgb, cs.lch), ex_lch, atol=(test_tol / 10.0))
+
 
 def test_arr_lch():
     for rgb, lch in tests:
         rgb = _make_array(*rgb)
         lch = _make_array(*lch)
         assert np.allclose(
-            arr_lch_to_rgb(lch), rgb, atol=(test_tol / 10.0))
+            convert_arr(lch, cs.lch, cs.rgb), rgb, atol=(test_tol / 10.0))
 
 
 def test_saturation_1():
@@ -72,6 +79,7 @@ def test_saturation_bw():
         round(sat[1, 0, 0], test_tol) == \
         round(sat[2, 0, 0], test_tol)
 
+
 def test_saturation():
     rgb = _make_array(0.392156, 0.776470, 0.164705)
     saturated = _make_array(0.3425, 0.78372, 0.0)
@@ -87,10 +95,9 @@ def test_bad_array_bands():
         saturate_rgb(bad, 1.1)
     assert '3 bands' in str(exc.value)
 
-    for func in (arr_rgb_to_lch, arr_lch_to_rgb):
-        with pytest.raises(ValueError) as exc:
-            func(bad)
-        assert '3 bands' in str(exc.value)
+    with pytest.raises(ValueError) as exc:
+        convert_arr(bad, cs.rgb, cs.lch)
+    assert '3 bands' in str(exc.value)
 
 def test_bad_array_dims():
     bad = np.random.random((3, 3))
@@ -98,10 +105,9 @@ def test_bad_array_dims():
         saturate_rgb(bad, 1.1)
     assert 'wrong number of dimensions' in str(exc.value)
 
-    for func in (arr_rgb_to_lch, arr_lch_to_rgb):
-        with pytest.raises(ValueError) as exc:
-            func(bad)
-        assert 'wrong number of dimensions' in str(exc.value)
+    with pytest.raises(ValueError) as exc:
+        convert_arr(bad, cs.rgb, cs.lch)
+    assert 'wrong number of dimensions' in str(exc.value)
 
 
 def test_bad_array_type():
@@ -110,7 +116,32 @@ def test_bad_array_type():
         saturate_rgb(bad, 1.1)
     assert 'dtype mismatch' in str(exc.value)
 
-    for func in (arr_rgb_to_lch, arr_lch_to_rgb):
-        with pytest.raises(ValueError) as exc:
-            func(bad)
-        assert 'dtype mismatch' in str(exc.value)
+    with pytest.raises(ValueError) as exc:
+        convert_arr(bad, cs.rgb, cs.lch)
+    assert 'dtype mismatch' in str(exc.value)
+
+
+def test_bad_colorspace():
+    with pytest.raises(TypeError) as exc:
+        convert(0.1, 0.1, 0.1, src='FOO', dst='RGB')
+
+    with pytest.raises(AttributeError) as exc:
+        convert(0.1, 0.1, 0.1, src=cs.foo, dst=cs.bar)
+
+
+def _assert_iter_floateq(a, b, tol):
+    for x, y in zip(a, b):
+        assert abs(x - y) < tol
+
+
+def test_convert_roundtrips():
+    # start with RGB
+    rgb = (0.392156, 0.776470, 0.164705)
+
+    # all other colorspaces
+    cspaces = tuple(x for x in dict(cs.__members__).values() if x != cs.rgb)
+
+    for cspace in cspaces:
+        other = convert(*rgb, src=cs.rgb, dst=cspace)
+        back = convert(*other, src=cspace, dst=cs.rgb)
+        _assert_iter_floateq(back, rgb, tol=1e-4)
