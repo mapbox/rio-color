@@ -20,10 +20,11 @@ ctypedef st_color color
 
 
 # Colorspace conts
-cdef int RGB = 0
-cdef int XYZ = 1
-cdef int LAB = 2
-cdef int LCH = 3
+cdef int RGB, XYZ, LAB, LCH
+RGB = 0
+XYZ = 1
+LAB = 2
+LCH = 3
 
 # TODO, use a proper enum
 # this index needs to stay in sync with constants above
@@ -47,7 +48,9 @@ cpdef convert(double one, double two, double three, src, dst):
 
 
 cdef color _convert(double one, double two, double three, int src, int dst):
-
+    # TODO currently, every combination of COLORSPACES
+    # must return a valid color. If this list grows,
+    # things get ugly fast
     if src == RGB:
         if dst == LAB:
             return _rgb_to_lab(one, two, three)
@@ -75,9 +78,7 @@ cdef color _convert(double one, double two, double three, int src, int dst):
         elif dst == XYZ:
             return _lch_to_xyz(one, two, three)
         elif dst == RGB:
-            return _lch_to_rgb(one, two, three)
-
-    raise ValueError("Invalid src/dst colorspace")
+           return _lch_to_rgb(one, two, three)
 
 
 cpdef np.ndarray[FLOAT_t, ndim=3] convert_arr(np.ndarray[FLOAT_t, ndim=3] arr, src, dst):
