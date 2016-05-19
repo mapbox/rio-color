@@ -44,6 +44,11 @@ else:
         Extension(
             "rio_color.colorspace", ["rio_color/colorspace.c"])]
 
+inst_reqs = ["click", "rasterio", "rio-mucho"]
+
+if sys.version_info < (3, 4):
+    inst_reqs.append('enum34')
+
 setup(name='rio-color',
       version=version,
       description=u"Color correction plugin for rasterio",
@@ -57,7 +62,7 @@ setup(name='rio-color',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=["click", "rasterio", "rio-mucho"],
+      install_requires=inst_reqs,
       ext_modules=ext_modules,
       include_dirs=include_dirs,
       extras_require={

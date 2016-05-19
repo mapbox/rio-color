@@ -4,6 +4,10 @@ import pytest
 # public 3d array funcs
 from rio_color.colorspace import convert_arr, saturate_rgb
 
+# enum
+from rio_color.colorspace import ColorSpace as cs
+
+
 # public single-arg wrappers
 from rio_color.colorspace import convert
 
@@ -28,20 +32,22 @@ def _make_array(x, y, z, dtype='float64'):
 
 def test_rgb2lch():
     for rgb, ex_lch in tests:
-        assert ex_lch == tuple(round(x, test_tol) for x in convert(*rgb, src='RGB', dst='LCH'))
+        assert ex_lch == tuple(round(x, test_tol)
+                               for x in convert(*rgb, src=cs.rgb, dst=cs.lch))
 
 
 def test_roundtrip():
     for rgb, _ in tests:
         assert tuple(round(x, test_tol) for x in rgb) == \
             tuple(round(x, test_tol) for x in convert(
-                *convert(*rgb, src='RGB', dst='LCH'), src='LCH', dst='RGB'))
+                *convert(*rgb, src=cs.rgb, dst=cs.lch), src=cs.lch, dst=cs.rgb))
 
 
 def test_lch2rgb():
     for ex_rgb, lch in tests:
         assert tuple(round(x, test_tol) for x in ex_rgb) == \
-            tuple(round(x, test_tol) for x in convert(*lch, src='LCH', dst='RGB'))
+            tuple(round(x, test_tol)
+                  for x in convert(*lch, src=cs.lch, dst=cs.rgb))
 
 
 def test_arr_rgb():
@@ -49,7 +55,7 @@ def test_arr_rgb():
         rgb = _make_array(*rgb)
         ex_lch = _make_array(*ex_lch)
         assert np.allclose(
-            convert_arr(rgb, 'RGB', 'LCH'), ex_lch, atol=(test_tol / 10.0))
+            convert_arr(rgb, cs.rgb, cs.lch), ex_lch, atol=(test_tol / 10.0))
 
 
 def test_arr_lch():
@@ -57,7 +63,7 @@ def test_arr_lch():
         rgb = _make_array(*rgb)
         lch = _make_array(*lch)
         assert np.allclose(
-            convert_arr(lch, 'LCH', 'RGB'), rgb, atol=(test_tol / 10.0))
+            convert_arr(lch, cs.lch, cs.rgb), rgb, atol=(test_tol / 10.0))
 
 
 def test_saturation_1():
@@ -91,7 +97,7 @@ def test_bad_array_bands():
     assert '3 bands' in str(exc.value)
 
     with pytest.raises(ValueError) as exc:
-        convert_arr(bad, 'RGB', 'LCH')
+        convert_arr(bad, cs.rgb, cs.lch)
     assert '3 bands' in str(exc.value)
 
 def test_bad_array_dims():
@@ -101,7 +107,7 @@ def test_bad_array_dims():
     assert 'wrong number of dimensions' in str(exc.value)
 
     with pytest.raises(ValueError) as exc:
-        convert_arr(bad, 'RGB', 'LCH')
+        convert_arr(bad, cs.rgb, cs.lch)
     assert 'wrong number of dimensions' in str(exc.value)
 
 
@@ -112,15 +118,13 @@ def test_bad_array_type():
     assert 'dtype mismatch' in str(exc.value)
 
     with pytest.raises(ValueError) as exc:
-        convert_arr(bad, 'RGB', 'LCH')
+        convert_arr(bad, cs.rgb, cs.lch)
     assert 'dtype mismatch' in str(exc.value)
 
 
 def test_bad_colorspace():
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(TypeError) as exc:
         convert(0.1, 0.1, 0.1, src='FOO', dst='RGB')
-    assert 'is not in list' in str(exc.value)
 
-    with pytest.raises(ValueError) as exc:
-        convert(0.1, 0.1, 0.1, src='RGB', dst='FOO')
-    assert 'is not in list' in str(exc.value)
+    with pytest.raises(AttributeError) as exc:
+        convert(0.1, 0.1, 0.1, src=cs.foo, dst=cs.bar)

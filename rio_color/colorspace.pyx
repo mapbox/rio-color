@@ -2,6 +2,7 @@
 # cython: cdivision=True
 # cython: wraparound=False
 from __future__ import division
+from enum import IntEnum
 
 import numpy as np
 
@@ -19,31 +20,27 @@ cdef struct st_color:
 ctypedef st_color color
 
 
-# Colorspace conts
-cdef int RGB, XYZ, LAB, LCH
-RGB = 0
-XYZ = 1
-LAB = 2
-LCH = 3
+class ColorSpace(IntEnum):
+    rgb = 0
+    xyz = 1
+    lab = 2
+    lch = 3
 
-# TODO, use a proper enum
-# this index needs to stay in sync with constants above
-COLORSPACES = [
-    'RGB',
-    'XYZ',
-    'LAB',
-    'LCH'
-]
+# Colorspace consts
+# allows cdef funcs to access values w/o python calls
+# needs to stay in sync with enum above
+cdef enum:
+    RGB = 0
+    XYZ = 1
+    LAB = 2
+    LCH = 3
 
 
 cpdef convert(double one, double two, double three, src, dst):
     cdef color color
     cdef int src_cs, dst_cs
 
-    src_cs = COLORSPACES.index(src)
-    dst_cs = COLORSPACES.index(dst)
-
-    color = _convert(one, two, three, src_cs, dst_cs)
+    color = _convert(one, two, three, src, dst)
     return color.one, color.two, color.three
 
 
@@ -58,15 +55,12 @@ cpdef np.ndarray[FLOAT_t, ndim=3] convert_arr(np.ndarray[FLOAT_t, ndim=3] arr, s
 
     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
 
-    src_cs = COLORSPACES.index(src)
-    dst_cs = COLORSPACES.index(dst)
-
     for i in range(arr.shape[1]):
         for j in range(arr.shape[2]):
             one = arr[0, i, j]
             two = arr[1, i, j]
             three = arr[2, i, j]
-            color = _convert(one, two, three, src_cs, dst_cs)
+            color = _convert(one, two, three, src, dst)
             out[0, i, j] = color.one
             out[1, i, j] = color.two
             out[2, i, j] = color.three
