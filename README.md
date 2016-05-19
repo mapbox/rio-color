@@ -16,8 +16,6 @@ A rasterio plugin for applying basic color-oriented image operations to geospati
 
 ## Operations
 
-![animated](https://cloud.githubusercontent.com/assets/1151287/15330468/f5cefc38-1c2a-11e6-855d-8bb0f4158ca7.gif)
-
 
 **Gamma** adjustment adjusts RGB values according to a power law, effectively brightening or darkening the midtones. It can be very effective in satellite imagery for reducing atmospheric haze in the blue and green bands.
 
@@ -25,6 +23,10 @@ A rasterio plugin for applying basic color-oriented image operations to geospati
 matches human's non-linear visual perception. It works well to increase contrast without blowing out the very dark shadows or already-bright parts of the image.
 
 **Saturation** can be thought of as the "colorfulness" of a pixel. Highly saturated colors are intense and almost cartoon-like, low saturation is more muted, closer to black and white. You can adjust saturation independently of brightness and hue but the data must be transformed into a different color space.
+
+
+![animated](https://cloud.githubusercontent.com/assets/1151287/15330468/f5cefc38-1c2a-11e6-855d-8bb0f4158ca7.gif)
+
 
    
 ## Install
