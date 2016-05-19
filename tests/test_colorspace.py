@@ -51,6 +51,7 @@ def test_arr_rgb():
         assert np.allclose(
             convert_arr(rgb, 'RGB', 'LCH'), ex_lch, atol=(test_tol / 10.0))
 
+
 def test_arr_lch():
     for rgb, lch in tests:
         rgb = _make_array(*rgb)
@@ -118,8 +119,8 @@ def test_bad_array_type():
 def test_bad_colorspace():
     with pytest.raises(ValueError) as exc:
         convert(0.1, 0.1, 0.1, src='FOO', dst='RGB')
-    assert 'Unknown src colorspace' in str(exc.value)
+    assert 'is not in list' in str(exc.value)
 
     with pytest.raises(ValueError) as exc:
         convert(0.1, 0.1, 0.1, src='RGB', dst='FOO')
-    assert 'Unknown dst colorspace' in str(exc.value)
+    assert 'is not in list' in str(exc.value)

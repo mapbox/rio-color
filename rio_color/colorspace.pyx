@@ -19,69 +19,90 @@ cdef struct st_color:
 ctypedef st_color color
 
 
+# Colorspace conts
+cdef int RGB = 0
+cdef int XYZ = 1
+cdef int LAB = 2
+cdef int LCH = 3
+
+# TODO, use a proper enum
+# this index needs to stay in sync with constants above
+COLORSPACES = [
+    'RGB',
+    'XYZ',
+    'LAB',
+    'LCH'
+]
+
+
 cpdef convert(double one, double two, double three, src, dst):
     cdef color color
+    cdef int src_cs, dst_cs
 
-    if src == "RGB":
-        if dst == "LAB":
-            color = _rgb_to_lab(one, two, three)
-        elif dst == "LCH":
-            color = _rgb_to_lch(one, two, three)
-        elif dst == "XYZ":
-            color = _rgb_to_xyz(one, two, three)
-        else:
-            raise ValueError('{}: Unknown dst colorspace'.format(dst))
-    elif src == "XYZ":
-        if dst == "LAB":
-            color = _xyz_to_lab(one, two, three)
-        elif dst == "LCH":
-            color = _xyz_to_lch(one, two, three)
-        elif dst == "RGB":
-            color = _xyz_to_rgb(one, two, three)
-        else:
-            raise ValueError('{}: Unknown dst colorspace'.format(dst))
-    elif src == "LAB":
-        if dst == "XYZ":
-            color = _lab_to_xyz(one, two, three)
-        elif dst == "LCH":
-            color = _lab_to_lch(one, two, three)
-        elif dst == "RGB":
-            color = _lab_to_rgb(one, two, three)
-        else:
-            raise ValueError('{}: Unknown dst colorspace'.format(dst))
-    elif src == "LCH":
-        if dst == "LAB":
-            color = _lch_to_lab(one, two, three)
-        elif dst == "XYZ":
-            color = _lch_to_xyz(one, two, three)
-        elif dst == "RGB":
-            color = _lch_to_rgb(one, two, three)
-        else:
-            raise ValueError('{}: Unknown dst colorspace'.format(dst))
-    else:
-        raise ValueError('{}: Unknown src colorspace'.format(src))
+    src_cs = COLORSPACES.index(src)
+    dst_cs = COLORSPACES.index(dst)
 
+    color = _convert(one, two, three, src_cs, dst_cs)
     return color.one, color.two, color.three
+
+
+cdef color _convert(double one, double two, double three, int src, int dst):
+
+    if src == RGB:
+        if dst == LAB:
+            return _rgb_to_lab(one, two, three)
+        elif dst == LCH:
+            return _rgb_to_lch(one, two, three)
+        elif dst == XYZ:
+            return _rgb_to_xyz(one, two, three)
+    elif src == XYZ:
+        if dst == LAB:
+            return _xyz_to_lab(one, two, three)
+        elif dst == LCH:
+            return _xyz_to_lch(one, two, three)
+        elif dst == RGB:
+            return _xyz_to_rgb(one, two, three)
+    elif src == LAB:
+        if dst == XYZ:
+            return _lab_to_xyz(one, two, three)
+        elif dst == LCH:
+            return _lab_to_lch(one, two, three)
+        elif dst == RGB:
+            return _lab_to_rgb(one, two, three)
+    elif src == LCH:
+        if dst == LAB:
+            return _lch_to_lab(one, two, three)
+        elif dst == XYZ:
+            return _lch_to_xyz(one, two, three)
+        elif dst == RGB:
+            return _lch_to_rgb(one, two, three)
+
+    raise ValueError("Invalid src/dst colorspace")
 
 
 cpdef np.ndarray[FLOAT_t, ndim=3] convert_arr(np.ndarray[FLOAT_t, ndim=3] arr, src, dst):
     cdef double one, two, three
-    cdef size_t i, j
     cdef color color
+    cdef size_t i, j
+    cdef int src_cs, dst_cs
+
     if arr.shape[0] != 3:
         raise ValueError("The 0th dimension must contain 3 bands")
 
     cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
+
+    src_cs = COLORSPACES.index(src)
+    dst_cs = COLORSPACES.index(dst)
 
     for i in range(arr.shape[1]):
         for j in range(arr.shape[2]):
             one = arr[0, i, j]
             two = arr[1, i, j]
             three = arr[2, i, j]
-            one, two, three = convert(one, two, three, src, dst)
-            out[0, i, j] = one
-            out[1, i, j] = two
-            out[2, i, j] = three
+            color = _convert(one, two, three, src_cs, dst_cs)
+            out[0, i, j] = color.one
+            out[1, i, j] = color.two
+            out[2, i, j] = color.three
 
     return out
 
