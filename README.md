@@ -3,12 +3,30 @@
 [![Build Status](https://travis-ci.org/mapbox/rio-color.svg)](https://travis-ci.org/mapbox/rio-color)
 [![Coverage Status](https://coveralls.io/repos/mapbox/rio-color/badge.svg?branch=master&service=github)](https://coveralls.io/github/mapbox/rio-color?branch=master)
 
-Color-oriented operations for `rasterio`/`rio`.
+A rasterio plugin for applying basic color-oriented image operations to geospatial rasters.
 
 ## Goals
 
-We want to supply a baseline selection of esthetics-oriented image operations for numpy/rasterio, exposed as much as possible through `rio`. Some functions may be trivial (gamma) or already implemented elsewhere (for example, in `skimage`), but we want versions of them that are standard and light, without big dependencies.
+* **No heavy dependencies**: rio-color is purposefully limited in scope to remain lightweight
+* **Use the image structure**: By iterating over the internal blocks of the input image, we keep memory usage low and predictable while gaining the abililty to
+* **Use multiple cores**: thanks to [rio-mucho](https://github.com/mapbox/rio-mucho)
+* **Retain all the GeoTIFF info and TIFF structure**: nothing is lost. A GeoTIFF input → GeoTIFF output with the same georeferencing, internal tiling, compression, nodata values, etc.
+* **Efficient colorspace conversions**: the intesive math is written in highly optimized C functions and for use with scalars and numpy arrays.
+* **CLI and Python module**: accessing the functionality as a python module that can act on in-memory numpy arrays opens up new opportunities for composing this with other array operations without using intermediate files.
 
+## Operations
+
+![animated](https://cloud.githubusercontent.com/assets/1151287/15330468/f5cefc38-1c2a-11e6-855d-8bb0f4158ca7.gif)
+
+
+**Gamma** adjustment adjusts RGB values according to a power law, effectively brightening or darkening the midtones. It can be very effective in satellite imagery for reducing atmospheric haze in the blue and green bands.
+
+**Sigmoidal** contrast adjustment can alter the contrast and brightness of an image in a way that
+matches human's non-linear visual perception. It works well to increase contrast without blowing out the very dark shadows or already-bright parts of the image.
+
+**Saturation** can be thought of as the "colorfulness" of a pixel. Highly saturated colors are intense and almost cartoon-like, low saturation is more muted, closer to black and white. You can adjust saturation independently of brightness and hue but the data must be transformed into a different color space.
+
+   
 ## Install
 
 We highly recommend installing in a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/). Once activated, 
@@ -29,7 +47,7 @@ pip install -e .
 
 ## Python API
 
-### `rio_color.operations`
+#### `rio_color.operations`
 
 The following functions accept and return numpy `ndarrays`. The arrays are assumed to be scaled 0 to 1. In some cases, the input array is assumed to be in a certain colorspace with the axis order as (bands, columns, rows); other image processing software may use the (columns, rows, bands) axis order.
 
@@ -38,8 +56,7 @@ The following functions accept and return numpy `ndarrays`. The arrays are assum
 * `saturation(rgb, proportion)`
 * `simple_atmo(rgb, haze, contrast, bias)`
 
-There is one function in the `rio_color.operations` module which doesn't manipulate arrays:
-`parse_operations`. This function takes an *operations string* and
+The `rio_color.operations.parse_operations` function takes an *operations string* and
 returns a list of python functions which can be applied to an array.
 
 ```
@@ -56,6 +73,24 @@ for func in parse_operations(ops):
 This provides a tiny domain specific language (DSL) to allow you
 to compose ordered chains of image manipulations using the above operations.
 For more information on operation strings, see the `rio color` command line help.
+
+#### `rio_color.colorspace`
+
+The `colorspace` module provides functions for converting scalars and numpy arrays between different colorspaces.
+
+```python
+>>> from rio_color.colorspace import ColorSpace as cs  # enum defining available color spaces
+>>> from rio_color.colorspace import convert, convert_arr
+>>> convert_arr(array, src=cs.rgb, dst=cs.lch) # for arrays
+...
+>>> convert(r, g, b, src=cs.rgb, dst=cs.lch)  # for scalars
+...
+>>> dict(cs.__members__)  # can convert to/from any of these color spaces
+{'lab': <ColorSpace.lab: 2>,
+ 'lch': <ColorSpace.lch: 3>,
+ 'rgb': <ColorSpace.rgb: 0>,
+ 'xyz': <ColorSpace.xyz: 1>}
+```
 
 ## Command Line Interface
 
