@@ -12,6 +12,9 @@ cimport cython
 ctypedef np.float64_t FLOAT_t
 
 
+# See http://stackoverflow.com/a/4523537/519385
+# for reasons why a fixed-length array should
+# not be typedef'd without a wrapping struct
 cdef struct st_color:
     double one
     double two
