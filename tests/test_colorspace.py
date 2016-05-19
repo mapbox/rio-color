@@ -4,12 +4,11 @@ import pytest
 # public 3d array funcs
 from rio_color.colorspace import convert_arr, saturate_rgb
 
-# enum
-from rio_color.colorspace import ColorSpace as cs
-
-
-# public single-arg wrappers
+# public scalar func
 from rio_color.colorspace import convert
+
+# enums required to define src and dst for convert and convert_arr
+from rio_color.colorspace import ColorSpace as cs
 
 
 tests = (
@@ -128,3 +127,21 @@ def test_bad_colorspace():
 
     with pytest.raises(AttributeError) as exc:
         convert(0.1, 0.1, 0.1, src=cs.foo, dst=cs.bar)
+
+
+def _assert_iter_floateq(a, b, tol):
+    for x, y in zip(a, b):
+        assert abs(x - y) < tol
+
+
+def test_convert_roundtrips():
+    # start with RGB
+    rgb = (0.392156, 0.776470, 0.164705)
+
+    # all other colorspaces
+    cspaces = tuple(x for x in dict(cs.__members__).values() if x != cs.rgb)
+
+    for cspace in cspaces:
+        other = convert(*rgb, src=cs.rgb, dst=cspace)
+        back = convert(*other, src=cspace, dst=cs.rgb)
+        _assert_iter_floateq(back, rgb, tol=1e-4)
