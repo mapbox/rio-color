@@ -35,7 +35,6 @@ def color(ctx, jobs, out_dtype, src_path, dst_path, operations,
     """Color correction
 
 Operations will be applied to the src image in the specified order.
-Each operation should be a single quoted argument.
 
 Available OPERATIONS include:
 
@@ -56,7 +55,7 @@ Available OPERATIONS include:
         PROPORTION = 1 results in an identical image
         PROPORTION = 2 is likely way too saturated
 
-BANDS are specified as a single arg
+BANDS are specified as a single arg, no delimiters
 
 \b
     `123` or `RGB` or `rgb` are all equivalent
@@ -65,7 +64,7 @@ Example:
 
 \b
     rio color -d uint8 -j 4 input.tif output.tif \\
-        gamma 3 0.95 sigmoidal 1,2,3 35 0.13
+        gamma 3 0.95, sigmoidal rgb 35 0.13
     """
     with rasterio.open(src_path) as src:
         opts = src.profile.copy()

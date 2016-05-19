@@ -74,8 +74,7 @@ Usage: rio color [OPTIONS] SRC_PATH DST_PATH OPERATIONS...
 
   Color correction
 
-  Operations will be applied to the src image in the specified order. Each
-  operation should be a single quoted argument.
+  Operations will be applied to the src image in the specified order.
 
   Available OPERATIONS include:
 
@@ -93,14 +92,14 @@ Usage: rio color [OPTIONS] SRC_PATH DST_PATH OPERATIONS...
           PROPORTION = 1 results in an identical image
           PROPORTION = 2 is likely way too saturated
 
-  BANDS are specified as a single arg
+  BANDS are specified as a single arg, no delimiters
 
       `123` or `RGB` or `rgb` are all equivalent
 
   Example:
 
       rio color -d uint8 -j 4 input.tif output.tif \
-          gamma 3 0.95 sigmoidal 1,2,3 35 0.13
+          gamma 3 0.95, sigmoidal rgb 35 0.13
 
 
 Options:
