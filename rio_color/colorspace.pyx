@@ -134,7 +134,7 @@ cdef color _convert(double one, double two, double three, int src, int dst):
         elif dst == XYZ:
             return _lch_to_xyz(one, two, three)
         elif dst == RGB:
-           return _lch_to_rgb(one, two, three)
+            return _lch_to_rgb(one, two, three)
 
 
 # Constants
