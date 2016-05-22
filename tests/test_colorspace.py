@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 import pytest
 
@@ -16,6 +18,7 @@ tests = (
     ((0, 0, 0), (0, 0, 0)),
     ((1.0, 0, 0), (53.2, 104.6, 0.7)),
     ((0.392156, 0.776470, 0.164705), (72.1, 85.2, 2.3)),
+    # using srgb companding, it becomes (71.7, 83.5, 2.3))
     ((1.0, 1.0, 1.0), (100, 0, -1.1)),
 )
 
@@ -129,19 +132,33 @@ def test_bad_colorspace():
         convert(0.1, 0.1, 0.1, src=cs.foo, dst=cs.bar)
 
 
-def _assert_iter_floateq(a, b, tol):
+def _iter_floateq(a, b, tol):
     for x, y in zip(a, b):
-        assert abs(x - y) < tol
+        return abs(x - y) < tol
 
 
 def test_convert_roundtrips():
-    # start with RGB
-    rgb = (0.392156, 0.776470, 0.164705)
+    cspaces = tuple(x for x in dict(cs.__members__).values())
+    tolerance = 0.01
 
-    # all other colorspaces
-    cspaces = tuple(x for x in dict(cs.__members__).values() if x != cs.rgb)
+    # TODO test 0 and 1, far end of the scale
+    # seems to be most sensistive to floating errors
+    for rgb in itertools.combinations([0, 0.1, 0.3, 0.6, 0.9, 1.0], 3):
+        colors = {}
 
-    for cspace in cspaces:
-        other = convert(*rgb, src=cs.rgb, dst=cspace)
-        back = convert(*other, src=cspace, dst=cs.rgb)
-        _assert_iter_floateq(back, rgb, tol=1e-4)
+        # RGB to other, roundtrip
+        for cspace in cspaces:
+            if cspace == cs.rgb:
+                continue
+            other = convert(*rgb, src=cs.rgb, dst=cspace)
+            # Collect some valid colors
+            colors[cspace] = other
+            back = convert(*other, src=cspace, dst=cs.rgb)
+            assert _iter_floateq(back, rgb, tol=tolerance)
+
+        # other to other roundtrip
+        for src, color in colors.items():
+            for dst in cspaces:
+                other = convert(*color, src=src, dst=dst)
+                back = convert(*other, src=dst, dst=src)
+                assert _iter_floateq(back, color, tol=tolerance)
