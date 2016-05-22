@@ -1,6 +1,10 @@
 Changes
 =======
 
+0.3.0 (2016=05-19)
+------------------
+- Generic colorspace conversions using convert and convert_arr. Support for RGB, XYZ, LCH, LAB.
+
 0.2.2 (2016-05-13)
 ------------------
 - Fixed `rio atmos` support for 4-band RGBA rasters
