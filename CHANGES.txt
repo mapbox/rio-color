@@ -4,7 +4,7 @@ Changes
 0.4.0
 ------------------
 - Added support for LUV colorspace conversions.
-- inline cdef functions, typed memory views and constants for a small speed boost.
+- inline cdef functions and constants for better code organization and a small speed boost.
 - compile-time option for sRGB companding for XYZ-RGB conversions, simple gamma adjustment is still the default.
 
 0.3.0 (2016-05-19)
