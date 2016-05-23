@@ -124,9 +124,21 @@ def test_bad_array_type():
     assert 'dtype mismatch' in str(exc.value)
 
 
+def test_array_bad_colorspace():
+    arr = np.random.random((3, 3))
+    with pytest.raises(ValueError) as exc:
+        convert_arr(arr, src='FOO', dst='RGB')
+
+    with pytest.raises(ValueError):
+        convert_arr(arr, src=999, dst=999)
+
+
 def test_bad_colorspace():
-    with pytest.raises(TypeError) as exc:
+    with pytest.raises(ValueError) as exc:
         convert(0.1, 0.1, 0.1, src='FOO', dst='RGB')
+
+    with pytest.raises(ValueError):
+        convert(0.1, 0.1, 0.1, src=999, dst=999)
 
     with pytest.raises(AttributeError) as exc:
         convert(0.1, 0.1, 0.1, src=cs.foo, dst=cs.bar)
@@ -139,10 +151,9 @@ def _iter_floateq(a, b, tol):
 
 def test_convert_roundtrips():
     cspaces = tuple(x for x in dict(cs.__members__).values())
+    # TODO relative tolerance and figure out how to decrease float drift
     tolerance = 0.01
 
-    # TODO test 0 and 1, far end of the scale
-    # seems to be most sensistive to floating errors
     for rgb in itertools.combinations([0, 0.1, 0.3, 0.6, 0.9, 1.0], 3):
         colors = {}
 
@@ -156,7 +167,7 @@ def test_convert_roundtrips():
             back = convert(*other, src=cspace, dst=cs.rgb)
             assert _iter_floateq(back, rgb, tol=tolerance)
 
-        # other to other roundtrip
+        # other to other roundtrip, including self
         for src, color in colors.items():
             for dst in cspaces:
                 other = convert(*color, src=src, dst=dst)

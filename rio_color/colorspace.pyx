@@ -40,7 +40,11 @@ cdef enum:
 
 cpdef convert(double one, double two, double three, src, dst):
     cdef color color
-    color = _convert(one, two, three, src, dst)
+
+    if src not in ColorSpace or dst not in ColorSpace:
+        raise ValueError("Invalid colorspace")
+
+    color = _convert(one, two, three, int(src), int(dst))
     return color.one, color.two, color.three
 
 
@@ -50,6 +54,9 @@ cpdef np.ndarray[FLOAT_t, ndim=3] convert_arr(np.ndarray[FLOAT_t, ndim=3] arr, s
 
     if arr.shape[0] != 3:
         raise ValueError("The 0th dimension must contain 3 bands")
+
+    if src not in ColorSpace or dst not in ColorSpace:
+        raise ValueError("Invalid colorspace")
 
     I = arr.shape[1]
     J = arr.shape[2]
@@ -191,6 +198,11 @@ cdef inline color _convert(double one, double two, double three, int src, int ds
             c = _luv_to_xyz(one, two, three)
             c = _xyz_to_lab(c.one, c.two, c.three)
             c = _lab_to_lch(c.one, c.two, c.three)
+
+    elif src == dst:
+        c.one = one
+        c.two = two
+        c.three = three
 
     return c
 
