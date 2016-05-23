@@ -90,10 +90,13 @@ The `colorspace` module provides functions for converting scalars and numpy arra
 >>> convert(r, g, b, src=cs.rgb, dst=cs.lch)  # for scalars
 ...
 >>> dict(cs.__members__)  # can convert to/from any of these color spaces
-{'lab': <ColorSpace.lab: 2>,
- 'lch': <ColorSpace.lch: 3>,
+{
  'rgb': <ColorSpace.rgb: 0>,
- 'xyz': <ColorSpace.xyz: 1>}
+ 'xyz': <ColorSpace.xyz: 1>,
+ 'lab': <ColorSpace.lab: 2>,
+ 'lch': <ColorSpace.lch: 3>,
+ 'luv': <ColorSpace.luv: 4>
+ }
 ```
 
 ## Command Line Interface
