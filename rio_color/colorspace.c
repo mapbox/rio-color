@@ -3472,7 +3472,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":230
+/* "rio_color/colorspace.pyx":234
  * # Direct colorspace conversions
  * 
  * cdef inline color _rgb_to_xyz(double r, double g, double b):             # <<<<<<<<<<<<<<
@@ -3493,9 +3493,9 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("_rgb_to_xyz", 0);
 
-  /* "rio_color/colorspace.pyx":242
- *         bl = b ** gamma
- *     ELSE:
+  /* "rio_color/colorspace.pyx":240
+ *     # convert RGB to linear scale
+ *     IF SRGB_COMPAND:
  *         if r <= 0.04045:             # <<<<<<<<<<<<<<
  *             rl = r / 12.92
  *         else:
@@ -3503,8 +3503,8 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_r <= 0.04045) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":243
- *     ELSE:
+    /* "rio_color/colorspace.pyx":241
+ *     IF SRGB_COMPAND:
  *         if r <= 0.04045:
  *             rl = r / 12.92             # <<<<<<<<<<<<<<
  *         else:
@@ -3512,9 +3512,9 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_rl = (__pyx_v_r / 12.92);
 
-    /* "rio_color/colorspace.pyx":242
- *         bl = b ** gamma
- *     ELSE:
+    /* "rio_color/colorspace.pyx":240
+ *     # convert RGB to linear scale
+ *     IF SRGB_COMPAND:
  *         if r <= 0.04045:             # <<<<<<<<<<<<<<
  *             rl = r / 12.92
  *         else:
@@ -3522,7 +3522,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L3;
   }
 
-  /* "rio_color/colorspace.pyx":245
+  /* "rio_color/colorspace.pyx":243
  *             rl = r / 12.92
  *         else:
  *             rl = ((r + 0.055) / 1.055) ** 2.4             # <<<<<<<<<<<<<<
@@ -3534,7 +3534,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L3:;
 
-  /* "rio_color/colorspace.pyx":246
+  /* "rio_color/colorspace.pyx":244
  *         else:
  *             rl = ((r + 0.055) / 1.055) ** 2.4
  *         if g <= 0.04045:             # <<<<<<<<<<<<<<
@@ -3544,7 +3544,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_g <= 0.04045) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":247
+    /* "rio_color/colorspace.pyx":245
  *             rl = ((r + 0.055) / 1.055) ** 2.4
  *         if g <= 0.04045:
  *             gl = g / 12.92             # <<<<<<<<<<<<<<
@@ -3553,7 +3553,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_gl = (__pyx_v_g / 12.92);
 
-    /* "rio_color/colorspace.pyx":246
+    /* "rio_color/colorspace.pyx":244
  *         else:
  *             rl = ((r + 0.055) / 1.055) ** 2.4
  *         if g <= 0.04045:             # <<<<<<<<<<<<<<
@@ -3563,7 +3563,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L4;
   }
 
-  /* "rio_color/colorspace.pyx":249
+  /* "rio_color/colorspace.pyx":247
  *             gl = g / 12.92
  *         else:
  *             gl = ((g + 0.055) / 1.055) ** 2.4             # <<<<<<<<<<<<<<
@@ -3575,7 +3575,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L4:;
 
-  /* "rio_color/colorspace.pyx":250
+  /* "rio_color/colorspace.pyx":248
  *         else:
  *             gl = ((g + 0.055) / 1.055) ** 2.4
  *         if b <= 0.04045:             # <<<<<<<<<<<<<<
@@ -3585,7 +3585,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_b <= 0.04045) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":251
+    /* "rio_color/colorspace.pyx":249
  *             gl = ((g + 0.055) / 1.055) ** 2.4
  *         if b <= 0.04045:
  *             bl = b / 12.92             # <<<<<<<<<<<<<<
@@ -3594,7 +3594,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_bl = (__pyx_v_b / 12.92);
 
-    /* "rio_color/colorspace.pyx":250
+    /* "rio_color/colorspace.pyx":248
  *         else:
  *             gl = ((g + 0.055) / 1.055) ** 2.4
  *         if b <= 0.04045:             # <<<<<<<<<<<<<<
@@ -3604,47 +3604,47 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L5;
   }
 
-  /* "rio_color/colorspace.pyx":253
+  /* "rio_color/colorspace.pyx":251
  *             bl = b / 12.92
  *         else:
  *             bl = ((b + 0.055) / 1.055) ** 2.4             # <<<<<<<<<<<<<<
- * 
- *     # matrix mult for srgb->xyz,
+ *     ELSE:
+ *         # Use "simplified sRGB"
  */
   /*else*/ {
     __pyx_v_bl = pow(((__pyx_v_b + 0.055) / 1.055), 2.4);
   }
   __pyx_L5:;
 
-  /* "rio_color/colorspace.pyx":257
+  /* "rio_color/colorspace.pyx":260
  *     # matrix mult for srgb->xyz,
- *     # includes adjustment for d65 reference white
- *     x = ((rl * 0.4124) + (gl * 0.3576) + (bl * 0.1805)) / 0.95047             # <<<<<<<<<<<<<<
- *     y = ((rl * 0.2126) + (gl * 0.7152) + (bl * 0.0722))
- *     z = ((rl * 0.0193) + (gl * 0.1192) + (bl * 0.9505)) / 1.08883
+ *     # includes adjustment for reference white
+ *     x = ((rl * 0.4124564) + (gl * 0.3575761) + (bl * 0.1804375)) / xn             # <<<<<<<<<<<<<<
+ *     y = ((rl * 0.2126729) + (gl * 0.7151522) + (bl * 0.0721750))
+ *     z = ((rl * 0.0193339) + (gl * 0.1191920) + (bl * 0.9503041)) / zn
  */
-  __pyx_v_x = ((((__pyx_v_rl * 0.4124) + (__pyx_v_gl * 0.3576)) + (__pyx_v_bl * 0.1805)) / 0.95047);
+  __pyx_v_x = ((((__pyx_v_rl * 0.4124564) + (__pyx_v_gl * 0.3575761)) + (__pyx_v_bl * 0.1804375)) / 0.95047);
 
-  /* "rio_color/colorspace.pyx":258
- *     # includes adjustment for d65 reference white
- *     x = ((rl * 0.4124) + (gl * 0.3576) + (bl * 0.1805)) / 0.95047
- *     y = ((rl * 0.2126) + (gl * 0.7152) + (bl * 0.0722))             # <<<<<<<<<<<<<<
- *     z = ((rl * 0.0193) + (gl * 0.1192) + (bl * 0.9505)) / 1.08883
+  /* "rio_color/colorspace.pyx":261
+ *     # includes adjustment for reference white
+ *     x = ((rl * 0.4124564) + (gl * 0.3575761) + (bl * 0.1804375)) / xn
+ *     y = ((rl * 0.2126729) + (gl * 0.7151522) + (bl * 0.0721750))             # <<<<<<<<<<<<<<
+ *     z = ((rl * 0.0193339) + (gl * 0.1191920) + (bl * 0.9503041)) / zn
  * 
  */
-  __pyx_v_y = (((__pyx_v_rl * 0.2126) + (__pyx_v_gl * 0.7152)) + (__pyx_v_bl * 0.0722));
+  __pyx_v_y = (((__pyx_v_rl * 0.2126729) + (__pyx_v_gl * 0.7151522)) + (__pyx_v_bl * 0.0721750));
 
-  /* "rio_color/colorspace.pyx":259
- *     x = ((rl * 0.4124) + (gl * 0.3576) + (bl * 0.1805)) / 0.95047
- *     y = ((rl * 0.2126) + (gl * 0.7152) + (bl * 0.0722))
- *     z = ((rl * 0.0193) + (gl * 0.1192) + (bl * 0.9505)) / 1.08883             # <<<<<<<<<<<<<<
+  /* "rio_color/colorspace.pyx":262
+ *     x = ((rl * 0.4124564) + (gl * 0.3575761) + (bl * 0.1804375)) / xn
+ *     y = ((rl * 0.2126729) + (gl * 0.7151522) + (bl * 0.0721750))
+ *     z = ((rl * 0.0193339) + (gl * 0.1191920) + (bl * 0.9503041)) / zn             # <<<<<<<<<<<<<<
  * 
  *     color.one = x
  */
-  __pyx_v_z = ((((__pyx_v_rl * 0.0193) + (__pyx_v_gl * 0.1192)) + (__pyx_v_bl * 0.9505)) / 1.08883);
+  __pyx_v_z = ((((__pyx_v_rl * 0.0193339) + (__pyx_v_gl * 0.1191920)) + (__pyx_v_bl * 0.9503041)) / 1.08883);
 
-  /* "rio_color/colorspace.pyx":261
- *     z = ((rl * 0.0193) + (gl * 0.1192) + (bl * 0.9505)) / 1.08883
+  /* "rio_color/colorspace.pyx":264
+ *     z = ((rl * 0.0193339) + (gl * 0.1191920) + (bl * 0.9503041)) / zn
  * 
  *     color.one = x             # <<<<<<<<<<<<<<
  *     color.two = y
@@ -3652,7 +3652,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.one = __pyx_v_x;
 
-  /* "rio_color/colorspace.pyx":262
+  /* "rio_color/colorspace.pyx":265
  * 
  *     color.one = x
  *     color.two = y             # <<<<<<<<<<<<<<
@@ -3661,7 +3661,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.two = __pyx_v_y;
 
-  /* "rio_color/colorspace.pyx":263
+  /* "rio_color/colorspace.pyx":266
  *     color.one = x
  *     color.two = y
  *     color.three = z             # <<<<<<<<<<<<<<
@@ -3670,7 +3670,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.three = __pyx_v_z;
 
-  /* "rio_color/colorspace.pyx":264
+  /* "rio_color/colorspace.pyx":267
  *     color.two = y
  *     color.three = z
  *     return color             # <<<<<<<<<<<<<<
@@ -3680,7 +3680,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":230
+  /* "rio_color/colorspace.pyx":234
  * # Direct colorspace conversions
  * 
  * cdef inline color _rgb_to_xyz(double r, double g, double b):             # <<<<<<<<<<<<<<
@@ -3694,7 +3694,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":267
+/* "rio_color/colorspace.pyx":270
  * 
  * 
  * cdef inline color _xyz_to_lab(double x, double y, double z):             # <<<<<<<<<<<<<<
@@ -3715,7 +3715,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("_xyz_to_lab", 0);
 
-  /* "rio_color/colorspace.pyx":273
+  /* "rio_color/colorspace.pyx":276
  * 
  *     # convert XYZ to LAB colorspace
  *     if x > t0:             # <<<<<<<<<<<<<<
@@ -3725,7 +3725,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_x > 0.008856451679035631) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":274
+    /* "rio_color/colorspace.pyx":277
  *     # convert XYZ to LAB colorspace
  *     if x > t0:
  *         fx = x ** third             # <<<<<<<<<<<<<<
@@ -3734,7 +3734,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_fx = pow(__pyx_v_x, 0.3333333333333333);
 
-    /* "rio_color/colorspace.pyx":273
+    /* "rio_color/colorspace.pyx":276
  * 
  *     # convert XYZ to LAB colorspace
  *     if x > t0:             # <<<<<<<<<<<<<<
@@ -3744,7 +3744,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L3;
   }
 
-  /* "rio_color/colorspace.pyx":276
+  /* "rio_color/colorspace.pyx":279
  *         fx = x ** third
  *     else:
  *         fx = (alpha * x) + bintercept             # <<<<<<<<<<<<<<
@@ -3756,7 +3756,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L3:;
 
-  /* "rio_color/colorspace.pyx":278
+  /* "rio_color/colorspace.pyx":281
  *         fx = (alpha * x) + bintercept
  * 
  *     if y > t0:             # <<<<<<<<<<<<<<
@@ -3766,7 +3766,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_y > 0.008856451679035631) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":279
+    /* "rio_color/colorspace.pyx":282
  * 
  *     if y > t0:
  *         fy = y ** third             # <<<<<<<<<<<<<<
@@ -3775,7 +3775,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_fy = pow(__pyx_v_y, 0.3333333333333333);
 
-    /* "rio_color/colorspace.pyx":278
+    /* "rio_color/colorspace.pyx":281
  *         fx = (alpha * x) + bintercept
  * 
  *     if y > t0:             # <<<<<<<<<<<<<<
@@ -3785,7 +3785,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L4;
   }
 
-  /* "rio_color/colorspace.pyx":281
+  /* "rio_color/colorspace.pyx":284
  *         fy = y ** third
  *     else:
  *         fy = (alpha * y) + bintercept             # <<<<<<<<<<<<<<
@@ -3797,7 +3797,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L4:;
 
-  /* "rio_color/colorspace.pyx":283
+  /* "rio_color/colorspace.pyx":286
  *         fy = (alpha * y) + bintercept
  * 
  *     if z > t0:             # <<<<<<<<<<<<<<
@@ -3807,7 +3807,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_z > 0.008856451679035631) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":284
+    /* "rio_color/colorspace.pyx":287
  * 
  *     if z > t0:
  *         fz = z ** third             # <<<<<<<<<<<<<<
@@ -3816,7 +3816,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_fz = pow(__pyx_v_z, 0.3333333333333333);
 
-    /* "rio_color/colorspace.pyx":283
+    /* "rio_color/colorspace.pyx":286
  *         fy = (alpha * y) + bintercept
  * 
  *     if z > t0:             # <<<<<<<<<<<<<<
@@ -3826,7 +3826,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L5;
   }
 
-  /* "rio_color/colorspace.pyx":286
+  /* "rio_color/colorspace.pyx":289
  *         fz = z ** third
  *     else:
  *         fz = (alpha * z) + bintercept             # <<<<<<<<<<<<<<
@@ -3838,7 +3838,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L5:;
 
-  /* "rio_color/colorspace.pyx":288
+  /* "rio_color/colorspace.pyx":291
  *         fz = (alpha * z) + bintercept
  * 
  *     L = (116 * fy) - 16             # <<<<<<<<<<<<<<
@@ -3847,7 +3847,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_L = ((116.0 * __pyx_v_fy) - 16.0);
 
-  /* "rio_color/colorspace.pyx":289
+  /* "rio_color/colorspace.pyx":292
  * 
  *     L = (116 * fy) - 16
  *     a = 500 * (fx - fy)             # <<<<<<<<<<<<<<
@@ -3856,7 +3856,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_a = (500.0 * (__pyx_v_fx - __pyx_v_fy));
 
-  /* "rio_color/colorspace.pyx":290
+  /* "rio_color/colorspace.pyx":293
  *     L = (116 * fy) - 16
  *     a = 500 * (fx - fy)
  *     b = 200 * (fy - fz)             # <<<<<<<<<<<<<<
@@ -3865,7 +3865,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_b = (200.0 * (__pyx_v_fy - __pyx_v_fz));
 
-  /* "rio_color/colorspace.pyx":292
+  /* "rio_color/colorspace.pyx":295
  *     b = 200 * (fy - fz)
  * 
  *     color.one = L             # <<<<<<<<<<<<<<
@@ -3874,7 +3874,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.one = __pyx_v_L;
 
-  /* "rio_color/colorspace.pyx":293
+  /* "rio_color/colorspace.pyx":296
  * 
  *     color.one = L
  *     color.two = a             # <<<<<<<<<<<<<<
@@ -3883,7 +3883,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.two = __pyx_v_a;
 
-  /* "rio_color/colorspace.pyx":294
+  /* "rio_color/colorspace.pyx":297
  *     color.one = L
  *     color.two = a
  *     color.three = b             # <<<<<<<<<<<<<<
@@ -3892,17 +3892,17 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.three = __pyx_v_b;
 
-  /* "rio_color/colorspace.pyx":295
+  /* "rio_color/colorspace.pyx":298
  *     color.two = a
  *     color.three = b
  *     return color             # <<<<<<<<<<<<<<
  * 
- * cdef inline color _lab_to_lch(double L, double a, double b):
+ * 
  */
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":267
+  /* "rio_color/colorspace.pyx":270
  * 
  * 
  * cdef inline color _xyz_to_lab(double x, double y, double z):             # <<<<<<<<<<<<<<
@@ -3916,8 +3916,8 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":297
- *     return color
+/* "rio_color/colorspace.pyx":301
+ * 
  * 
  * cdef inline color _lab_to_lch(double L, double a, double b):             # <<<<<<<<<<<<<<
  *     cdef color color
@@ -3930,7 +3930,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_lab_to_lch", 0);
 
-  /* "rio_color/colorspace.pyx":300
+  /* "rio_color/colorspace.pyx":304
  *     cdef color color
  * 
  *     color.one = L             # <<<<<<<<<<<<<<
@@ -3939,7 +3939,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.one = __pyx_v_L;
 
-  /* "rio_color/colorspace.pyx":301
+  /* "rio_color/colorspace.pyx":305
  * 
  *     color.one = L
  *     color.two = ((a * a) + (b * b)) ** 0.5             # <<<<<<<<<<<<<<
@@ -3948,7 +3948,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.two = pow(((__pyx_v_a * __pyx_v_a) + (__pyx_v_b * __pyx_v_b)), 0.5);
 
-  /* "rio_color/colorspace.pyx":302
+  /* "rio_color/colorspace.pyx":306
  *     color.one = L
  *     color.two = ((a * a) + (b * b)) ** 0.5
  *     color.three = atan2(b, a)             # <<<<<<<<<<<<<<
@@ -3957,7 +3957,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.three = atan2(__pyx_v_b, __pyx_v_a);
 
-  /* "rio_color/colorspace.pyx":303
+  /* "rio_color/colorspace.pyx":307
  *     color.two = ((a * a) + (b * b)) ** 0.5
  *     color.three = atan2(b, a)
  *     return color             # <<<<<<<<<<<<<<
@@ -3967,8 +3967,8 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":297
- *     return color
+  /* "rio_color/colorspace.pyx":301
+ * 
  * 
  * cdef inline color _lab_to_lch(double L, double a, double b):             # <<<<<<<<<<<<<<
  *     cdef color color
@@ -3981,7 +3981,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":306
+/* "rio_color/colorspace.pyx":310
  * 
  * 
  * cdef inline color _lch_to_lab(double L, double C, double H):             # <<<<<<<<<<<<<<
@@ -3997,7 +3997,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_lch_to_lab", 0);
 
-  /* "rio_color/colorspace.pyx":310
+  /* "rio_color/colorspace.pyx":314
  *     cdef color color
  * 
  *     a = C * cos(H)             # <<<<<<<<<<<<<<
@@ -4006,7 +4006,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_a = (__pyx_v_C * cos(__pyx_v_H));
 
-  /* "rio_color/colorspace.pyx":311
+  /* "rio_color/colorspace.pyx":315
  * 
  *     a = C * cos(H)
  *     b = C * sin(H)             # <<<<<<<<<<<<<<
@@ -4015,7 +4015,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_b = (__pyx_v_C * sin(__pyx_v_H));
 
-  /* "rio_color/colorspace.pyx":313
+  /* "rio_color/colorspace.pyx":317
  *     b = C * sin(H)
  * 
  *     color.one = L             # <<<<<<<<<<<<<<
@@ -4024,7 +4024,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.one = __pyx_v_L;
 
-  /* "rio_color/colorspace.pyx":314
+  /* "rio_color/colorspace.pyx":318
  * 
  *     color.one = L
  *     color.two = a             # <<<<<<<<<<<<<<
@@ -4033,7 +4033,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.two = __pyx_v_a;
 
-  /* "rio_color/colorspace.pyx":315
+  /* "rio_color/colorspace.pyx":319
  *     color.one = L
  *     color.two = a
  *     color.three = b             # <<<<<<<<<<<<<<
@@ -4042,7 +4042,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.three = __pyx_v_b;
 
-  /* "rio_color/colorspace.pyx":316
+  /* "rio_color/colorspace.pyx":320
  *     color.two = a
  *     color.three = b
  *     return color             # <<<<<<<<<<<<<<
@@ -4052,7 +4052,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":306
+  /* "rio_color/colorspace.pyx":310
  * 
  * 
  * cdef inline color _lch_to_lab(double L, double C, double H):             # <<<<<<<<<<<<<<
@@ -4066,7 +4066,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":319
+/* "rio_color/colorspace.pyx":323
  * 
  * 
  * cdef inline color _lab_to_xyz(double L, double a, double b):             # <<<<<<<<<<<<<<
@@ -4087,7 +4087,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("_lab_to_xyz", 0);
 
-  /* "rio_color/colorspace.pyx":323
+  /* "rio_color/colorspace.pyx":327
  *     cdef color color
  * 
  *     tx = ((L + 16) / 116.0) + (a / 500.0)             # <<<<<<<<<<<<<<
@@ -4096,7 +4096,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_tx = (((__pyx_v_L + 16.0) / 116.0) + (__pyx_v_a / 500.0));
 
-  /* "rio_color/colorspace.pyx":324
+  /* "rio_color/colorspace.pyx":328
  * 
  *     tx = ((L + 16) / 116.0) + (a / 500.0)
  *     if tx > delta:             # <<<<<<<<<<<<<<
@@ -4106,7 +4106,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_tx > 0.20689655172413793) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":325
+    /* "rio_color/colorspace.pyx":329
  *     tx = ((L + 16) / 116.0) + (a / 500.0)
  *     if tx > delta:
  *         x = tx ** 3             # <<<<<<<<<<<<<<
@@ -4115,7 +4115,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_x = pow(__pyx_v_tx, 3.0);
 
-    /* "rio_color/colorspace.pyx":324
+    /* "rio_color/colorspace.pyx":328
  * 
  *     tx = ((L + 16) / 116.0) + (a / 500.0)
  *     if tx > delta:             # <<<<<<<<<<<<<<
@@ -4125,7 +4125,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L3;
   }
 
-  /* "rio_color/colorspace.pyx":327
+  /* "rio_color/colorspace.pyx":331
  *         x = tx ** 3
  *     else:
  *         x = 3 * delta * delta * (tx - bintercept)             # <<<<<<<<<<<<<<
@@ -4137,7 +4137,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L3:;
 
-  /* "rio_color/colorspace.pyx":329
+  /* "rio_color/colorspace.pyx":333
  *         x = 3 * delta * delta * (tx - bintercept)
  * 
  *     ty = (L + 16) / 116.0             # <<<<<<<<<<<<<<
@@ -4146,7 +4146,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_ty = ((__pyx_v_L + 16.0) / 116.0);
 
-  /* "rio_color/colorspace.pyx":330
+  /* "rio_color/colorspace.pyx":334
  * 
  *     ty = (L + 16) / 116.0
  *     if ty > delta:             # <<<<<<<<<<<<<<
@@ -4156,7 +4156,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_ty > 0.20689655172413793) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":331
+    /* "rio_color/colorspace.pyx":335
  *     ty = (L + 16) / 116.0
  *     if ty > delta:
  *         y = ty ** 3             # <<<<<<<<<<<<<<
@@ -4165,7 +4165,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_y = pow(__pyx_v_ty, 3.0);
 
-    /* "rio_color/colorspace.pyx":330
+    /* "rio_color/colorspace.pyx":334
  * 
  *     ty = (L + 16) / 116.0
  *     if ty > delta:             # <<<<<<<<<<<<<<
@@ -4175,7 +4175,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L4;
   }
 
-  /* "rio_color/colorspace.pyx":333
+  /* "rio_color/colorspace.pyx":337
  *         y = ty ** 3
  *     else:
  *         y = 3 * delta * delta * (ty - bintercept)             # <<<<<<<<<<<<<<
@@ -4187,7 +4187,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L4:;
 
-  /* "rio_color/colorspace.pyx":335
+  /* "rio_color/colorspace.pyx":339
  *         y = 3 * delta * delta * (ty - bintercept)
  * 
  *     tz = ((L + 16) / 116.0) - (b / 200.0)             # <<<<<<<<<<<<<<
@@ -4196,7 +4196,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_tz = (((__pyx_v_L + 16.0) / 116.0) - (__pyx_v_b / 200.0));
 
-  /* "rio_color/colorspace.pyx":336
+  /* "rio_color/colorspace.pyx":340
  * 
  *     tz = ((L + 16) / 116.0) - (b / 200.0)
  *     if tz > delta:             # <<<<<<<<<<<<<<
@@ -4206,7 +4206,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_tz > 0.20689655172413793) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":337
+    /* "rio_color/colorspace.pyx":341
  *     tz = ((L + 16) / 116.0) - (b / 200.0)
  *     if tz > delta:
  *         z = tz ** 3             # <<<<<<<<<<<<<<
@@ -4215,7 +4215,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_z = pow(__pyx_v_tz, 3.0);
 
-    /* "rio_color/colorspace.pyx":336
+    /* "rio_color/colorspace.pyx":340
  * 
  *     tz = ((L + 16) / 116.0) - (b / 200.0)
  *     if tz > delta:             # <<<<<<<<<<<<<<
@@ -4225,29 +4225,29 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L5;
   }
 
-  /* "rio_color/colorspace.pyx":339
+  /* "rio_color/colorspace.pyx":343
  *         z = tz ** 3
  *     else:
  *         z = 3 * delta * delta * (tz - bintercept)             # <<<<<<<<<<<<<<
  * 
- *     color.one = x
+ *     # Reference illuminant
  */
   /*else*/ {
     __pyx_v_z = (((3.0 * 0.20689655172413793) * 0.20689655172413793) * (__pyx_v_tz - 0.13793103448275862));
   }
   __pyx_L5:;
 
-  /* "rio_color/colorspace.pyx":341
- *         z = 3 * delta * delta * (tz - bintercept)
+  /* "rio_color/colorspace.pyx":346
  * 
+ *     # Reference illuminant
  *     color.one = x             # <<<<<<<<<<<<<<
  *     color.two = y
  *     color.three = z
  */
   __pyx_v_color.one = __pyx_v_x;
 
-  /* "rio_color/colorspace.pyx":342
- * 
+  /* "rio_color/colorspace.pyx":347
+ *     # Reference illuminant
  *     color.one = x
  *     color.two = y             # <<<<<<<<<<<<<<
  *     color.three = z
@@ -4255,7 +4255,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.two = __pyx_v_y;
 
-  /* "rio_color/colorspace.pyx":343
+  /* "rio_color/colorspace.pyx":348
  *     color.one = x
  *     color.two = y
  *     color.three = z             # <<<<<<<<<<<<<<
@@ -4264,7 +4264,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.three = __pyx_v_z;
 
-  /* "rio_color/colorspace.pyx":344
+  /* "rio_color/colorspace.pyx":349
  *     color.two = y
  *     color.three = z
  *     return color             # <<<<<<<<<<<<<<
@@ -4274,7 +4274,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":319
+  /* "rio_color/colorspace.pyx":323
  * 
  * 
  * cdef inline color _lab_to_xyz(double L, double a, double b):             # <<<<<<<<<<<<<<
@@ -4288,7 +4288,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":347
+/* "rio_color/colorspace.pyx":352
  * 
  * 
  * cdef inline color _xyz_to_rgb(double x, double y, double z):             # <<<<<<<<<<<<<<
@@ -4309,54 +4309,54 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("_xyz_to_rgb", 0);
 
-  /* "rio_color/colorspace.pyx":352
+  /* "rio_color/colorspace.pyx":357
  * 
  *     # uses reference white d65
- *     x = x * 0.95047             # <<<<<<<<<<<<<<
- *     z = z * 1.08883
+ *     x = x * xn             # <<<<<<<<<<<<<<
+ *     z = z * zn
  * 
  */
   __pyx_v_x = (__pyx_v_x * 0.95047);
 
-  /* "rio_color/colorspace.pyx":353
+  /* "rio_color/colorspace.pyx":358
  *     # uses reference white d65
- *     x = x * 0.95047
- *     z = z * 1.08883             # <<<<<<<<<<<<<<
+ *     x = x * xn
+ *     z = z * zn             # <<<<<<<<<<<<<<
  * 
  *     # XYZ to sRGB
  */
   __pyx_v_z = (__pyx_v_z * 1.08883);
 
-  /* "rio_color/colorspace.pyx":357
+  /* "rio_color/colorspace.pyx":362
  *     # XYZ to sRGB
  *     # expanded matrix multiplication
- *     rlin = (x * 3.2406) + (y * -1.5372) + (z * -0.4986)             # <<<<<<<<<<<<<<
- *     glin = (x * -0.9689) + (y * 1.8758) + (z * 0.0415)
- *     blin = (x * 0.0557) + (y * -0.2040) + (z * 1.0570)
+ *     rlin = (x * 3.2404542) + (y * -1.5371385) + (z * -0.4985314)             # <<<<<<<<<<<<<<
+ *     glin = (x * -0.9692660) + (y * 1.8760108) + (z * 0.0415560)
+ *     blin = (x * 0.0556434) + (y * -0.2040259) + (z * 1.0572252)
  */
-  __pyx_v_rlin = (((__pyx_v_x * 3.2406) + (__pyx_v_y * -1.5372)) + (__pyx_v_z * -0.4986));
+  __pyx_v_rlin = (((__pyx_v_x * 3.2404542) + (__pyx_v_y * -1.5371385)) + (__pyx_v_z * -0.4985314));
 
-  /* "rio_color/colorspace.pyx":358
+  /* "rio_color/colorspace.pyx":363
  *     # expanded matrix multiplication
- *     rlin = (x * 3.2406) + (y * -1.5372) + (z * -0.4986)
- *     glin = (x * -0.9689) + (y * 1.8758) + (z * 0.0415)             # <<<<<<<<<<<<<<
- *     blin = (x * 0.0557) + (y * -0.2040) + (z * 1.0570)
+ *     rlin = (x * 3.2404542) + (y * -1.5371385) + (z * -0.4985314)
+ *     glin = (x * -0.9692660) + (y * 1.8760108) + (z * 0.0415560)             # <<<<<<<<<<<<<<
+ *     blin = (x * 0.0556434) + (y * -0.2040259) + (z * 1.0572252)
  * 
  */
-  __pyx_v_glin = (((__pyx_v_x * -0.9689) + (__pyx_v_y * 1.8758)) + (__pyx_v_z * 0.0415));
+  __pyx_v_glin = (((__pyx_v_x * -0.9692660) + (__pyx_v_y * 1.8760108)) + (__pyx_v_z * 0.0415560));
 
-  /* "rio_color/colorspace.pyx":359
- *     rlin = (x * 3.2406) + (y * -1.5372) + (z * -0.4986)
- *     glin = (x * -0.9689) + (y * 1.8758) + (z * 0.0415)
- *     blin = (x * 0.0557) + (y * -0.2040) + (z * 1.0570)             # <<<<<<<<<<<<<<
+  /* "rio_color/colorspace.pyx":364
+ *     rlin = (x * 3.2404542) + (y * -1.5371385) + (z * -0.4985314)
+ *     glin = (x * -0.9692660) + (y * 1.8760108) + (z * 0.0415560)
+ *     blin = (x * 0.0556434) + (y * -0.2040259) + (z * 1.0572252)             # <<<<<<<<<<<<<<
  * 
- *     IF SIMPLE:
+ *     IF SRGB_COMPAND:
  */
-  __pyx_v_blin = (((__pyx_v_x * 0.0557) + (__pyx_v_y * -0.2040)) + (__pyx_v_z * 1.0570));
+  __pyx_v_blin = (((__pyx_v_x * 0.0556434) + (__pyx_v_y * -0.2040259)) + (__pyx_v_z * 1.0572252));
 
-  /* "rio_color/colorspace.pyx":381
- *         b = blin ** (1 / gamma)
- *     ELSE:
+  /* "rio_color/colorspace.pyx":367
+ * 
+ *     IF SRGB_COMPAND:
  *         if rlin <= 0.0031308:             # <<<<<<<<<<<<<<
  *             r = 12.92 * rlin
  *         else:
@@ -4364,8 +4364,8 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_rlin <= 0.0031308) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":382
- *     ELSE:
+    /* "rio_color/colorspace.pyx":368
+ *     IF SRGB_COMPAND:
  *         if rlin <= 0.0031308:
  *             r = 12.92 * rlin             # <<<<<<<<<<<<<<
  *         else:
@@ -4373,9 +4373,9 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_r = (12.92 * __pyx_v_rlin);
 
-    /* "rio_color/colorspace.pyx":381
- *         b = blin ** (1 / gamma)
- *     ELSE:
+    /* "rio_color/colorspace.pyx":367
+ * 
+ *     IF SRGB_COMPAND:
  *         if rlin <= 0.0031308:             # <<<<<<<<<<<<<<
  *             r = 12.92 * rlin
  *         else:
@@ -4383,7 +4383,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L3;
   }
 
-  /* "rio_color/colorspace.pyx":384
+  /* "rio_color/colorspace.pyx":370
  *             r = 12.92 * rlin
  *         else:
  *             r = (1.055 * (rlin ** (1 / 2.4))) - 0.055             # <<<<<<<<<<<<<<
@@ -4395,7 +4395,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L3:;
 
-  /* "rio_color/colorspace.pyx":385
+  /* "rio_color/colorspace.pyx":371
  *         else:
  *             r = (1.055 * (rlin ** (1 / 2.4))) - 0.055
  *         if glin <= 0.0031308:             # <<<<<<<<<<<<<<
@@ -4405,7 +4405,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_glin <= 0.0031308) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":386
+    /* "rio_color/colorspace.pyx":372
  *             r = (1.055 * (rlin ** (1 / 2.4))) - 0.055
  *         if glin <= 0.0031308:
  *             g = 12.92 * glin             # <<<<<<<<<<<<<<
@@ -4414,7 +4414,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_g = (12.92 * __pyx_v_glin);
 
-    /* "rio_color/colorspace.pyx":385
+    /* "rio_color/colorspace.pyx":371
  *         else:
  *             r = (1.055 * (rlin ** (1 / 2.4))) - 0.055
  *         if glin <= 0.0031308:             # <<<<<<<<<<<<<<
@@ -4424,7 +4424,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L4;
   }
 
-  /* "rio_color/colorspace.pyx":388
+  /* "rio_color/colorspace.pyx":374
  *             g = 12.92 * glin
  *         else:
  *             g = (1.055 * (glin ** (1 / 2.4))) - 0.055             # <<<<<<<<<<<<<<
@@ -4436,7 +4436,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L4:;
 
-  /* "rio_color/colorspace.pyx":389
+  /* "rio_color/colorspace.pyx":375
  *         else:
  *             g = (1.055 * (glin ** (1 / 2.4))) - 0.055
  *         if blin <= 0.0031308:             # <<<<<<<<<<<<<<
@@ -4446,7 +4446,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_blin <= 0.0031308) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":390
+    /* "rio_color/colorspace.pyx":376
  *             g = (1.055 * (glin ** (1 / 2.4))) - 0.055
  *         if blin <= 0.0031308:
  *             b = 12.92 * blin             # <<<<<<<<<<<<<<
@@ -4455,7 +4455,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_b = (12.92 * __pyx_v_blin);
 
-    /* "rio_color/colorspace.pyx":389
+    /* "rio_color/colorspace.pyx":375
  *         else:
  *             g = (1.055 * (glin ** (1 / 2.4))) - 0.055
  *         if blin <= 0.0031308:             # <<<<<<<<<<<<<<
@@ -4465,20 +4465,194 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L5;
   }
 
-  /* "rio_color/colorspace.pyx":392
+  /* "rio_color/colorspace.pyx":378
  *             b = 12.92 * blin
  *         else:
  *             b = (1.055 * (blin ** (1 / 2.4))) - 0.055             # <<<<<<<<<<<<<<
- * 
- *     color.one = r
+ *     ELSE:
+ *         # Use simplified sRGB
  */
   /*else*/ {
     __pyx_v_b = ((1.055 * pow(__pyx_v_blin, (1.0 / 2.4))) - 0.055);
   }
   __pyx_L5:;
 
+  /* "rio_color/colorspace.pyx":386
+ * 
+ *     # constrain to 0..1 to deal with any float drift
+ *     if r > 1.0:             # <<<<<<<<<<<<<<
+ *         r = 1.0
+ *     elif r < 0.0:
+ */
+  __pyx_t_1 = ((__pyx_v_r > 1.0) != 0);
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":387
+ *     # constrain to 0..1 to deal with any float drift
+ *     if r > 1.0:
+ *         r = 1.0             # <<<<<<<<<<<<<<
+ *     elif r < 0.0:
+ *         r = 0.0
+ */
+    __pyx_v_r = 1.0;
+
+    /* "rio_color/colorspace.pyx":386
+ * 
+ *     # constrain to 0..1 to deal with any float drift
+ *     if r > 1.0:             # <<<<<<<<<<<<<<
+ *         r = 1.0
+ *     elif r < 0.0:
+ */
+    goto __pyx_L6;
+  }
+
+  /* "rio_color/colorspace.pyx":388
+ *     if r > 1.0:
+ *         r = 1.0
+ *     elif r < 0.0:             # <<<<<<<<<<<<<<
+ *         r = 0.0
+ *     if g > 1.0:
+ */
+  __pyx_t_1 = ((__pyx_v_r < 0.0) != 0);
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":389
+ *         r = 1.0
+ *     elif r < 0.0:
+ *         r = 0.0             # <<<<<<<<<<<<<<
+ *     if g > 1.0:
+ *         g = 1.0
+ */
+    __pyx_v_r = 0.0;
+
+    /* "rio_color/colorspace.pyx":388
+ *     if r > 1.0:
+ *         r = 1.0
+ *     elif r < 0.0:             # <<<<<<<<<<<<<<
+ *         r = 0.0
+ *     if g > 1.0:
+ */
+  }
+  __pyx_L6:;
+
+  /* "rio_color/colorspace.pyx":390
+ *     elif r < 0.0:
+ *         r = 0.0
+ *     if g > 1.0:             # <<<<<<<<<<<<<<
+ *         g = 1.0
+ *     elif g < 0.0:
+ */
+  __pyx_t_1 = ((__pyx_v_g > 1.0) != 0);
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":391
+ *         r = 0.0
+ *     if g > 1.0:
+ *         g = 1.0             # <<<<<<<<<<<<<<
+ *     elif g < 0.0:
+ *         g = 0.0
+ */
+    __pyx_v_g = 1.0;
+
+    /* "rio_color/colorspace.pyx":390
+ *     elif r < 0.0:
+ *         r = 0.0
+ *     if g > 1.0:             # <<<<<<<<<<<<<<
+ *         g = 1.0
+ *     elif g < 0.0:
+ */
+    goto __pyx_L7;
+  }
+
+  /* "rio_color/colorspace.pyx":392
+ *     if g > 1.0:
+ *         g = 1.0
+ *     elif g < 0.0:             # <<<<<<<<<<<<<<
+ *         g = 0.0
+ *     if b > 1.0:
+ */
+  __pyx_t_1 = ((__pyx_v_g < 0.0) != 0);
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":393
+ *         g = 1.0
+ *     elif g < 0.0:
+ *         g = 0.0             # <<<<<<<<<<<<<<
+ *     if b > 1.0:
+ *         b = 1.0
+ */
+    __pyx_v_g = 0.0;
+
+    /* "rio_color/colorspace.pyx":392
+ *     if g > 1.0:
+ *         g = 1.0
+ *     elif g < 0.0:             # <<<<<<<<<<<<<<
+ *         g = 0.0
+ *     if b > 1.0:
+ */
+  }
+  __pyx_L7:;
+
   /* "rio_color/colorspace.pyx":394
- *             b = (1.055 * (blin ** (1 / 2.4))) - 0.055
+ *     elif g < 0.0:
+ *         g = 0.0
+ *     if b > 1.0:             # <<<<<<<<<<<<<<
+ *         b = 1.0
+ *     elif b < 0.0:
+ */
+  __pyx_t_1 = ((__pyx_v_b > 1.0) != 0);
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":395
+ *         g = 0.0
+ *     if b > 1.0:
+ *         b = 1.0             # <<<<<<<<<<<<<<
+ *     elif b < 0.0:
+ *         b = 0.0
+ */
+    __pyx_v_b = 1.0;
+
+    /* "rio_color/colorspace.pyx":394
+ *     elif g < 0.0:
+ *         g = 0.0
+ *     if b > 1.0:             # <<<<<<<<<<<<<<
+ *         b = 1.0
+ *     elif b < 0.0:
+ */
+    goto __pyx_L8;
+  }
+
+  /* "rio_color/colorspace.pyx":396
+ *     if b > 1.0:
+ *         b = 1.0
+ *     elif b < 0.0:             # <<<<<<<<<<<<<<
+ *         b = 0.0
+ * 
+ */
+  __pyx_t_1 = ((__pyx_v_b < 0.0) != 0);
+  if (__pyx_t_1) {
+
+    /* "rio_color/colorspace.pyx":397
+ *         b = 1.0
+ *     elif b < 0.0:
+ *         b = 0.0             # <<<<<<<<<<<<<<
+ * 
+ *     color.one = r
+ */
+    __pyx_v_b = 0.0;
+
+    /* "rio_color/colorspace.pyx":396
+ *     if b > 1.0:
+ *         b = 1.0
+ *     elif b < 0.0:             # <<<<<<<<<<<<<<
+ *         b = 0.0
+ * 
+ */
+  }
+  __pyx_L8:;
+
+  /* "rio_color/colorspace.pyx":399
+ *         b = 0.0
  * 
  *     color.one = r             # <<<<<<<<<<<<<<
  *     color.two = g
@@ -4486,7 +4660,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.one = __pyx_v_r;
 
-  /* "rio_color/colorspace.pyx":395
+  /* "rio_color/colorspace.pyx":400
  * 
  *     color.one = r
  *     color.two = g             # <<<<<<<<<<<<<<
@@ -4495,7 +4669,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.two = __pyx_v_g;
 
-  /* "rio_color/colorspace.pyx":396
+  /* "rio_color/colorspace.pyx":401
  *     color.one = r
  *     color.two = g
  *     color.three = b             # <<<<<<<<<<<<<<
@@ -4504,7 +4678,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.three = __pyx_v_b;
 
-  /* "rio_color/colorspace.pyx":398
+  /* "rio_color/colorspace.pyx":403
  *     color.three = b
  * 
  *     return color             # <<<<<<<<<<<<<<
@@ -4514,7 +4688,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":347
+  /* "rio_color/colorspace.pyx":352
  * 
  * 
  * cdef inline color _xyz_to_rgb(double x, double y, double z):             # <<<<<<<<<<<<<<
@@ -4528,7 +4702,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":401
+/* "rio_color/colorspace.pyx":406
  * 
  * 
  * cdef inline color _xyz_to_luv(double x, double y, double z):             # <<<<<<<<<<<<<<
@@ -4549,7 +4723,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("_xyz_to_luv", 0);
 
-  /* "rio_color/colorspace.pyx":405
+  /* "rio_color/colorspace.pyx":410
  *     cdef double L, u, v, uprime, vprime, denom
  * 
  *     denom = x + (15 * y) + (3 * z)             # <<<<<<<<<<<<<<
@@ -4558,7 +4732,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_denom = ((__pyx_v_x + (15.0 * __pyx_v_y)) + (3.0 * __pyx_v_z));
 
-  /* "rio_color/colorspace.pyx":406
+  /* "rio_color/colorspace.pyx":411
  * 
  *     denom = x + (15 * y) + (3 * z)
  *     uprime = (4 * x) / denom             # <<<<<<<<<<<<<<
@@ -4567,17 +4741,26 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_uprime = ((4.0 * __pyx_v_x) / __pyx_v_denom);
 
-  /* "rio_color/colorspace.pyx":407
+  /* "rio_color/colorspace.pyx":412
  *     denom = x + (15 * y) + (3 * z)
  *     uprime = (4 * x) / denom
  *     vprime = (9 * y) / denom             # <<<<<<<<<<<<<<
  * 
- *     if y <= t0:
+ *     y = y / yn
  */
   __pyx_v_vprime = ((9.0 * __pyx_v_y) / __pyx_v_denom);
 
-  /* "rio_color/colorspace.pyx":409
+  /* "rio_color/colorspace.pyx":414
  *     vprime = (9 * y) / denom
+ * 
+ *     y = y / yn             # <<<<<<<<<<<<<<
+ * 
+ *     if y <= t0:
+ */
+  __pyx_v_y = (__pyx_v_y / 1.0);
+
+  /* "rio_color/colorspace.pyx":416
+ *     y = y / yn
  * 
  *     if y <= t0:             # <<<<<<<<<<<<<<
  *         L = kappa * y
@@ -4586,7 +4769,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_y <= 0.008856451679035631) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":410
+    /* "rio_color/colorspace.pyx":417
  * 
  *     if y <= t0:
  *         L = kappa * y             # <<<<<<<<<<<<<<
@@ -4595,8 +4778,8 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_L = (903.2962962962961 * __pyx_v_y);
 
-    /* "rio_color/colorspace.pyx":409
- *     vprime = (9 * y) / denom
+    /* "rio_color/colorspace.pyx":416
+ *     y = y / yn
  * 
  *     if y <= t0:             # <<<<<<<<<<<<<<
  *         L = kappa * y
@@ -4605,7 +4788,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     goto __pyx_L3;
   }
 
-  /* "rio_color/colorspace.pyx":412
+  /* "rio_color/colorspace.pyx":419
  *         L = kappa * y
  *     else:
  *         L = (116 * (y ** third)) - 16             # <<<<<<<<<<<<<<
@@ -4617,25 +4800,25 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L3:;
 
-  /* "rio_color/colorspace.pyx":414
+  /* "rio_color/colorspace.pyx":421
  *         L = (116 * (y ** third)) - 16
  * 
  *     u = 13 * L * (uprime - uprime_n)             # <<<<<<<<<<<<<<
  *     v = 13 * L * (vprime - vprime_n)
  * 
  */
-  __pyx_v_u = ((13.0 * __pyx_v_L) * (__pyx_v_uprime - 0.2009));
+  __pyx_v_u = ((13.0 * __pyx_v_L) * (__pyx_v_uprime - 0.19783982482140777));
 
-  /* "rio_color/colorspace.pyx":415
+  /* "rio_color/colorspace.pyx":422
  * 
  *     u = 13 * L * (uprime - uprime_n)
  *     v = 13 * L * (vprime - vprime_n)             # <<<<<<<<<<<<<<
  * 
  *     color.one = L
  */
-  __pyx_v_v = ((13.0 * __pyx_v_L) * (__pyx_v_vprime - 0.461));
+  __pyx_v_v = ((13.0 * __pyx_v_L) * (__pyx_v_vprime - 0.4683363029324097));
 
-  /* "rio_color/colorspace.pyx":417
+  /* "rio_color/colorspace.pyx":424
  *     v = 13 * L * (vprime - vprime_n)
  * 
  *     color.one = L             # <<<<<<<<<<<<<<
@@ -4644,7 +4827,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.one = __pyx_v_L;
 
-  /* "rio_color/colorspace.pyx":418
+  /* "rio_color/colorspace.pyx":425
  * 
  *     color.one = L
  *     color.two = u             # <<<<<<<<<<<<<<
@@ -4653,7 +4836,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.two = __pyx_v_u;
 
-  /* "rio_color/colorspace.pyx":419
+  /* "rio_color/colorspace.pyx":426
  *     color.one = L
  *     color.two = u
  *     color.three = v             # <<<<<<<<<<<<<<
@@ -4662,7 +4845,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.three = __pyx_v_v;
 
-  /* "rio_color/colorspace.pyx":420
+  /* "rio_color/colorspace.pyx":427
  *     color.two = u
  *     color.three = v
  *     return color             # <<<<<<<<<<<<<<
@@ -4672,7 +4855,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":401
+  /* "rio_color/colorspace.pyx":406
  * 
  * 
  * cdef inline color _xyz_to_luv(double x, double y, double z):             # <<<<<<<<<<<<<<
@@ -4686,7 +4869,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   return __pyx_r;
 }
 
-/* "rio_color/colorspace.pyx":423
+/* "rio_color/colorspace.pyx":430
  * 
  * 
  * cdef inline color _luv_to_xyz(double L, double u, double v):             # <<<<<<<<<<<<<<
@@ -4706,7 +4889,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("_luv_to_xyz", 0);
 
-  /* "rio_color/colorspace.pyx":427
+  /* "rio_color/colorspace.pyx":434
  *     cdef double x, y, z, uprime, vprime
  * 
  *     if L == 0.0:             # <<<<<<<<<<<<<<
@@ -4716,7 +4899,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_t_1 = ((__pyx_v_L == 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":428
+    /* "rio_color/colorspace.pyx":435
  * 
  *     if L == 0.0:
  *         color.one = 0.0             # <<<<<<<<<<<<<<
@@ -4725,7 +4908,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_color.one = 0.0;
 
-    /* "rio_color/colorspace.pyx":429
+    /* "rio_color/colorspace.pyx":436
  *     if L == 0.0:
  *         color.one = 0.0
  *         color.two = 0.0             # <<<<<<<<<<<<<<
@@ -4734,7 +4917,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_color.two = 0.0;
 
-    /* "rio_color/colorspace.pyx":430
+    /* "rio_color/colorspace.pyx":437
  *         color.one = 0.0
  *         color.two = 0.0
  *         color.three = 0.0             # <<<<<<<<<<<<<<
@@ -4743,7 +4926,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
     __pyx_v_color.three = 0.0;
 
-    /* "rio_color/colorspace.pyx":431
+    /* "rio_color/colorspace.pyx":438
  *         color.two = 0.0
  *         color.three = 0.0
  *         return color             # <<<<<<<<<<<<<<
@@ -4753,7 +4936,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
     __pyx_r = __pyx_v_color;
     goto __pyx_L0;
 
-    /* "rio_color/colorspace.pyx":427
+    /* "rio_color/colorspace.pyx":434
  *     cdef double x, y, z, uprime, vprime
  * 
  *     if L == 0.0:             # <<<<<<<<<<<<<<
@@ -4762,55 +4945,55 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   }
 
-  /* "rio_color/colorspace.pyx":433
+  /* "rio_color/colorspace.pyx":440
  *         return color
  * 
  *     uprime = (u / (13 * L)) + uprime_n             # <<<<<<<<<<<<<<
  *     vprime = (v / (13 * L)) + vprime_n
  * 
  */
-  __pyx_v_uprime = ((__pyx_v_u / (13.0 * __pyx_v_L)) + 0.2009);
+  __pyx_v_uprime = ((__pyx_v_u / (13.0 * __pyx_v_L)) + 0.19783982482140777);
 
-  /* "rio_color/colorspace.pyx":434
+  /* "rio_color/colorspace.pyx":441
  * 
  *     uprime = (u / (13 * L)) + uprime_n
  *     vprime = (v / (13 * L)) + vprime_n             # <<<<<<<<<<<<<<
  * 
  *     if L <= 8.0:
  */
-  __pyx_v_vprime = ((__pyx_v_v / (13.0 * __pyx_v_L)) + 0.461);
+  __pyx_v_vprime = ((__pyx_v_v / (13.0 * __pyx_v_L)) + 0.4683363029324097);
 
-  /* "rio_color/colorspace.pyx":436
+  /* "rio_color/colorspace.pyx":443
  *     vprime = (v / (13 * L)) + vprime_n
  * 
  *     if L <= 8.0:             # <<<<<<<<<<<<<<
- *         y = L * ((3.0 / 29) ** 3)
+ *         y = L / kappa
  *     else:
  */
   __pyx_t_1 = ((__pyx_v_L <= 8.0) != 0);
   if (__pyx_t_1) {
 
-    /* "rio_color/colorspace.pyx":437
+    /* "rio_color/colorspace.pyx":444
  * 
  *     if L <= 8.0:
- *         y = L * ((3.0 / 29) ** 3)             # <<<<<<<<<<<<<<
+ *         y = L / kappa             # <<<<<<<<<<<<<<
  *     else:
  *         y = ((L + 16) / 116.0) ** 3
  */
-    __pyx_v_y = (__pyx_v_L * pow((3.0 / 29.0), 3.0));
+    __pyx_v_y = (__pyx_v_L / 903.2962962962961);
 
-    /* "rio_color/colorspace.pyx":436
+    /* "rio_color/colorspace.pyx":443
  *     vprime = (v / (13 * L)) + vprime_n
  * 
  *     if L <= 8.0:             # <<<<<<<<<<<<<<
- *         y = L * ((3.0 / 29) ** 3)
+ *         y = L / kappa
  *     else:
  */
     goto __pyx_L4;
   }
 
-  /* "rio_color/colorspace.pyx":439
- *         y = L * ((3.0 / 29) ** 3)
+  /* "rio_color/colorspace.pyx":446
+ *         y = L / kappa
  *     else:
  *         y = ((L + 16) / 116.0) ** 3             # <<<<<<<<<<<<<<
  * 
@@ -4821,7 +5004,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   }
   __pyx_L4:;
 
-  /* "rio_color/colorspace.pyx":441
+  /* "rio_color/colorspace.pyx":448
  *         y = ((L + 16) / 116.0) ** 3
  * 
  *     x = y * ((9 * uprime) / (4 * vprime))             # <<<<<<<<<<<<<<
@@ -4830,7 +5013,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_x = (__pyx_v_y * ((9.0 * __pyx_v_uprime) / (4.0 * __pyx_v_vprime)));
 
-  /* "rio_color/colorspace.pyx":442
+  /* "rio_color/colorspace.pyx":449
  * 
  *     x = y * ((9 * uprime) / (4 * vprime))
  *     z = y * ((12 - (3 * uprime) - (20 * vprime)) / (4 * vprime))             # <<<<<<<<<<<<<<
@@ -4839,7 +5022,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_z = (__pyx_v_y * (((12.0 - (3.0 * __pyx_v_uprime)) - (20.0 * __pyx_v_vprime)) / (4.0 * __pyx_v_vprime)));
 
-  /* "rio_color/colorspace.pyx":444
+  /* "rio_color/colorspace.pyx":451
  *     z = y * ((12 - (3 * uprime) - (20 * vprime)) / (4 * vprime))
  * 
  *     color.one = x             # <<<<<<<<<<<<<<
@@ -4848,7 +5031,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.one = __pyx_v_x;
 
-  /* "rio_color/colorspace.pyx":445
+  /* "rio_color/colorspace.pyx":452
  * 
  *     color.one = x
  *     color.two = y             # <<<<<<<<<<<<<<
@@ -4857,7 +5040,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.two = __pyx_v_y;
 
-  /* "rio_color/colorspace.pyx":446
+  /* "rio_color/colorspace.pyx":453
  *     color.one = x
  *     color.two = y
  *     color.three = z             # <<<<<<<<<<<<<<
@@ -4865,7 +5048,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
  */
   __pyx_v_color.three = __pyx_v_z;
 
-  /* "rio_color/colorspace.pyx":447
+  /* "rio_color/colorspace.pyx":454
  *     color.two = y
  *     color.three = z
  *     return color             # <<<<<<<<<<<<<<
@@ -4873,7 +5056,7 @@ static CYTHON_INLINE __pyx_t_9rio_color_10colorspace_color __pyx_f_9rio_color_10
   __pyx_r = __pyx_v_color;
   goto __pyx_L0;
 
-  /* "rio_color/colorspace.pyx":423
+  /* "rio_color/colorspace.pyx":430
  * 
  * 
  * cdef inline color _luv_to_xyz(double L, double u, double v):             # <<<<<<<<<<<<<<

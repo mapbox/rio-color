@@ -213,16 +213,22 @@ DEF delta = 6.0 / 29  # 0.206896
 DEF t0 = delta ** 3  # 0.008856
 DEF alpha = (delta ** -2) / 3  # 7.787037
 DEF third = 1.0 / 3
-DEF uprime_n = 0.2009
-DEF vprime_n = 0.4610
 DEF kappa = (29.0 / 3) ** 3  # 903.3
 DEF gamma = 2.2
+DEF xn = 0.95047
+DEF yn = 1.0
+DEF zn = 1.08883
+DEF denom_n = xn + (15 * yn) + (3 * zn)
+DEF uprime_n = (4 * xn) / denom_n
+DEF vprime_n = (9 * yn) / denom_n
+
 
 # Compile time option to use
-# simplified sRGB (True) or sRGB companding (False)
-# SIMPLE=False is slightly slower but is more accurate at
-# the extreme ends of scale - unit tests would need updating
-DEF SIMPLE = False
+# sRGB companding (default, True) or simplified gamma (False)
+# sRGB companding is slightly slower but is more accurate at
+# the extreme ends of scale
+# Unit tests tuned to sRGB companding, change with caution
+DEF SRGB_COMPAND = True
 
 
 # Direct colorspace conversions
@@ -232,13 +238,7 @@ cdef inline color _rgb_to_xyz(double r, double g, double b):
     cdef color color
 
     # convert RGB to linear scale
-
-    IF SIMPLE:
-        # Use "simplified sRGB"
-        rl = r ** gamma
-        gl = g ** gamma
-        bl = b ** gamma
-    ELSE:
+    IF SRGB_COMPAND:
         if r <= 0.04045:
             rl = r / 12.92
         else:
@@ -251,12 +251,17 @@ cdef inline color _rgb_to_xyz(double r, double g, double b):
             bl = b / 12.92
         else:
             bl = ((b + 0.055) / 1.055) ** 2.4
+    ELSE:
+        # Use "simplified sRGB"
+        rl = r ** gamma
+        gl = g ** gamma
+        bl = b ** gamma
 
     # matrix mult for srgb->xyz,
-    # includes adjustment for d65 reference white
-    x = ((rl * 0.4124) + (gl * 0.3576) + (bl * 0.1805)) / 0.95047
-    y = ((rl * 0.2126) + (gl * 0.7152) + (bl * 0.0722))
-    z = ((rl * 0.0193) + (gl * 0.1192) + (bl * 0.9505)) / 1.08883
+    # includes adjustment for reference white
+    x = ((rl * 0.4124564) + (gl * 0.3575761) + (bl * 0.1804375)) / xn
+    y = ((rl * 0.2126729) + (gl * 0.7151522) + (bl * 0.0721750))
+    z = ((rl * 0.0193339) + (gl * 0.1191920) + (bl * 0.9503041)) / zn
 
     color.one = x
     color.two = y
@@ -293,6 +298,7 @@ cdef inline color _xyz_to_lab(double x, double y, double z):
     color.two = a
     color.three = b
     return color
+
 
 cdef inline color _lab_to_lch(double L, double a, double b):
     cdef color color
@@ -338,6 +344,7 @@ cdef inline color _lab_to_xyz(double L, double a, double b):
     else:
         z = 3 * delta * delta * (tz - bintercept)
 
+    # Reference illuminant
     color.one = x
     color.two = y
     color.three = z
@@ -349,35 +356,16 @@ cdef inline color _xyz_to_rgb(double x, double y, double z):
     cdef color color
 
     # uses reference white d65
-    x = x * 0.95047
-    z = z * 1.08883
+    x = x * xn
+    z = z * zn
 
     # XYZ to sRGB
     # expanded matrix multiplication
-    rlin = (x * 3.2406) + (y * -1.5372) + (z * -0.4986)
-    glin = (x * -0.9689) + (y * 1.8758) + (z * 0.0415)
-    blin = (x * 0.0557) + (y * -0.2040) + (z * 1.0570)
+    rlin = (x * 3.2404542) + (y * -1.5371385) + (z * -0.4985314)
+    glin = (x * -0.9692660) + (y * 1.8760108) + (z * 0.0415560)
+    blin = (x * 0.0556434) + (y * -0.2040259) + (z * 1.0572252)
 
-    IF SIMPLE:
-        # constrain to 0..1 to deal with any float drift
-        if rlin > 1.0:
-            rlin = 1.0
-        elif rlin < 0.0:
-            rlin = 0.0
-        if glin > 1.0:
-            glin = 1.0
-        elif glin < 0.0:
-            glin = 0.0
-        if blin > 1.0:
-            blin = 1.0
-        elif blin < 0.0:
-            blin = 0.0
-
-        # Use simplified sRGB
-        r = rlin ** (1 / gamma)
-        g = glin ** (1 / gamma)
-        b = blin ** (1 / gamma)
-    ELSE:
+    IF SRGB_COMPAND:
         if rlin <= 0.0031308:
             r = 12.92 * rlin
         else:
@@ -390,6 +378,25 @@ cdef inline color _xyz_to_rgb(double x, double y, double z):
             b = 12.92 * blin
         else:
             b = (1.055 * (blin ** (1 / 2.4))) - 0.055
+    ELSE:
+        # Use simplified sRGB
+        r = rlin ** (1 / gamma)
+        g = glin ** (1 / gamma)
+        b = blin ** (1 / gamma)
+
+    # constrain to 0..1 to deal with any float drift
+    if r > 1.0:
+        r = 1.0
+    elif r < 0.0:
+        r = 0.0
+    if g > 1.0:
+        g = 1.0
+    elif g < 0.0:
+        g = 0.0
+    if b > 1.0:
+        b = 1.0
+    elif b < 0.0:
+        b = 0.0
 
     color.one = r
     color.two = g
@@ -405,6 +412,8 @@ cdef inline color _xyz_to_luv(double x, double y, double z):
     denom = x + (15 * y) + (3 * z)
     uprime = (4 * x) / denom
     vprime = (9 * y) / denom
+
+    y = y / yn
 
     if y <= t0:
         L = kappa * y
@@ -434,7 +443,7 @@ cdef inline color _luv_to_xyz(double L, double u, double v):
     vprime = (v / (13 * L)) + vprime_n
 
     if L <= 8.0:
-        y = L * ((3.0 / 29) ** 3)
+        y = L / kappa
     else:
         y = ((L + 16) / 116.0) ** 3
 

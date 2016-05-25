@@ -1,4 +1,5 @@
 from itertools import combinations, product
+import collections
 import math
 
 import numpy as np
@@ -31,10 +32,40 @@ tests = (
     ((0, 0, 0), (0, 0, 0)),
     ((1.0, 0, 0), (53.2, 104.6, 0.7)),
     ((0.392156, 0.776470, 0.164705), (71.7, 83.5, 2.3)),
-    ((1.0, 1.0, 1.0), (100, 0, -1.1)),
+    ((0.0392, 0.1960, 0.3529), (20.3517, 27.8757, -1.4612)),
+    ((0.0456, 0.1929, 0.3941), (20.8945, 34.9429, -1.3244)),
+    ((1.0, 1.0, 1.0), (100, 0, 2.8)),
 )
 
 test_tol = 1
+
+
+@pytest.mark.parametrize("pair", tests)
+def test_fixtures(pair):
+    # use colormath to confirm test values
+    rgb, lch = pair
+    cmlch = convert_color(sRGBColor(*rgb), LCHabColor).get_value_tuple()
+
+    assert _near(lch[0:2], cmlch[0:2], 0.2)
+
+    if lch[0] < 99.999999:
+        # If L == 100, the hue is indeterminate
+        # Otherwise, normalize to [0, 2*pi] and compare
+        h = lch[2] % (math.pi * 2)
+        cmh = math.radians(cmlch[2]) % (math.pi * 2)
+        assert _near([h], [cmh], 0.2)
+
+
+def _near(a, b, tol):
+
+    if not isinstance(tol, collections.Iterable):
+        tol = [tol] * len(a)
+
+    for x, y, t in zip(a, b, tol):
+        if abs(x - y) > t:
+            return False
+    return True
+
 
 def _make_array(x, y, z, dtype='float64'):
     """ make a 3, 1, 1 array
@@ -44,55 +75,64 @@ def _make_array(x, y, z, dtype='float64'):
         [[y]],
         [[z]]]).astype(dtype)
 
-def test_rgb2lch():
-    for rgb, ex_lch in tests:
-        assert ex_lch == tuple(round(x, test_tol)
-                               for x in convert(*rgb, src=cs.rgb, dst=cs.lch))
+@pytest.mark.parametrize("pair", tests)
+def test_rgb2lch(pair):
+    rgb, lch = pair
+    alch = convert(*rgb, src=cs.rgb, dst=cs.lch)
+    assert alch[0] >= 0
+    assert _near(alch, lch, (1.0, 1.0, 0.25))
 
 
-def test_roundtrip():
-    for rgb, _ in tests:
-        assert tuple(round(x, test_tol) for x in rgb) == \
-            tuple(round(x, test_tol) for x in convert(
-                *convert(*rgb, src=cs.rgb, dst=cs.lch), src=cs.lch, dst=cs.rgb))
+@pytest.mark.parametrize("pair", tests)
+def test_roundtrip(pair):
+    rgb, lch = pair
+    argb = convert(*convert(*rgb,
+                            src=cs.rgb,
+                            dst=cs.lch), src=cs.lch, dst=cs.rgb)
+    for v in argb:
+        assert v > -0.0001
+        assert v < 1.0001
+    assert _near(argb, rgb, 0.1)
 
 
-def test_lch2rgb():
-    for ex_rgb, lch in tests:
-        assert tuple(round(x, test_tol) for x in ex_rgb) == \
-            tuple(round(x, test_tol)
-                  for x in convert(*lch, src=cs.lch, dst=cs.rgb))
+@pytest.mark.parametrize("pair", tests)
+def test_lch2rgb(pair):
+    rgb, lch = pair
+    argb = convert(*lch, src=cs.lch, dst=cs.rgb)
+    assert _near(argb, rgb, (1.0, 1.0, 0.1))
 
 
-def test_arr_rgb():
-    for rgb, ex_lch in tests:
-        rgb = _make_array(*rgb)
-        ex_lch = _make_array(*ex_lch)
-        assert np.allclose(
-            convert_arr(rgb, cs.rgb, cs.lch), ex_lch, atol=(test_tol / 10.0))
+@pytest.mark.parametrize("pair", tests)
+def test_arr_rgb(pair):
+    rgb, lch = pair
+    rgb = _make_array(*rgb)
+    lch = _make_array(*lch)
+    assert np.allclose(
+        convert_arr(rgb, cs.rgb, cs.lch), lch, atol=0.2)
 
 
-def test_arr_lch():
-    for rgb, lch in tests:
-        rgb = _make_array(*rgb)
-        lch = _make_array(*lch)
-        assert np.allclose(
-            convert_arr(lch, cs.lch, cs.rgb), rgb, atol=(test_tol / 10.0))
+@pytest.mark.parametrize("pair", tests)
+def test_arr_lch(pair):
+    rgb, lch = pair
+    rgb = _make_array(*rgb)
+    lch = _make_array(*lch)
+    assert np.allclose(
+        convert_arr(lch, cs.lch, cs.rgb), rgb, atol=0.2)
 
 
-def test_saturation_1():
-    for rgb, _ in tests:
-        rgb = _make_array(*rgb)
-        assert np.allclose(
-            saturate_rgb(rgb, 1.0), rgb, atol=(test_tol / 10.0))
+@pytest.mark.parametrize("pair", tests)
+def test_saturation_1(pair):
+    rgb, lch = pair
+    rgb = _make_array(*rgb)
+    assert np.allclose(
+        saturate_rgb(rgb, 1.0), rgb, atol=0.2)
 
 
 def test_saturation_bw():
     rgb = _make_array(0.392156, 0.776470, 0.164705)
     sat = saturate_rgb(rgb, 0.0)
-    assert round(sat[0, 0, 0], test_tol) == \
-        round(sat[1, 0, 0], test_tol) == \
-        round(sat[2, 0, 0], test_tol)
+    assert _near((sat[0, 0, 0], ), (sat[1, 0, 0], ), tol=0.1)
+    assert _near((sat[1, 0, 0], ), (sat[2, 0, 0], ), tol=0.1)
 
 
 def test_saturation():
@@ -101,7 +141,14 @@ def test_saturation():
     assert np.allclose(
         saturate_rgb(rgb, 1.1),
         saturated,
-        atol=(test_tol / 10.0))
+        atol=0.2)
+
+    rgb = _make_array(0.0392, 0.1960, 0.3529)
+    saturated = _make_array(0.0456, 0.1929, 0.3941)
+    assert np.allclose(
+        saturate_rgb(rgb, 1.25),
+        saturated,
+        atol=0.2)
 
 
 def test_bad_array_bands():
@@ -164,62 +211,6 @@ def test_bad_colorspace_invalid_enum():
         convert(0.1, 0.1, 0.1, src=cs.foo, dst=cs.bar)
 
 
-def _iter_floateq(a, b, tol):
-    for x, y in zip(a, b):
-        return abs(x - y) < tol
-
-
-@pytest.mark.parametrize(
-    "rgb", list(combinations([0, 0.1, 0.3, 0.6, 0.9, 1.0], 3)))
-def test_convert_roundtrips(rgb):
-    cspaces = tuple(x for x in dict(cs.__members__).values())
-    # TODO relative tolerance and figure out how to decrease float drift
-    tolerance = 0.01
-    colors = {}
-
-    # RGB to other, roundtrip
-    for cspace in cspaces:
-        if cspace == cs.rgb:
-            continue
-        other = convert(*rgb, src=cs.rgb, dst=cspace)
-        # Collect some valid colors
-        colors[cspace] = other
-        back = convert(*other, src=cspace, dst=cs.rgb)
-        assert _iter_floateq(back, rgb, tol=tolerance)
-
-
-# Color values to use when parametrizing color conversion tests.
-# There are 5 classes of characteristic values.
-#
-# RGB, XYZ, and C values range from 0-1.
-rgbxyzc_vals = [0.0, 0.3, 0.6, 1.0]
-
-# L ranges from 0-100.
-L_vals = [1.0, 50.0, 100.0]
-
-# Chroma practical range 0~120
-c_vals = [0.0, 20.0, 115.0]
-
-# ab and uv range from -inf to inf, practical range +-100
-abuv_vals = [-30.0, 0.0, 1.0, 30.0]
-
-# H ranges from -pi to pi.
-h_vals = [-math.pi / 2.0, 0.0, math.pi / 2.0]
-
-# In parametrizing colors, we use `itertools.product()` with 3 of the
-# sequences above to get a grid or matrix of colors in a particular
-# colorspace.
-rgb_colors = xyz_colors = list(product(rgbxyzc_vals, repeat=3))
-lab_colors = list(product(L_vals, abuv_vals, abuv_vals))
-lch_colors = list(product(L_vals, c_vals, h_vals))
-luv_colors = list(product(L_vals, abuv_vals, abuv_vals))
-
-# special case of L=0, others should not be != zero
-lab_colors.append((0, 0, 0))
-lch_colors.append((0, 0, 0))
-luv_colors.append((0, 0, 0))
-
-
 def assert_color_roundtrip(color, src, dst, tolerance):
     """Asserts roundtrip of color correction within a given tolerance
 
@@ -228,7 +219,7 @@ def assert_color_roundtrip(color, src, dst, tolerance):
     other = convert(*color, src=src, dst=dst)
     rio_roundtrip = convert(*other, src=dst, dst=src)
 
-    if _iter_floateq(rio_roundtrip, color, tol=tolerance):
+    if _near(rio_roundtrip, color, tol=tolerance):
         return True
     else:
         # Did not roundtrip properly, can colormath do it?
@@ -239,42 +230,17 @@ def assert_color_roundtrip(color, src, dst, tolerance):
             convert_color(src_cm(*color), dst_cm, illuminant="d65"),
             src_cm, illuminant="d65").get_value_tuple()
 
-        assert _iter_floateq(rio_roundtrip, cm_roundtrip, tol=tolerance)
+        assert _near(rio_roundtrip, cm_roundtrip, tol=tolerance)
 
 
-# In parametrizing destination colorspaces we use a list comprehension,
+rgb_vals = [0.0, 0.01, 0.3, 0.5, 0.7, 0.99, 1.0]
+rgb_colors = xyz_colors = list(product(rgb_vals, repeat=3))
+
+# In parameterizing destination colorspaces we use a list comprehension,
 # omitting the source colorspace.
-
+# Test roundtrip from RGB to everything else
 @pytest.mark.parametrize("color", rgb_colors)
-@pytest.mark.parametrize("dst", [v for v in cs if v != cs.rgb])
-@pytest.mark.parametrize("tolerance", [0.01])
+@pytest.mark.parametrize("dst", [v for v in cs if v not in (cs.rgb, )])
+@pytest.mark.parametrize("tolerance", [0.1])
 def test_rgb_convert_roundtrip(color, dst, tolerance):
     assert_color_roundtrip(color, cs.rgb, dst, tolerance)
-
-
-@pytest.mark.parametrize("color", xyz_colors)
-@pytest.mark.parametrize("dst", [v for v in cs if v != cs.xyz])
-@pytest.mark.parametrize("tolerance", [0.01])
-def test_xyz_convert_roundtrip(color, dst, tolerance):
-    assert_color_roundtrip(color, cs.xyz, dst, tolerance)
-
-
-@pytest.mark.parametrize("color", lab_colors)
-@pytest.mark.parametrize("dst", [v for v in cs if v != cs.lab])
-@pytest.mark.parametrize("tolerance", [0.01])
-def test_lab_convert_roundtrip(color, dst, tolerance):
-    assert_color_roundtrip(color, cs.lab, dst, tolerance)
-
-
-@pytest.mark.parametrize("color", lch_colors)
-@pytest.mark.parametrize("dst", [v for v in cs if v != cs.lch])
-@pytest.mark.parametrize("tolerance", [0.01])
-def test_lch_convert_roundtrip(color, dst, tolerance):
-    assert_color_roundtrip(color, cs.lch, dst, tolerance)
-
-
-@pytest.mark.parametrize("color", luv_colors)
-@pytest.mark.parametrize("dst", [v for v in cs if v != cs.luv])
-@pytest.mark.parametrize("tolerance", [0.01])
-def test_luv_convert_roundtrip(color, dst, tolerance):
-    assert_color_roundtrip(color, cs.luv, dst, tolerance)
