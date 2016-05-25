@@ -4,8 +4,9 @@ Changes
 0.4.0
 ------------------
 - Added support for LUV colorspace conversions.
+- Testing framework to roundtrip RGB conversions and use colormath for confirmation
 - inline cdef functions and constants for better code organization and a small speed boost.
-- compile-time option for sRGB companding for XYZ-RGB conversions, simple gamma adjustment is still the default.
+- sRGB companding for XYZ-RGB conversions
 
 0.3.0 (2016-05-19)
 ------------------
