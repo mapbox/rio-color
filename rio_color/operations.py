@@ -103,18 +103,16 @@ def gamma(arr, g):
     Parameters
     ----------
     gamma (:math:`\gamma`): float
-        Reasonable values range from 0.8 to 2.3.
+        Reasonable values range from 0.8 to 2.4.
 
 
     """
-    output = arr**(1.0 / g)
+    if (arr.max() > 1.0 + epsilon) or (arr.min() < 0 - epsilon):
+        raise ValueError("Input array must have float values between 0 and 1")
+    if g <= 0 or np.isnan(g):
+        raise ValueError("gamma must be greater than 0")
 
-    if np.any(output < 0) or np.any(output > (1 + epsilon)):
-        raise ValueError("Gamma corrected output is not within the range of [0,1]")
-    elif np.isnan(output.sum()):
-        raise ValueError("Gamma corrected output contains NaN")
-    else:
-        return output
+    return arr**(1.0 / g)
 
 
 def saturation(arr, proportion):

@@ -1,7 +1,4 @@
-# cython: boundscheck=False
-# cython: cdivision=True
-# cython: wraparound=False
-from __future__ import division
+# cython: language_level=3, boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, initializedcheck=False
 from enum import IntEnum
 
 import numpy as np
@@ -28,6 +25,7 @@ class ColorSpace(IntEnum):
     xyz = 1
     lab = 2
     lch = 3
+    luv = 4
 
 # Colorspace consts
 # allows cdef funcs to access values w/o python calls
@@ -37,29 +35,36 @@ cdef enum:
     XYZ = 1
     LAB = 2
     LCH = 3
+    LUV = 4
 
 
 cpdef convert(double one, double two, double three, src, dst):
     cdef color color
-    cdef int src_cs, dst_cs
 
-    color = _convert(one, two, three, src, dst)
+    if src not in ColorSpace or dst not in ColorSpace:
+        raise ValueError("Invalid colorspace")
+
+    color = _convert(one, two, three, int(src), int(dst))
     return color.one, color.two, color.three
 
 
 cpdef np.ndarray[FLOAT_t, ndim=3] convert_arr(np.ndarray[FLOAT_t, ndim=3] arr, src, dst):
     cdef double one, two, three
     cdef color color
-    cdef size_t i, j
-    cdef int src_cs, dst_cs
 
     if arr.shape[0] != 3:
         raise ValueError("The 0th dimension must contain 3 bands")
 
-    cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
+    if src not in ColorSpace or dst not in ColorSpace:
+        raise ValueError("Invalid colorspace")
 
-    for i in range(arr.shape[1]):
-        for j in range(arr.shape[2]):
+    I = arr.shape[1]
+    J = arr.shape[2]
+
+    cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty(shape=(3, I, J))   # _like(arr)
+
+    for i in range(I):
+        for j in range(J):
             one = arr[0, i, j]
             two = arr[1, i, j]
             three = arr[2, i, j]
@@ -77,24 +82,26 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
     a bit of data manipulation inside the loop.
     """
     cdef double r, g, b
-    cdef size_t i, j
     cdef color c_lch
     cdef color c_rgb
 
     if arr.shape[0] != 3:
         raise ValueError("The 0th dimension must contain 3 bands")
 
-    cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty_like(arr)
+    I = arr.shape[1]
+    J = arr.shape[2]
 
-    for i in range(arr.shape[1]):
-        for j in range(arr.shape[2]):
+    cdef np.ndarray[FLOAT_t, ndim=3] out = np.empty(shape=(3, I, J))
+
+    for i in range(I):
+        for j in range(J):
             r = arr[0, i, j]
             g = arr[1, i, j]
             b = arr[2, i, j]
 
-            c_lch = _rgb_to_lch(r, g, b)
+            c_lch = _convert(r, g, b, RGB, LCH)
             c_lch.two *= satmult
-            c_rgb = _lch_to_rgb(c_lch.one, c_lch.two, c_lch.three)
+            c_rgb = _convert(c_lch.one, c_lch.two, c_lch.three, LCH, RGB)
 
             out[0, i, j] = c_rgb.one
             out[1, i, j] = c_rgb.two
@@ -103,111 +110,158 @@ cpdef np.ndarray[FLOAT_t, ndim=3] saturate_rgb(np.ndarray[FLOAT_t, ndim=3] arr, 
     return out
 
 
-cdef color _convert(double one, double two, double three, int src, int dst):
-    # TODO currently, every combination of COLORSPACES
-    # must return a valid color. If this list grows,
-    # things get ugly fast
+cdef inline color _convert(double one, double two, double three, int src, int dst):
+    cdef color c
+
     if src == RGB:
+
         if dst == LAB:
-            return _rgb_to_lab(one, two, three)
+            c = _rgb_to_xyz(one, two, three)
+            c = _xyz_to_lab(c.one, c.two, c.three)
+
         elif dst == LCH:
-            return _rgb_to_lch(one, two, three)
+            c = _rgb_to_xyz(one, two, three)
+            c = _xyz_to_lab(c.one, c.two, c.three)
+            c = _lab_to_lch(c.one, c.two, c.three)
+
         elif dst == XYZ:
-            return _rgb_to_xyz(one, two, three)
+            c = _rgb_to_xyz(one, two, three)
+
+        elif dst == LUV:
+            c = _rgb_to_xyz(one, two, three)
+            c = _xyz_to_luv(c.one, c.two, c.three)
+
     elif src == XYZ:
+
         if dst == LAB:
-            return _xyz_to_lab(one, two, three)
+            c = _xyz_to_lab(one, two, three)
+
         elif dst == LCH:
-            return _xyz_to_lch(one, two, three)
+            c = _xyz_to_lab(one, two, three)
+            c = _lab_to_lch(c.one, c.two, c.three)
+
         elif dst == RGB:
-            return _xyz_to_rgb(one, two, three)
+            c = _xyz_to_rgb(one, two, three)
+
+        elif dst == LUV:
+            c = _xyz_to_luv(one, two, three)
+
     elif src == LAB:
+
         if dst == XYZ:
-            return _lab_to_xyz(one, two, three)
+            c = _lab_to_xyz(one, two, three)
+
         elif dst == LCH:
-            return _lab_to_lch(one, two, three)
+            c = _lab_to_lch(one, two, three)
+
         elif dst == RGB:
-            return _lab_to_rgb(one, two, three)
+            c = _lab_to_xyz(one, two, three)
+            c = _xyz_to_rgb(c.one, c.two, c.three)
+
+        elif dst == LUV:
+            c = _lab_to_xyz(one, two, three)
+            c = _xyz_to_luv(c.one, c.two, c.three)
+
     elif src == LCH:
+
         if dst == LAB:
-            return _lch_to_lab(one, two, three)
+            c = _lch_to_lab(one, two, three)
+
         elif dst == XYZ:
-            return _lch_to_xyz(one, two, three)
+            c = _lch_to_lab(one, two, three)
+            c = _lab_to_xyz(c.one, c.two, c.three)
+
         elif dst == RGB:
-            return _lch_to_rgb(one, two, three)
+            c = _lch_to_lab(one, two, three)
+            c = _lab_to_xyz(c.one, c.two, c.three)
+            c = _xyz_to_rgb(c.one, c.two, c.three)
+
+        elif dst == LUV:
+            c = _lch_to_lab(one, two, three)
+            c = _lab_to_xyz(c.one, c.two, c.three)
+            c = _xyz_to_luv(c.one, c.two, c.three)
+
+    elif src == LUV:
+
+        if dst == LAB:
+            c = _luv_to_xyz(one, two, three)
+            c = _xyz_to_lab(c.one, c.two, c.three)
+
+        elif dst == XYZ:
+            c = _luv_to_xyz(one, two, three)
+
+        elif dst == RGB:
+            c = _luv_to_xyz(one, two, three)
+            c = _xyz_to_rgb(c.one, c.two, c.three)
+
+        elif dst == LCH:
+            c = _luv_to_xyz(one, two, three)
+            c = _xyz_to_lab(c.one, c.two, c.three)
+            c = _lab_to_lch(c.one, c.two, c.three)
+
+    elif src == dst:
+        c.one = one
+        c.two = two
+        c.three = three
+
+    return c
 
 
 # Constants
-cdef double bintercept = 4.0 / 29  # 0.137931
-cdef double delta = 6.0 / 29  # 0.206896
-cdef double t0 = delta ** 3  # 0.008856
-cdef double alpha = (delta ** -2) / 3  # 7.787037
+DEF bintercept = 4.0 / 29  # 0.137931
+DEF delta = 6.0 / 29  # 0.206896
+DEF t0 = delta ** 3  # 0.008856
+DEF alpha = (delta ** -2) / 3  # 7.787037
+DEF third = 1.0 / 3
+DEF kappa = (29.0 / 3) ** 3  # 903.3
+DEF gamma = 2.2
+DEF xn = 0.95047
+DEF yn = 1.0
+DEF zn = 1.08883
+DEF denom_n = xn + (15 * yn) + (3 * zn)
+DEF uprime_n = (4 * xn) / denom_n
+DEF vprime_n = (9 * yn) / denom_n
 
 
-# Conversions composed of multiple steps
-
-cdef color _rgb_to_lch(double r, double g, double b):
-    cdef color color
-    color = _rgb_to_xyz(r, g, b)
-    color = _xyz_to_lab(color.one, color.two, color.three)
-    color = _lab_to_lch(color.one, color.two, color.three)
-    return color
+# Compile time option to use
+# sRGB companding (default, True) or simplified gamma (False)
+# sRGB companding is slightly slower but is more accurate at
+# the extreme ends of scale
+# Unit tests tuned to sRGB companding, change with caution
+DEF SRGB_COMPAND = True
 
 
-cdef color _lch_to_rgb(double L, double C, double H):
-    cdef color color
-    color = _lch_to_lab(L, C, H)
-    color = _lab_to_xyz(color.one, color.two, color.three)
-    color = _xyz_to_rgb(color.one, color.two, color.three)
-    return color
+# Direct colorspace conversions
 
-
-cdef color _lch_to_xyz(double L, double C, double H):
-    cdef color color
-    color = _lch_to_lab(L, C, H)
-    color = _lab_to_xyz(color.one, color.two, color.three)
-    return color
-
-
-cdef color _xyz_to_lch(double x, double y, double z):
-    cdef color color
-    color = _xyz_to_lab(x, y, z)
-    color = _lab_to_lch(color.one, color.two, color.three)
-    return color
-
-
-cdef color _rgb_to_lab(double r, double g, double b):
-    cdef color color
-    color = _rgb_to_xyz(r, g, b)
-    color = _xyz_to_lab(color.one, color.two, color.three)
-    return color
-
-
-cdef color _lab_to_rgb(double L, double a, double b):
-    cdef color color
-    color = _lab_to_xyz(L, a, b)
-    color = _xyz_to_rgb(color.one, color.two, color.three)
-    return color
-
-
-# Direct conversions
-
-cdef color _rgb_to_xyz(double r, double g, double b):
+cdef inline color _rgb_to_xyz(double r, double g, double b):
     cdef double rl, gl, bl
     cdef color color
 
     # convert RGB to linear scale
-    # if simplified:
-    # Use gamma = 2.2, "simplified sRGB"
-    rl = r ** 2.2
-    gl = g ** 2.2
-    bl = b ** 2.2
+    IF SRGB_COMPAND:
+        if r <= 0.04045:
+            rl = r / 12.92
+        else:
+            rl = ((r + 0.055) / 1.055) ** 2.4
+        if g <= 0.04045:
+            gl = g / 12.92
+        else:
+            gl = ((g + 0.055) / 1.055) ** 2.4
+        if b <= 0.04045:
+            bl = b / 12.92
+        else:
+            bl = ((b + 0.055) / 1.055) ** 2.4
+    ELSE:
+        # Use "simplified sRGB"
+        rl = r ** gamma
+        gl = g ** gamma
+        bl = b ** gamma
 
     # matrix mult for srgb->xyz,
-    # includes adjustment for d65 reference white
-    x = ((rl * 0.4124) + (gl * 0.3576) + (bl * 0.1805)) / 0.95047
-    y = ((rl * 0.2126) + (gl * 0.7152) + (bl * 0.0722))
-    z = ((rl * 0.0193) + (gl * 0.1192) + (bl * 0.9505)) / 1.08883
+    # includes adjustment for reference white
+    x = ((rl * 0.4124564) + (gl * 0.3575761) + (bl * 0.1804375)) / xn
+    y = ((rl * 0.2126729) + (gl * 0.7151522) + (bl * 0.0721750))
+    z = ((rl * 0.0193339) + (gl * 0.1191920) + (bl * 0.9503041)) / zn
 
     color.one = x
     color.two = y
@@ -215,24 +269,24 @@ cdef color _rgb_to_xyz(double r, double g, double b):
     return color
 
 
-cdef color _xyz_to_lab(double x, double y, double z):
+cdef inline color _xyz_to_lab(double x, double y, double z):
     cdef double fx, fy, fz
     cdef double L, a, b
     cdef color color
 
     # convert XYZ to LAB colorspace
     if x > t0:
-        fx = x ** 0.3333333333333333
+        fx = x ** third
     else:
         fx = (alpha * x) + bintercept
 
     if y > t0:
-        fy = y ** 0.3333333333333333
+        fy = y ** third
     else:
         fy = (alpha * y) + bintercept
 
     if z > t0:
-        fz = z ** 0.3333333333333333
+        fz = z ** third
     else:
         fz = (alpha * z) + bintercept
 
@@ -245,7 +299,8 @@ cdef color _xyz_to_lab(double x, double y, double z):
     color.three = b
     return color
 
-cdef color _lab_to_lch(double L, double a, double b):
+
+cdef inline color _lab_to_lch(double L, double a, double b):
     cdef color color
 
     color.one = L
@@ -254,7 +309,7 @@ cdef color _lab_to_lch(double L, double a, double b):
     return color
 
 
-cdef color _lch_to_lab(double L, double C, double H):
+cdef inline color _lch_to_lab(double L, double C, double H):
     cdef double a, b
     cdef color color
 
@@ -267,7 +322,7 @@ cdef color _lch_to_lab(double L, double C, double H):
     return color
 
 
-cdef color _lab_to_xyz(double L, double a, double b):
+cdef inline color _lab_to_xyz(double L, double a, double b):
     cdef double x, y, z
     cdef color color
 
@@ -289,44 +344,113 @@ cdef color _lab_to_xyz(double L, double a, double b):
     else:
         z = 3 * delta * delta * (tz - bintercept)
 
+    # Reference illuminant
     color.one = x
     color.two = y
     color.three = z
     return color
 
 
-cdef color _xyz_to_rgb(double x, double y, double z):
-    cdef double rlin, glin, blin
+cdef inline color _xyz_to_rgb(double x, double y, double z):
+    cdef double rlin, glin, blin, r, g, b
     cdef color color
 
     # uses reference white d65
-    x = x * 0.95047
-    z = z * 1.08883
+    x = x * xn
+    z = z * zn
 
     # XYZ to sRGB
     # expanded matrix multiplication
-    rlin = (x * 3.2406) + (y * -1.5372) + (z * -0.4986)
-    glin = (x * -0.9689) + (y * 1.8758) + (z * 0.0415)
-    blin = (x * 0.0557) + (y * -0.2040) + (z * 1.0570)
+    rlin = (x * 3.2404542) + (y * -1.5371385) + (z * -0.4985314)
+    glin = (x * -0.9692660) + (y * 1.8760108) + (z * 0.0415560)
+    blin = (x * 0.0556434) + (y * -0.2040259) + (z * 1.0572252)
+
+    IF SRGB_COMPAND:
+        if rlin <= 0.0031308:
+            r = 12.92 * rlin
+        else:
+            r = (1.055 * (rlin ** (1 / 2.4))) - 0.055
+        if glin <= 0.0031308:
+            g = 12.92 * glin
+        else:
+            g = (1.055 * (glin ** (1 / 2.4))) - 0.055
+        if blin <= 0.0031308:
+            b = 12.92 * blin
+        else:
+            b = (1.055 * (blin ** (1 / 2.4))) - 0.055
+    ELSE:
+        # Use simplified sRGB
+        r = rlin ** (1 / gamma)
+        g = glin ** (1 / gamma)
+        b = blin ** (1 / gamma)
 
     # constrain to 0..1 to deal with any float drift
-    if rlin > 1.0:
-        rlin = 1.0
-    elif rlin < 0.0:
-        rlin = 0.0
-    if glin > 1.0:
-        glin = 1.0
-    elif glin < 0.0:
-        glin = 0.0
-    if blin > 1.0:
-        blin = 1.0
-    elif blin < 0.0:
-        blin = 0.0
+    if r > 1.0:
+        r = 1.0
+    elif r < 0.0:
+        r = 0.0
+    if g > 1.0:
+        g = 1.0
+    elif g < 0.0:
+        g = 0.0
+    if b > 1.0:
+        b = 1.0
+    elif b < 0.0:
+        b = 0.0
 
-    # includes gamma exponentiation
-    # Use simplified sRGB with gamma = 2.2
-    color.one = rlin ** (1 / 2.2)
-    color.two = glin ** (1 / 2.2)
-    color.three = blin ** (1 / 2.2)
+    color.one = r
+    color.two = g
+    color.three = b
 
+    return color
+
+
+cdef inline color _xyz_to_luv(double x, double y, double z):
+    cdef color color
+    cdef double L, u, v, uprime, vprime, denom
+
+    denom = x + (15 * y) + (3 * z)
+    uprime = (4 * x) / denom
+    vprime = (9 * y) / denom
+
+    y = y / yn
+
+    if y <= t0:
+        L = kappa * y
+    else:
+        L = (116 * (y ** third)) - 16
+
+    u = 13 * L * (uprime - uprime_n)
+    v = 13 * L * (vprime - vprime_n)
+
+    color.one = L
+    color.two = u
+    color.three = v
+    return color
+
+
+cdef inline color _luv_to_xyz(double L, double u, double v):
+    cdef color color
+    cdef double x, y, z, uprime, vprime
+
+    if L == 0.0:
+        color.one = 0.0
+        color.two = 0.0
+        color.three = 0.0
+        return color
+
+    uprime = (u / (13 * L)) + uprime_n
+    vprime = (v / (13 * L)) + vprime_n
+
+    if L <= 8.0:
+        y = L / kappa
+    else:
+        y = ((L + 16) / 116.0) ** 3
+
+    x = y * ((9 * uprime) / (4 * vprime))
+    z = y * ((12 - (3 * uprime) - (20 * vprime)) / (4 * vprime))
+
+    color.one = x
+    color.two = y
+    color.three = z
     return color
