@@ -74,6 +74,8 @@ def test_gamma(arr):
     # test output contains NaN
     with pytest.raises(ValueError):
         x = gamma(arr, np.nan)
+    with pytest.raises(ValueError):
+        x = gamma(arr * -1, 2.2)
 
 
 def test_sat(arr):
