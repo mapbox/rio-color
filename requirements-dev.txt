@@ -1,6 +1,7 @@
 affine
 cligj
 coveralls>=0.4
+colormath
 cython
 delocate
 enum34

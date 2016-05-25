@@ -222,7 +222,7 @@ DEF gamma = 2.2
 # simplified sRGB (True) or sRGB companding (False)
 # SIMPLE=False is slightly slower but is more accurate at
 # the extreme ends of scale - unit tests would need updating
-DEF SIMPLE = True
+DEF SIMPLE = False
 
 
 # Direct colorspace conversions
@@ -423,6 +423,12 @@ cdef inline color _xyz_to_luv(double x, double y, double z):
 cdef inline color _luv_to_xyz(double L, double u, double v):
     cdef color color
     cdef double x, y, z, uprime, vprime
+
+    if L == 0.0:
+        color.one = 0.0
+        color.two = 0.0
+        color.three = 0.0
+        return color
 
     uprime = (u / (13 * L)) + uprime_n
     vprime = (v / (13 * L)) + vprime_n

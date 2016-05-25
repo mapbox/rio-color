@@ -13,13 +13,24 @@ from rio_color.colorspace import convert
 # enums required to define src and dst for convert and convert_arr
 from rio_color.colorspace import ColorSpace as cs
 
+from colormath.color_objects import \
+    LuvColor, sRGBColor, XYZColor, LCHabColor, LabColor
+
+from colormath.color_conversions import convert_color
+
+to_colormath = {
+    cs.rgb: sRGBColor,
+    cs.xyz: XYZColor,
+    cs.lab: LabColor,
+    cs.lch: LCHabColor,
+    cs.luv: LuvColor}
+
 
 tests = (
     # (rgb, expected_lch)
     ((0, 0, 0), (0, 0, 0)),
     ((1.0, 0, 0), (53.2, 104.6, 0.7)),
-    ((0.392156, 0.776470, 0.164705), (72.1, 85.2, 2.3)),
-    # using srgb companding, it becomes (71.7, 83.5, 2.3))
+    ((0.392156, 0.776470, 0.164705), (71.7, 83.5, 2.3)),
     ((1.0, 1.0, 1.0), (100, 0, -1.1)),
 )
 
@@ -176,27 +187,21 @@ def test_convert_roundtrips(rgb):
         back = convert(*other, src=cspace, dst=cs.rgb)
         assert _iter_floateq(back, rgb, tol=tolerance)
 
-    # other to other roundtrip, including self
-    for src, color in colors.items():
-        for dst in cspaces:
-            other = convert(*color, src=src, dst=dst)
-            back = convert(*other, src=dst, dst=src)
-            assert _iter_floateq(back, color, tol=tolerance)
-
 
 # Color values to use when parametrizing color conversion tests.
-# There are 4 classes of characteristic values.
+# There are 5 classes of characteristic values.
 #
 # RGB, XYZ, and C values range from 0-1.
-# Note: RGB (0, 0, 0) can't be converted to LUV and so we xfail that
-# case when parametrizing (below).
 rgbxyzc_vals = [0.0, 0.3, 0.6, 1.0]
 
 # L ranges from 0-100.
-L_vals = [0.0, 50.0, 100.0]
+L_vals = [1.0, 50.0, 100.0]
 
-# ab and uv range from -inf to inf.
-abuv_vals = [-10.0, 0.0, 10.0]
+# Chroma practical range 0~120
+c_vals = [0.0, 20.0, 115.0]
+
+# ab and uv range from -inf to inf, practical range +-100
+abuv_vals = [-30.0, 0.0, 1.0, 30.0]
 
 # H ranges from -pi to pi.
 h_vals = [-math.pi / 2.0, 0.0, math.pi / 2.0]
@@ -206,8 +211,13 @@ h_vals = [-math.pi / 2.0, 0.0, math.pi / 2.0]
 # colorspace.
 rgb_colors = xyz_colors = list(product(rgbxyzc_vals, repeat=3))
 lab_colors = list(product(L_vals, abuv_vals, abuv_vals))
-lch_colors = list(product(L_vals, rgbxyzc_vals, h_vals))
+lch_colors = list(product(L_vals, c_vals, h_vals))
 luv_colors = list(product(L_vals, abuv_vals, abuv_vals))
+
+# special case of L=0, others should not be != zero
+lab_colors.append((0, 0, 0))
+lch_colors.append((0, 0, 0))
+luv_colors.append((0, 0, 0))
 
 
 def assert_color_roundtrip(color, src, dst, tolerance):
@@ -216,8 +226,20 @@ def assert_color_roundtrip(color, src, dst, tolerance):
     Helper function for tests below.
     """
     other = convert(*color, src=src, dst=dst)
-    back = convert(*other, src=dst, dst=src)
-    assert _iter_floateq(back, color, tol=tolerance)
+    rio_roundtrip = convert(*other, src=dst, dst=src)
+
+    if _iter_floateq(rio_roundtrip, color, tol=tolerance):
+        return True
+    else:
+        # Did not roundtrip properly, can colormath do it?
+        src_cm = to_colormath[src]
+        dst_cm = to_colormath[dst]
+
+        cm_roundtrip = convert_color(
+            convert_color(src_cm(*color), dst_cm, illuminant="d65"),
+            src_cm, illuminant="d65").get_value_tuple()
+
+        assert _iter_floateq(rio_roundtrip, cm_roundtrip, tol=tolerance)
 
 
 # In parametrizing destination colorspaces we use a list comprehension,
