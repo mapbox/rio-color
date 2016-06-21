@@ -27,8 +27,42 @@ matches human's non-linear visual perception. It works well to increase contrast
 
 ![animated](https://cloud.githubusercontent.com/assets/1151287/15330468/f5cefc38-1c2a-11e6-855d-8bb0f4158ca7.gif)
 
+## Examples
 
-   
+#### Sigmoidal
+
+Contrast
+
+![sigmoidal_contrast](img/sigmoidal_contrast.jpg)
+
+Bias
+
+![sigmoidal_bias](img/sigmoidal_bias.jpg)
+
+#### Gamma
+
+Red
+
+![gamma_red](img/gamma_red.jpg)
+
+Green
+
+![gamma_green](img/gamma_green.jpg)
+
+Blue
+
+![gamma_blue](img/gamma_blue.jpg)
+
+#### Saturation
+
+![saturation](img/saturation.jpg)
+
+
+#### Combinations of operations
+
+![combos](img/combos.jpg)
+
+
 ## Install
 
 We highly recommend installing in a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/). Once activated, 
