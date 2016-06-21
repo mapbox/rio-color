@@ -33,34 +33,34 @@ matches human's non-linear visual perception. It works well to increase contrast
 
 Contrast
 
-![sigmoidal_contrast](sigmoidal_contrast.jpg)
+![sigmoidal_contrast](img/sigmoidal_contrast.jpg)
 
 Bias
 
-![sigmoidal_bias](sigmoidal_bias.jpg)
+![sigmoidal_bias](img/sigmoidal_bias.jpg)
 
 #### Gamma
 
 Red
 
-![gamma_red](gamma_red.jpg)
+![gamma_red](img/gamma_red.jpg)
 
 Green
 
-![gamma_green](gamma_green.jpg)
+![gamma_green](img/gamma_green.jpg)
 
 Blue
 
-![gamma_blue](gamma_blue.jpg)
+![gamma_blue](img/gamma_blue.jpg)
 
 #### Saturation
 
-![saturation](saturation.jpg)
+![saturation](img/saturation.jpg)
 
 
 #### Combinations of operations
 
-![combos](combos.jpg)
+![combos](img/combos.jpg)
 
 
 ## Install
