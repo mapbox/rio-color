@@ -2,6 +2,7 @@ import click
 
 import rasterio
 from rasterio.rio.options import creation_options
+from rasterio.transform import guard_transform
 from rio_color.workers import atmos_worker, color_worker
 from rio_color.operations import parse_operations, simple_atmo_opstring
 import riomucho
@@ -71,7 +72,7 @@ Example:
         windows = [(window, ij) for ij, window in src.block_windows()]
 
     opts.update(**creation_options)
-    opts['transform'] = opts['affine']
+    opts['transform'] = guard_transform(opts['transform'])
 
     out_dtype = out_dtype if out_dtype else opts['dtype']
     opts['dtype'] = out_dtype
@@ -144,7 +145,7 @@ def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
         windows = [(window, ij) for ij, window in src.block_windows()]
 
     opts.update(**creation_options)
-    opts['transform'] = opts['affine']
+    opts['transform'] = guard_transform(opts['transform'])
 
     out_dtype = out_dtype if out_dtype else opts['dtype']
     opts['dtype'] = out_dtype
