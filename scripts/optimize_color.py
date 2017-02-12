@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 from __future__ import division, print_function
 
-import time
 import random
-import sys
-from collections import OrderedDict
 
 from simanneal import Annealer
 import click
@@ -15,29 +12,41 @@ from rio_color.operations import parse_operations
 from rio_color.utils import to_math_type
 
 
-def time_string(seconds):
-    """Returns time in seconds as a string formatted HHHH:MM:SS."""
-    s = int(round(seconds))  # round to nearest second
-    h, s = divmod(s, 3600)   # get hours and remainder
-    m, s = divmod(s, 60)     # split remainder into minutes and seconds
-    return '%4i:%02i:%02i' % (h, m, s)
+from multiprocessing import Process, Pipe
+
+class KillSwitch(object):
+    pass
+
+def f(conn):
+    while True:
+        msg = conn.recv()
+        print('child received {}'.format(msg))
+        if type(msg) == KillSwitch:
+            break
+        # send msg out to the web socket
+        # conn.send('hello from child {}'.format(result))
+
+
+parent, child = Pipe()
+p = Process(target=f, args=(child,))
+p.start()
+for i in range(10):
+    parent.send(i)
 
 
 class ColorEstimator(Annealer):
 
-    keys = "gamma_red,gamma_green,gamma_blue,contrast,bias".split(',')
+    keys = "gamma_red,gamma_green,gamma_blue,contrast".split(',')
 
     def __init__(self, source, reference, state=None):
         self.src = source.copy()
         self.ref = reference.copy()
         if not state:
-            params = OrderedDict(
+            params = dict(
                 gamma_red=1.0,
                 gamma_green=1.0,
                 gamma_blue=1.0,
-                contrast=10,
-                bias=0.5,
-                saturation=1.0)
+                contrast=10)
         else:
             if self._validate(state):
                 params = state
@@ -70,8 +79,8 @@ class ColorEstimator(Annealer):
         self.state[k] = newval
 
     def cmd(self, state):
-        ops = "gamma r {gamma_red}, gamma g {gamma_green}, gamma b {gamma_blue}, " \
-              "sigmoidal rgb {contrast} {bias}".format(
+        ops = "gamma r {gamma_red:.2f}, gamma g {gamma_green:.2f}, gamma b {gamma_blue:.2f}, " \
+            "sigmoidal rgb {contrast:.2f} 0.5".format(
                   **state)
         return ops
 
@@ -86,20 +95,19 @@ class ColorEstimator(Annealer):
                   for i in range(3)]
         return sum(scores)
 
+    def to_dict(self):
+        return dict(
+            best=self.best_state,
+            current=self.state)
+
     def update(self, step, T, E, acceptance, improvement):
-        elapsed = time.time() - self.start
-        if step == 0:
-            print(' Temperature        Energy    Accept   Improve     Elapsed   Remaining',
-                  file=sys.stderr)
-            print('\r%12.5f  %12.2f                      %s            ' %
-                  (T, E, time_string(elapsed)), file=sys.stderr, end="\r"),
-            sys.stderr.flush()
-        else:
-            remain = (self.steps - step) * (elapsed / step)
-            print('\r%12.5f  %12.2f  %7.2f%%  %7.2f%%  %s  %s\r' %
-                  (T, E, 100.0 * acceptance, 100.0 * improvement,
-                   time_string(elapsed), time_string(remain)), file=sys.stderr, end="\r"),
-            sys.stderr.flush()
+        print("Curr: " + self.cmd(self.state))
+        if self.best_state:
+            print("Best: " + self.cmd(self.best_state))
+        print("-"*80)
+        print(" Temperature        Energy    Accept   Improve     Elapsed   Remaining")
+        parent.send(self.to_dict())
+        self.default_update(step, T, E, acceptance, improvement)
 
 
 def histogram_distance(arr1, arr2, bins=None):
@@ -127,11 +135,13 @@ def histogram_distance(arr1, arr2, bins=None):
     sqerr = (hist1 - hist2)**2
     return sqerr.sum()
 
+
 def calc_downsample(w, h, target=400):
     if w > h:
         return h / target
     elif h >= w:
         return w / target
+
 
 @click.command()
 @click.argument('source')
@@ -149,6 +159,7 @@ def main(source, reference, downsample, steps):
     Increase the --steps to get better results (longer runtime).
     """
 
+    click.echo("Reading source data...", err=True)
     with rasterio.open(source) as src:
         if downsample is None:
             ratio = calc_downsample(src.width, src.height)
@@ -159,6 +170,7 @@ def main(source, reference, downsample, steps):
         rgb = src.read((1, 2, 3), out_shape=(3, h, w))
         orig_rgb = to_math_type(rgb)
 
+    click.echo("Reading reference data...", err=True)
     with rasterio.open(reference) as ref:
         if downsample is None:
             ratio = calc_downsample(ref.width, ref.height)
@@ -169,21 +181,26 @@ def main(source, reference, downsample, steps):
         rgb = ref.read((1, 2, 3), out_shape=(3, h, w))
         ref_rgb = to_math_type(rgb)
 
+    click.echo("Annealing...", err=True)
     est = ColorEstimator(orig_rgb, ref_rgb)
 
     schedule = dict(
         tmax=1.0,  # Max (starting) temperature
         tmin=1e-9,      # Min (ending) temperature
         steps=steps,   # Number of iterations
-        updates=steps/20   # Number of updates (by default an update prints to stdout)
+        updates=steps/20   # Number of updates
     )
 
     est.set_schedule(schedule)
+    est.save_state_on_exit = True
     optimal, score = est.anneal()
     optimal['energy'] = score
     ops = est.cmd(optimal)
     click.echo('rio color -j4 {} {} {}'.format(
         source, '/tmp/output.tif', ops))
+
+    parent.send(KillSwitch())
+    p.join()
 
 
 if __name__ == "__main__":
