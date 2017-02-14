@@ -11,6 +11,7 @@ import rasterio
 
 from rio_color.operations import parse_operations
 from rio_color.utils import to_math_type
+from rasterio.plot import reshape_as_image
 
 def time_string(seconds):
     """Returns time in seconds as a string formatted HHHH:MM:SS."""
@@ -18,6 +19,38 @@ def time_string(seconds):
     h, s = divmod(s, 3600)   # get hours and remainder
     m, s = divmod(s, 60)     # split remainder into minutes and seconds
     return '%2i:%02i:%02i' % (h, m, s)
+
+import matplotlib.pyplot as plt
+fig = plt.figure(figsize=(20, 9))
+fig.suptitle('Color Formula Optimization', fontsize=18, fontweight='bold')
+
+
+def progress_report(curr, best, curr_score, best_score, step, totalsteps,
+                    accept, improv, elaps, remain):
+
+    text = """
+Current Formula    {curr}   (hist distance {curr_score})
+Best Formula       {best}   (hist distance {best_score})
+Step {step} of {totalsteps}
+Acceptance Rate : {accept} %
+Improvement Rate: {improv} %
+Time  {elaps} ( {remain} Remaing)""".format(**locals())
+    return text
+
+txt = fig.text(0.02, 0.05, 'foo', family='monospace', fontsize=16)
+
+axs = (
+    fig.add_subplot(1, 4, 1),
+    fig.add_subplot(1, 4, 2),
+    fig.add_subplot(1, 4, 3),
+    fig.add_subplot(1, 4, 4))
+
+fig.tight_layout()
+axs[0].set_title('Source')
+axs[1].set_title('Current Formula')
+axs[2].set_title('Best Formula')
+axs[3].set_title('Reference')
+imgs = []
 
 
 class ColorEstimator(Annealer):
@@ -27,6 +60,7 @@ class ColorEstimator(Annealer):
     def __init__(self, source, reference, state=None):
         self.src = source.copy()
         self.ref = reference.copy()
+
         if not state:
             params = dict(
                 gamma_red=1.0,
@@ -49,7 +83,7 @@ class ColorEstimator(Annealer):
 
     def move(self):
         k = random.choice(self.keys)
-        multiplier = random.choice((0.9, 1.1))
+        multiplier = random.choice((0.95, 1.05))
 
         invalid_key = True
         while invalid_key:
@@ -70,12 +104,15 @@ class ColorEstimator(Annealer):
                   **state)
         return ops
 
-    def energy(self):
-        arr = self.src.copy()
-        ops = self.cmd(self.state)
-
+    def apply_color(self, arr, state):
+        ops = self.cmd(state)
         for func in parse_operations(ops):
             arr = func(arr)
+        return arr
+
+    def energy(self):
+        arr = self.src.copy()
+        arr = self.apply_color(arr, self.state)
 
         scores = [histogram_distance(self.ref[i], arr[i])
                   for i in range(3)]
@@ -89,21 +126,40 @@ class ColorEstimator(Annealer):
             current=self.state)
 
     def update(self, step, T, E, acceptance, improvement):
-        print('-' * 80)
-        print("Current Formula\t{}\t(hist distance {:.4f})".format(
-            self.cmd(self.state), float(E)))
-        if self.best_state:
-            print("Best Formula\t{}\t(hist distance {:.4f})".format(
-                self.cmd(self.best_state), self.best_energy))
-        print('Step {} of {}'.format(step, self.steps))
-        if acceptance is not None:
-            print('Acceptance Rate: {}%'.format(100 * acceptance))
-        if improvement is not None:
-            print('Improvement Rate: {}%'.format(100 * improvement))
+        # print('-' * 80)
+        # print("Current Formula\t{}\t(hist distance {:.4f})".format(
+        #     self.cmd(self.state), float(E)))
+        # # if self.best_state:
+        # #     print("Best Formula\t{}\t(hist distance {:.4f})".format(
+        # #         self.cmd(self.best_state), self.best_energy))
+        # print('Step {} of {}'.format(step, self.steps))
+        if acceptance is None:
+            acceptance = 0
+        if improvement is None:
+            improvement = 0
         if step > 0:
             elapsed = time.time() - self.start
             remain = (self.steps - step) * (elapsed / step)
-            print('Time {}  ({} Remaing)'.format(time_string(elapsed), time_string(remain)))
+            # print('Time {}  ({} Remaing)'.format(time_string(elapsed), time_string(remain)))
+        else:
+            elapsed = 0
+            remain = 0
+
+        curr = self.cmd(self.state)
+        curr_score = float(E)
+        best = self.cmd(self.best_state)
+        best_score = self.best_energy
+        report = progress_report(
+            curr, best, curr_score, best_score, step, self.steps,
+            acceptance * 100, improvement * 100,
+            time_string(elapsed), time_string(remain))
+        print(report)
+
+        imgs[1].set_data(reshape_as_image(self.apply_color(self.src.copy(), self.state)))
+        imgs[2].set_data(reshape_as_image(self.apply_color(self.src.copy(), self.best_state)))
+        txt.set_text(report)
+        fig.canvas.draw()
+
 
 
 def histogram_distance(arr1, arr2, bins=None):
@@ -179,6 +235,12 @@ def main(source, reference, downsample, steps):
 
     click.echo("Annealing...", err=True)
     est = ColorEstimator(orig_rgb, ref_rgb)
+
+    imgs.append(axs[0].imshow(reshape_as_image(est.src)))
+    imgs.append(axs[1].imshow(reshape_as_image(est.src)))
+    imgs.append(axs[2].imshow(reshape_as_image(est.src)))
+    imgs.append(axs[3].imshow(reshape_as_image(est.ref)))
+    fig.show()
 
     schedule = dict(
         tmax=25.0,  # Max (starting) temperature
