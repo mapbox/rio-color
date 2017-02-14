@@ -181,8 +181,8 @@ def main(source, reference, downsample, steps):
     est = ColorEstimator(orig_rgb, ref_rgb)
 
     schedule = dict(
-        tmax=100.0,  # Max (starting) temperature
-        tmin=1e-3,      # Min (ending) temperature
+        tmax=25.0,  # Max (starting) temperature
+        tmin=1e-4,      # Min (ending) temperature
         steps=steps,   # Number of iterations
         updates=steps/20   # Number of updates
     )
