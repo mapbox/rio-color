@@ -2,6 +2,7 @@
 from __future__ import division, print_function
 
 import random
+import time
 
 from simanneal import Annealer
 import click
@@ -10,6 +11,14 @@ import rasterio
 
 from rio_color.operations import parse_operations
 from rio_color.utils import to_math_type
+
+def time_string(seconds):
+    """Returns time in seconds as a string formatted HHHH:MM:SS."""
+    s = int(round(seconds))  # round to nearest second
+    h, s = divmod(s, 3600)   # get hours and remainder
+    m, s = divmod(s, 60)     # split remainder into minutes and seconds
+    return '%2i:%02i:%02i' % (h, m, s)
+
 
 class ColorEstimator(Annealer):
 
@@ -70,7 +79,9 @@ class ColorEstimator(Annealer):
 
         scores = [histogram_distance(self.ref[i], arr[i])
                   for i in range(3)]
-        return sum(scores)
+
+        # Important: scale by 100 for readability
+        return sum(scores) * 100
 
     def to_dict(self):
         return dict(
@@ -78,12 +89,21 @@ class ColorEstimator(Annealer):
             current=self.state)
 
     def update(self, step, T, E, acceptance, improvement):
-        print("Curr: " + self.cmd(self.state))
+        print('-' * 80)
+        print("Current Formula\t{}\t(hist distance {:.4f})".format(
+            self.cmd(self.state), float(E)))
         if self.best_state:
-            print("Best: " + self.cmd(self.best_state))
-        print("-"*80)
-        print(" Temperature        Energy    Accept   Improve     Elapsed   Remaining")
-        self.default_update(step, T, E, acceptance, improvement)
+            print("Best Formula\t{}\t(hist distance {:.4f})".format(
+                self.cmd(self.best_state), self.best_energy))
+        print('Step {} of {}'.format(step, self.steps))
+        if acceptance is not None:
+            print('Acceptance Rate: {}%'.format(100 * acceptance))
+        if improvement is not None:
+            print('Improvement Rate: {}%'.format(100 * improvement))
+        if step > 0:
+            elapsed = time.time() - self.start
+            remain = (self.steps - step) * (elapsed / step)
+            print('Time {}  ({} Remaing)'.format(time_string(elapsed), time_string(remain)))
 
 
 def histogram_distance(arr1, arr2, bins=None):
@@ -161,14 +181,14 @@ def main(source, reference, downsample, steps):
     est = ColorEstimator(orig_rgb, ref_rgb)
 
     schedule = dict(
-        tmax=1.0,  # Max (starting) temperature
-        tmin=1e-9,      # Min (ending) temperature
+        tmax=100.0,  # Max (starting) temperature
+        tmin=1e-3,      # Min (ending) temperature
         steps=steps,   # Number of iterations
         updates=steps/20   # Number of updates
     )
 
     est.set_schedule(schedule)
-    est.save_state_on_exit = True
+    est.save_state_on_exit = False
     optimal, score = est.anneal()
     optimal['energy'] = score
     ops = est.cmd(optimal)
