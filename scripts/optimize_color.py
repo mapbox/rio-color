@@ -9,9 +9,10 @@ import click
 import numpy as np
 import rasterio
 
+from rasterio.plot import reshape_as_image
 from rio_color.operations import parse_operations
 from rio_color.utils import to_math_type
-from rasterio.plot import reshape_as_image
+
 
 def time_string(seconds):
     """Returns time in seconds as a string formatted HHHH:MM:SS."""
@@ -20,14 +21,9 @@ def time_string(seconds):
     m, s = divmod(s, 60)     # split remainder into minutes and seconds
     return '%2i:%02i:%02i' % (h, m, s)
 
-import matplotlib.pyplot as plt
-fig = plt.figure(figsize=(20, 9))
-fig.suptitle('Color Formula Optimization', fontsize=18, fontweight='bold')
-
 
 def progress_report(curr, best, curr_score, best_score, step, totalsteps,
                     accept, improv, elaps, remain):
-
     text = """
 Current Formula    {curr}   (hist distance {curr_score})
 Best Formula       {best}   (hist distance {best_score})
@@ -37,19 +33,10 @@ Improvement Rate: {improv} %
 Time  {elaps} ( {remain} Remaing)""".format(**locals())
     return text
 
-txt = fig.text(0.02, 0.05, 'foo', family='monospace', fontsize=16)
 
-axs = (
-    fig.add_subplot(1, 4, 1),
-    fig.add_subplot(1, 4, 2),
-    fig.add_subplot(1, 4, 3),
-    fig.add_subplot(1, 4, 4))
-
-fig.tight_layout()
-axs[0].set_title('Source')
-axs[1].set_title('Current Formula')
-axs[2].set_title('Best Formula')
-axs[3].set_title('Reference')
+# Plot globals
+fig = None
+txt = None
 imgs = []
 
 
@@ -126,13 +113,6 @@ class ColorEstimator(Annealer):
             current=self.state)
 
     def update(self, step, T, E, acceptance, improvement):
-        # print('-' * 80)
-        # print("Current Formula\t{}\t(hist distance {:.4f})".format(
-        #     self.cmd(self.state), float(E)))
-        # # if self.best_state:
-        # #     print("Best Formula\t{}\t(hist distance {:.4f})".format(
-        # #         self.cmd(self.best_state), self.best_energy))
-        # print('Step {} of {}'.format(step, self.steps))
         if acceptance is None:
             acceptance = 0
         if improvement is None:
@@ -155,10 +135,12 @@ class ColorEstimator(Annealer):
             time_string(elapsed), time_string(remain))
         print(report)
 
-        imgs[1].set_data(reshape_as_image(self.apply_color(self.src.copy(), self.state)))
-        imgs[2].set_data(reshape_as_image(self.apply_color(self.src.copy(), self.best_state)))
-        txt.set_text(report)
-        fig.canvas.draw()
+        if fig:
+            imgs[1].set_data(reshape_as_image(self.apply_color(self.src.copy(), self.state)))
+            imgs[2].set_data(reshape_as_image(self.apply_color(self.src.copy(), self.best_state)))
+            if txt:
+                txt.set_text(report)
+            fig.canvas.draw()
 
 
 
@@ -200,7 +182,8 @@ def calc_downsample(w, h, target=400):
 @click.argument('reference')
 @click.option('--downsample', '-d', type=int, default=None)
 @click.option('--steps', '-s', type=int, default=5000)
-def main(source, reference, downsample, steps):
+@click.option('--plot/--no-plot', default=True)
+def main(source, reference, downsample, steps, plot):
     """Given a source image and a reference image,
     Find the rio color formula which results in an
     output with similar histogram to the reference image.
@@ -210,6 +193,7 @@ def main(source, reference, downsample, steps):
     Increase the --downsample option to speed things up.
     Increase the --steps to get better results (longer runtime).
     """
+    global fig, txt, imgs
 
     click.echo("Reading source data...", err=True)
     with rasterio.open(source) as src:
@@ -236,11 +220,27 @@ def main(source, reference, downsample, steps):
     click.echo("Annealing...", err=True)
     est = ColorEstimator(orig_rgb, ref_rgb)
 
-    imgs.append(axs[0].imshow(reshape_as_image(est.src)))
-    imgs.append(axs[1].imshow(reshape_as_image(est.src)))
-    imgs.append(axs[2].imshow(reshape_as_image(est.src)))
-    imgs.append(axs[3].imshow(reshape_as_image(est.ref)))
-    fig.show()
+    if plot:
+        import matplotlib.pyplot as plt
+        fig = plt.figure(figsize=(20, 10))
+        fig.suptitle('Color Formula Optimization', fontsize=18, fontweight='bold')
+        txt = fig.text(0.02, 0.05, 'foo', family='monospace', fontsize=16)
+        type(txt)
+        axs = (
+            fig.add_subplot(1, 4, 1),
+            fig.add_subplot(1, 4, 2),
+            fig.add_subplot(1, 4, 3),
+            fig.add_subplot(1, 4, 4))
+        fig.tight_layout()
+        axs[0].set_title('Source')
+        axs[1].set_title('Current Formula')
+        axs[2].set_title('Best Formula')
+        axs[3].set_title('Reference')
+        imgs.append(axs[0].imshow(reshape_as_image(est.src)))
+        imgs.append(axs[1].imshow(reshape_as_image(est.src)))
+        imgs.append(axs[2].imshow(reshape_as_image(est.src)))
+        imgs.append(axs[3].imshow(reshape_as_image(est.ref)))
+        fig.show()
 
     schedule = dict(
         tmax=25.0,  # Max (starting) temperature
