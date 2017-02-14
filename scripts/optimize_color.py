@@ -11,29 +11,6 @@ import rasterio
 from rio_color.operations import parse_operations
 from rio_color.utils import to_math_type
 
-
-from multiprocessing import Process, Pipe
-
-class KillSwitch(object):
-    pass
-
-def f(conn):
-    while True:
-        msg = conn.recv()
-        print('child received {}'.format(msg))
-        if type(msg) == KillSwitch:
-            break
-        # send msg out to the web socket
-        # conn.send('hello from child {}'.format(result))
-
-
-parent, child = Pipe()
-p = Process(target=f, args=(child,))
-p.start()
-for i in range(10):
-    parent.send(i)
-
-
 class ColorEstimator(Annealer):
 
     keys = "gamma_red,gamma_green,gamma_blue,contrast".split(',')
@@ -106,7 +83,6 @@ class ColorEstimator(Annealer):
             print("Best: " + self.cmd(self.best_state))
         print("-"*80)
         print(" Temperature        Energy    Accept   Improve     Elapsed   Remaining")
-        parent.send(self.to_dict())
         self.default_update(step, T, E, acceptance, improvement)
 
 
@@ -198,9 +174,6 @@ def main(source, reference, downsample, steps):
     ops = est.cmd(optimal)
     click.echo('rio color -j4 {} {} {}'.format(
         source, '/tmp/output.tif', ops))
-
-    parent.send(KillSwitch())
-    p.join()
 
 
 if __name__ == "__main__":
