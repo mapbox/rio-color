@@ -59,6 +59,13 @@ venv35:
 	pip install -U wheel delocate && \
 	pip install numpy
 
+venv36:
+	virtualenv -p $(PYFRAMEWORK)/3.6/bin/python3.6 venv36 && \
+	source venv36/bin/activate && \
+	pip install -U pip && \
+	pip install -U wheel delocate && \
+	pip install numpy
+
 rio_color_27: venv27
 	source venv27/bin/activate && \
 	cd .. && \
@@ -83,6 +90,15 @@ rio_color_35: venv35
 	py.test tests && \
 	MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET) CXXFLAGS="$(CXXFLAGS)" CFLAGS="$(CFLAGS)" LDFLAGS="$(CFLAGS)" python setup.py sdist bdist_wheel
 
+rio_color_36: venv36
+	source venv36/bin/activate && \
+	cd .. && \
+	pip install --pre rasterio && \
+	pip install -r requirements-dev.txt && \
+	MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET) CXXFLAGS="$(CXXFLAGS)" CFLAGS="$(CFLAGS)" LDFLAGS="$(CFLAGS)" pip install -e . && \
+	py.test tests && \
+	MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET) CXXFLAGS="$(CXXFLAGS)" CFLAGS="$(CFLAGS)" LDFLAGS="$(CFLAGS)" python setup.py sdist bdist_wheel
+
 
 publish: build
 	ls ../dist
@@ -93,3 +109,4 @@ clean:
 	rm -rf venv27
 	rm -rf venv34
 	rm -rf venv35
+	rm -rf venv36

@@ -45,7 +45,7 @@ else:
         Extension(
             "rio_color.colorspace", ["rio_color/colorspace.c"])]
 
-inst_reqs = ["click", "rasterio", "rio-mucho"]
+inst_reqs = ["click", "rasterio>=1.0a11", "rio-mucho"]
 
 if sys.version_info < (3, 4):
     inst_reqs.append('enum34')
@@ -62,8 +62,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Cython',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
         'Topic :: Multimedia :: Graphics :: Graphics Conversion',
