@@ -63,5 +63,4 @@ target/
 .*.swp
 
 rio_color/colorspace.html
-release/venv*
-
+venv*

@@ -79,7 +79,7 @@ setup(
     ext_modules=ext_modules,
     include_dirs=include_dirs,
     extras_require={
-        'test': ['pytest', 'colormath', 'pytest-cov', 'codecov'],
+        'test': ['pytest', 'colormath==2.0.2', 'pytest-cov', 'codecov'],
     },
     entry_points="""
     [rasterio.rio_plugins]
