@@ -21,8 +21,7 @@ for version in "2.7" "3.4" "3.5" "3.6"; do
     pip install -U wheel delocate
 	pip install -r requirements-dev.txt
 	pip install -r requirements.txt
-    pip install .
+    python setup.py bdist_wheel
     py.test tests
-    python setup.py sdist bdist_wheel
     clean
 done

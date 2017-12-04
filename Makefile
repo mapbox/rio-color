@@ -2,7 +2,7 @@ SHELL = /bin/bash
 
 all: build
 
-build: osx-wheels manylinux-wheels
+build: sdist osx-wheels manylinux-wheels
 
 image:
 	docker build -f Dockerfile.wheels -t rio-wheelbuilder .
@@ -12,6 +12,9 @@ osx-wheels:
 
 manylinux-wheels: image
 	docker run -v $(CURDIR):/src rio-wheelbuilder bash -c "/src/build-linux-wheels.sh"
+
+sdist:
+	python setup.py sdist
 
 clean:
 	rm -rf dist

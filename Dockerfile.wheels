@@ -14,5 +14,12 @@ RUN /opt/python/cp34-cp34m/bin/pip install --pre "rasterio>=1.0a11" --only-binar
 RUN /opt/python/cp35-cp35m/bin/pip install --pre "rasterio>=1.0a11" --only-binary rasterio
 RUN /opt/python/cp36-cp36m/bin/pip install --pre "rasterio>=1.0a11" --only-binary rasterio
 
+COPY requirements-dev.txt /requirements-dev.txt
+RUN /opt/python/cp27-cp27m/bin/pip install -r /requirements-dev.txt
+RUN /opt/python/cp27-cp27mu/bin/pip install -r /requirements-dev.txt
+RUN /opt/python/cp34-cp34m/bin/pip install -r /requirements-dev.txt
+RUN /opt/python/cp35-cp35m/bin/pip install -r /requirements-dev.txt
+RUN /opt/python/cp36-cp36m/bin/pip install -r /requirements-dev.txt
+
 WORKDIR /src
 CMD ["/src/build-linux-wheels.sh"]
