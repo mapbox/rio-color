@@ -1,6 +1,11 @@
 Changes
 =======
 
+0.4.1 (2017-12-1)
+-----------------
+- optimize-color script
+- packaging: test on Python 3.6, upgrade to Cython 0.27.3, Linux wheels
+
 0.4.0 (2016-05-25)
 ------------------
 - Added support for LUV colorspace conversions.

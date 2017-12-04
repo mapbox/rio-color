@@ -4,6 +4,7 @@ __pycache__/
 
 # C extensions
 *.so
+*.c
 
 # Distribution / packaging
 .Python
@@ -62,5 +63,4 @@ target/
 .*.swp
 
 rio_color/colorspace.html
-release/venv*
-
+venv*
