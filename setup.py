@@ -31,8 +31,10 @@ long_description = """Color adjustment plugin for rasterio.
 
 See https://github.com/mapbox/rio-color for docs."""
 
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 
 if cythonize and 'clean' not in sys.argv:
     ext_modules = cythonize([

@@ -173,6 +173,7 @@ def simple_atmo(rgb, haze, contrast, bias):
 
     return output
 
+
 def _op_factory(func, kwargs, opname, bands, rgb_op=False):
     """create an operation function closure
     don't call directly, use parse_operations

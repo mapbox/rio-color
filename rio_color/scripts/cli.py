@@ -85,7 +85,7 @@ Example:
     # parsing will be run again within the worker
     # where its returned value will be used
     try:
-        ops = parse_operations(args['ops_string'])
+        parse_operations(args['ops_string'])
     except ValueError as e:
         raise click.UsageError(str(e))
 

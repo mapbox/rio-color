@@ -3,6 +3,7 @@ from .utils import to_math_type, scale_dtype
 
 # Rio workers
 
+
 def atmos_worker(srcs, window, ij, args):
     src = srcs[0]
     rgb = src.read(window=window)

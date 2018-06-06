@@ -3,6 +3,7 @@ import pytest
 
 from rio_color.utils import to_math_type, math_type, scale_dtype, magick_to_rio
 
+
 @pytest.fixture
 def arr():
     return np.array([
@@ -61,4 +62,3 @@ def test_magick_to_rio():
         "sigmoidal RGB 3 0.4",
         "saturation 1.35",
     ])
-

@@ -15,6 +15,7 @@ def equal(r1, r2):
         with rasterio.open(r2) as src2:
             return np.array_equal(src1.read(), src2.read())
 
+
 def test_atmos_cli(tmpdir):
     output = str(tmpdir.join('atmosj1.tif'))
     runner = CliRunner()
@@ -200,12 +201,12 @@ def test_color_cli_16bit_photointerp(tmpdir):
     runner = CliRunner()
     result = runner.invoke(
         color,
-        [ '-d', 'uint16',
-          '-j', '1',
-          'tests/rgb16.tif',
-          output,
-          "gamma 3 1.85",
-          "gamma 1,2 1.95"])
+        ['-d', 'uint16',
+         '-j', '1',
+         'tests/rgb16.tif',
+         output,
+         "gamma 3 1.85",
+         "gamma 1,2 1.95"])
     assert result.exit_code == 0
 
     with rasterio.open('tests/rgb16.tif') as src:
@@ -227,6 +228,7 @@ def test_color_empty_operations(tmpdir):
         color,
         ['tests/rgb8.tif', output, ", , ,"])
     assert result.exit_code == 2
+
 
 def test_as_color(tmpdir):
     runner = CliRunner()
