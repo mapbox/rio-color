@@ -26,9 +26,9 @@ install:
   - "pip wheel numpy"
   - "pip install --only-binary numpy numpy"
   - "pip wheel -r requirements.txt"
-  - "pip install --only-binary -r requirements.txt"
+  - "pip install -r requirements.txt"
   - "pip wheel -r requirements-dev.txt"
-  - "pip install --only-binary -r requirements-dev.txt"
+  - "pip install -r requirements-dev.txt"
   - "pip install -e .[test]"
 script:
   - py.test --cov rio_color --cov-report term-missing
