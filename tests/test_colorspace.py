@@ -1,4 +1,4 @@
-from itertools import combinations, product
+from itertools import product
 import collections
 import math
 
@@ -74,6 +74,7 @@ def _make_array(x, y, z, dtype='float64'):
         [[x]],
         [[y]],
         [[z]]]).astype(dtype)
+
 
 @pytest.mark.parametrize("pair", tests)
 def test_rgb2lch(pair):
@@ -239,6 +240,8 @@ rgb_colors = xyz_colors = list(product(rgb_vals, repeat=3))
 # In parameterizing destination colorspaces we use a list comprehension,
 # omitting the source colorspace.
 # Test roundtrip from RGB to everything else
+
+
 @pytest.mark.parametrize("color", rgb_colors)
 @pytest.mark.parametrize("dst", [v for v in cs if v not in (cs.rgb, )])
 @pytest.mark.parametrize("tolerance", [0.1])
