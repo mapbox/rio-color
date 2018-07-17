@@ -211,8 +211,7 @@ def test_color_cli_16bit_photointerp(tmpdir):
 
     with rasterio.open('tests/rgb16.tif') as src:
         with rasterio.open(output) as out:
-            for b in src.indexes:
-                assert out.colorinterp == src.colorinterp
+            assert out.colorinterp == src.colorinterp
 
 
 def test_color_empty_operations(tmpdir):
