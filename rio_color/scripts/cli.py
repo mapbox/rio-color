@@ -110,6 +110,8 @@ Example:
                     arr = color_worker(rasters, window, ij, args)
                     dest.write(arr, window=window)
 
+                dest.colorinterp = src.colorinterp
+
 
 @click.command('atmos')
 @click.option('--atmo', '-a', type=click.FLOAT, default=0.03,
