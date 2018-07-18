@@ -11,8 +11,12 @@ import riomucho
 
 
 jobs_opt = click.option(
-    '--jobs', '-j', type=int, default=1,
-    help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1")
+    "--jobs",
+    "-j",
+    type=int,
+    default=1,
+    help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1",
+)
 
 
 def check_jobs(jobs):
@@ -21,21 +25,25 @@ def check_jobs(jobs):
         raise click.UsageError("Jobs must be >= 1 or == -1")
     elif jobs < 0:
         import multiprocessing
+
         jobs = multiprocessing.cpu_count()
     return jobs
 
 
-@click.command('color')
+@click.command("color")
 @jobs_opt
-@click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
-              help="Integer data type for output data, default: same as input")
-@click.argument('src_path', type=click.Path(exists=True))
-@click.argument('dst_path', type=click.Path(exists=False))
-@click.argument('operations', nargs=-1, required=True)
+@click.option(
+    "--out-dtype",
+    "-d",
+    type=click.Choice(["uint8", "uint16"]),
+    help="Integer data type for output data, default: same as input",
+)
+@click.argument("src_path", type=click.Path(exists=True))
+@click.argument("dst_path", type=click.Path(exists=False))
+@click.argument("operations", nargs=-1, required=True)
 @click.pass_context
 @creation_options
-def color(ctx, jobs, out_dtype, src_path, dst_path, operations,
-          creation_options):
+def color(ctx, jobs, out_dtype, src_path, dst_path, operations, creation_options):
     """Color correction
 
 Operations will be applied to the src image in the specified order.
@@ -75,20 +83,17 @@ Example:
         windows = [(window, ij) for ij, window in src.block_windows()]
 
     opts.update(**creation_options)
-    opts['transform'] = guard_transform(opts['transform'])
+    opts["transform"] = guard_transform(opts["transform"])
 
-    out_dtype = out_dtype if out_dtype else opts['dtype']
-    opts['dtype'] = out_dtype
+    out_dtype = out_dtype if out_dtype else opts["dtype"]
+    opts["dtype"] = out_dtype
 
-    args = {
-        'ops_string': ' '.join(operations),
-        'out_dtype': out_dtype
-    }
+    args = {"ops_string": " ".join(operations), "out_dtype": out_dtype}
     # Just run this for validation this time
     # parsing will be run again within the worker
     # where its returned value will be used
     try:
-        parse_operations(args['ops_string'])
+        parse_operations(args["ops_string"])
     except ValueError as e:
         raise click.UsageError(str(e))
 
@@ -102,11 +107,11 @@ Example:
             windows=windows,
             options=opts,
             global_args=args,
-            mode="manual_read"
+            mode="manual_read",
         ) as mucho:
             mucho.run(jobs)
     else:
-        with rasterio.open(dst_path, 'w', **opts) as dest:
+        with rasterio.open(dst_path, "w", **opts) as dest:
             with rasterio.open(src_path) as src:
                 rasters = [src]
                 for window, ij in windows:
@@ -116,33 +121,69 @@ Example:
                 dest.colorinterp = src.colorinterp
 
 
-@click.command('atmos')
-@click.option('--atmo', '-a', type=click.FLOAT, default=0.03,
-              help="How much to dampen cool colors, thus cutting through "
-                   "haze. 0..1 (0 is none), default: 0.03.")
-@click.option('--contrast', '-c', type=click.FLOAT, default=10,
-              help="Contrast factor to apply to the scene. -infinity..infinity"
-                   "(0 is none), default: 10.")
-@click.option('--bias', '-b', type=click.FLOAT, default=0.15,
-              help="Skew (brighten/darken) the output. Lower values make it "
-                   "brighter. 0..1 (0.5 is none), default: 0.15")
-@click.option('--out-dtype', '-d', type=click.Choice(['uint8', 'uint16']),
-              help="Integer data type for output data, default: same as input")
-@click.option('--as-color', is_flag=True, default=False,
-              help="Prints the equivalent rio color command to stdout."
-                   "Does NOT run either command, SRC_PATH will not be created")
-@click.argument('src_path', required=True)
-@click.argument('dst_path', type=click.Path(exists=False))
+@click.command("atmos")
+@click.option(
+    "--atmo",
+    "-a",
+    type=click.FLOAT,
+    default=0.03,
+    help="How much to dampen cool colors, thus cutting through "
+    "haze. 0..1 (0 is none), default: 0.03.",
+)
+@click.option(
+    "--contrast",
+    "-c",
+    type=click.FLOAT,
+    default=10,
+    help="Contrast factor to apply to the scene. -infinity..infinity"
+    "(0 is none), default: 10.",
+)
+@click.option(
+    "--bias",
+    "-b",
+    type=click.FLOAT,
+    default=0.15,
+    help="Skew (brighten/darken) the output. Lower values make it "
+    "brighter. 0..1 (0.5 is none), default: 0.15",
+)
+@click.option(
+    "--out-dtype",
+    "-d",
+    type=click.Choice(["uint8", "uint16"]),
+    help="Integer data type for output data, default: same as input",
+)
+@click.option(
+    "--as-color",
+    is_flag=True,
+    default=False,
+    help="Prints the equivalent rio color command to stdout."
+    "Does NOT run either command, SRC_PATH will not be created",
+)
+@click.argument("src_path", required=True)
+@click.argument("dst_path", type=click.Path(exists=False))
 @jobs_opt
 @creation_options
 @click.pass_context
-def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
-          src_path, dst_path, creation_options, as_color):
+def atmos(
+    ctx,
+    atmo,
+    contrast,
+    bias,
+    jobs,
+    out_dtype,
+    src_path,
+    dst_path,
+    creation_options,
+    as_color,
+):
     """Atmospheric correction
     """
     if as_color:
-        click.echo("rio color {} {} {}".format(
-            src_path, dst_path, simple_atmo_opstring(atmo, contrast, bias)))
+        click.echo(
+            "rio color {} {} {}".format(
+                src_path, dst_path, simple_atmo_opstring(atmo, contrast, bias)
+            )
+        )
         exit(0)
 
     with rasterio.open(src_path) as src:
@@ -150,17 +191,12 @@ def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
         windows = [(window, ij) for ij, window in src.block_windows()]
 
     opts.update(**creation_options)
-    opts['transform'] = guard_transform(opts['transform'])
+    opts["transform"] = guard_transform(opts["transform"])
 
-    out_dtype = out_dtype if out_dtype else opts['dtype']
-    opts['dtype'] = out_dtype
+    out_dtype = out_dtype if out_dtype else opts["dtype"]
+    opts["dtype"] = out_dtype
 
-    args = {
-        'atmo': atmo,
-        'contrast': contrast,
-        'bias': bias,
-        'out_dtype': out_dtype
-    }
+    args = {"atmo": atmo, "contrast": contrast, "bias": bias, "out_dtype": out_dtype}
 
     jobs = check_jobs(jobs)
 
@@ -172,11 +208,11 @@ def atmos(ctx, atmo, contrast, bias, jobs, out_dtype,
             windows=windows,
             options=opts,
             global_args=args,
-            mode="manual_read"
+            mode="manual_read",
         ) as mucho:
             mucho.run(jobs)
     else:
-        with rasterio.open(dst_path, 'w', **opts) as dest:
+        with rasterio.open(dst_path, "w", **opts) as dest:
             with rasterio.open(src_path) as src:
                 rasters = [src]
                 for window, ij in windows:

@@ -57,13 +57,11 @@ def magick_to_rio(convert_opts):
             args.append(0.5)
         elif len(args) == 2:
             args[1] = float(args[1].replace("%", "")) / 100.0
-        ops.append("sigmoidal {} {} {}".format(
-            bands, *args))
+        ops.append("sigmoidal {} {} {}".format(bands, *args))
 
     def append_gamma(arg):
         global bands
-        ops.append("gamma {} {}".format(
-            bands, arg))
+        ops.append("gamma {} {}".format(bands, arg))
 
     def append_sat(arg):
         args = list(filter(None, re.split("[,x]+", arg)))
@@ -90,4 +88,4 @@ def magick_to_rio(convert_opts):
                 nextf(part)
             nextf = None
 
-    return ' '.join(ops)
+    return " ".join(ops)

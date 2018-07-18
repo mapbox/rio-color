@@ -64,13 +64,15 @@ def sigmoidal(arr, contrast, bias):
     if beta == 0:
         return arr
 
-    np.seterr(divide='ignore', invalid='ignore')
+    np.seterr(divide="ignore", invalid="ignore")
 
     if beta > 0:
-        numerator = 1 / (1 + np.exp(beta * (alpha - arr))) - \
-            1 / (1 + np.exp(beta * alpha))
-        denominator = 1 / (1 + np.exp(beta * (alpha - 1))) - \
-            1 / (1 + np.exp(beta * alpha))
+        numerator = 1 / (1 + np.exp(beta * (alpha - arr))) - 1 / (
+            1 + np.exp(beta * alpha)
+        )
+        denominator = 1 / (1 + np.exp(beta * (alpha - 1))) - 1 / (
+            1 + np.exp(beta * alpha)
+        )
         output = numerator / denominator
 
     else:
@@ -78,15 +80,19 @@ def sigmoidal(arr, contrast, bias):
         # todo: account for 0s
         # todo: formatting ;)
         output = (
-            (beta * alpha) - np.log(
+            (beta * alpha)
+            - np.log(
                 (
-                    1 / (
-                        (arr / (1 + np.exp(beta * alpha - beta))) -
-                        (arr / (1 + np.exp(beta * alpha))) +
-                        (1 / (1 + np.exp(beta * alpha)))
+                    1
+                    / (
+                        (arr / (1 + np.exp(beta * alpha - beta)))
+                        - (arr / (1 + np.exp(beta * alpha)))
+                        + (1 / (1 + np.exp(beta * alpha)))
                     )
-                ) - 1)
-            ) / beta
+                )
+                - 1
+            )
+        ) / beta
 
     return output
 
@@ -114,7 +120,7 @@ def gamma(arr, g):
     if g <= 0 or np.isnan(g):
         raise ValueError("gamma must be greater than 0")
 
-    return arr**(1.0 / g)
+    return arr ** (1.0 / g)
 
 
 def saturation(arr, proportion):
@@ -139,16 +145,14 @@ def simple_atmo_opstring(haze, contrast, bias):
     """Make a simple atmospheric correction formula."""
     gamma_b = 1 - haze
     gamma_g = 1 - (haze / 3.0)
-    ops = ("gamma g {gamma_g}, "
-           "gamma b {gamma_b}, "
-           "sigmoidal rgb {contrast} {bias}").format(
-               gamma_g=gamma_g, gamma_b=gamma_b,
-               contrast=contrast, bias=bias)
+    ops = (
+        "gamma g {gamma_g}, " "gamma b {gamma_b}, " "sigmoidal rgb {contrast} {bias}"
+    ).format(gamma_g=gamma_g, gamma_b=gamma_b, contrast=contrast, bias=bias)
     return ops
 
 
 def simple_atmo(rgb, haze, contrast, bias):
-    '''
+    """
     A simple, static (non-adaptive) atmospheric correction function.
 
     Parameters
@@ -162,7 +166,7 @@ def simple_atmo(rgb, haze, contrast, bias):
     bias : float, between 0 and 1
         Threshold level for the contrast function to center on
         (typically centered at 0.5 or 50%)
-    '''
+    """
     gamma_b = 1 - haze
     gamma_g = 1 - (haze / 3.0)
     arr = np.empty(shape=(3, rgb.shape[1], rgb.shape[2]))
@@ -182,6 +186,7 @@ def _op_factory(func, kwargs, opname, bands, rgb_op=False):
     don't call directly, use parse_operations
     returns a function which itself takes and returns ndarrays
     """
+
     def f(arr):
         # Avoid mutation by copying
         newarr = arr.copy()
@@ -206,24 +211,22 @@ def parse_operations(ops_string):
 
     And returns a list of functions, each of which take and return ndarrays
     """
-    band_lookup = {'r': 1, 'g': 2, 'b': 3}
+    band_lookup = {"r": 1, "g": 2, "b": 3}
     count = len(band_lookup)
 
-    opfuncs = {
-        'saturation': saturation,
-        'sigmoidal': sigmoidal,
-        'gamma': gamma}
+    opfuncs = {"saturation": saturation, "sigmoidal": sigmoidal, "gamma": gamma}
 
     opkwargs = {
-        'saturation': ('proportion',),
-        'sigmoidal': ('contrast', 'bias'),
-        'gamma': ('g',)}
+        "saturation": ("proportion",),
+        "sigmoidal": ("contrast", "bias"),
+        "gamma": ("g",),
+    }
 
     # Operations that assume RGB colorspace
-    rgb_ops = ('saturation',)
+    rgb_ops = ("saturation",)
 
     # split into tokens, commas are optional whitespace
-    tokens = [x.strip() for x in ops_string.replace(',', '').split(' ')]
+    tokens = [x.strip() for x in ops_string.replace(",", "").split(" ")]
     operations = []
     current = []
     for token in tokens:
@@ -262,8 +265,8 @@ def parse_operations(ops_string):
                     band = band_lookup[bs.lower()]
                 if band < 1 or band > count:
                     raise ValueError(
-                        "{} BAND must be between 1 and {}"
-                        .format(opname, count))
+                        "{} BAND must be between 1 and {}".format(opname, count)
+                    )
                 bands.add(band)
 
         # assume all args are float
@@ -271,8 +274,13 @@ def parse_operations(ops_string):
         kwargs = dict(zip(opkwargs[opname], args))
 
         # Create opperation function
-        f = _op_factory(func=func, kwargs=kwargs, opname=opname,
-                        bands=bands, rgb_op=(opname in rgb_ops))
+        f = _op_factory(
+            func=func,
+            kwargs=kwargs,
+            opname=opname,
+            bands=bands,
+            rgb_op=(opname in rgb_ops),
+        )
         result.append(f)
 
     return result

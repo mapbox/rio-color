@@ -1,3 +1,3 @@
 """rio-color"""
 
-__version__ = '1.0dev1'
+__version__ = "1.0dev1"
