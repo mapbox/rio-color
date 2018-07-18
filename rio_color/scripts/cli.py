@@ -1,3 +1,5 @@
+"""Main CLI."""
+
 import click
 
 import rasterio
@@ -14,6 +16,7 @@ jobs_opt = click.option(
 
 
 def check_jobs(jobs):
+    """Validate number of jobs."""
     if jobs == 0:
         raise click.UsageError("Jobs must be >= 1 or == -1")
     elif jobs < 0:

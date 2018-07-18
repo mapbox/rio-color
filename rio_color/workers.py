@@ -1,3 +1,5 @@
+"""Color functions for use with rio-mucho."""
+
 from .operations import parse_operations, simple_atmo
 from .utils import to_math_type, scale_dtype
 
@@ -5,6 +7,7 @@ from .utils import to_math_type, scale_dtype
 
 
 def atmos_worker(srcs, window, ij, args):
+    """A simple atmospheric correction user function."""
     src = srcs[0]
     rgb = src.read(window=window)
     rgb = to_math_type(rgb)
@@ -20,6 +23,7 @@ def atmos_worker(srcs, window, ij, args):
 
 
 def color_worker(srcs, window, ij, args):
+    """A user function."""
     src = srcs[0]
     arr = src.read(window=window)
     arr = to_math_type(arr)

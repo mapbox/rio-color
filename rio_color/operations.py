@@ -1,3 +1,5 @@
+"""Color operations."""
+
 import numpy as np
 from .utils import epsilon
 from .colorspace import saturate_rgb
@@ -134,6 +136,7 @@ def saturation(arr, proportion):
 
 
 def simple_atmo_opstring(haze, contrast, bias):
+    """Make a simple atmospheric correction formula."""
     gamma_b = 1 - haze
     gamma_g = 1 - (haze / 3.0)
     ops = ("gamma g {gamma_g}, "

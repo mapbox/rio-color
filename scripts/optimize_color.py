@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+"""Example script"""
+
 from __future__ import division, print_function
 
 import random
@@ -24,6 +27,7 @@ def time_string(seconds):
 
 def progress_report(curr, best, curr_score, best_score, step, totalsteps,
                     accept, improv, elaps, remain):
+    """Report progress"""
     text = """
 Current Formula    {curr}   (hist distance {curr_score})
 Best Formula       {best}   (hist distance {best_score})
@@ -41,10 +45,12 @@ imgs = []
 
 
 class ColorEstimator(Annealer):
+    """Optimizes color using simulated annealing"""
 
     keys = "gamma_red,gamma_green,gamma_blue,contrast".split(',')
 
     def __init__(self, source, reference, state=None):
+        """Create a new instance"""
         self.src = source.copy()
         self.ref = reference.copy()
 
@@ -63,12 +69,14 @@ class ColorEstimator(Annealer):
         super(ColorEstimator, self).__init__(params)
 
     def validate(self):
+        """Validate keys."""
         # todo validate values bt 0..1
         for k in self.keys:
             if k not in self.state:
                 return False
 
     def move(self):
+        """Create a state change."""
         k = random.choice(self.keys)
         multiplier = random.choice((0.95, 1.05))
 
@@ -86,18 +94,21 @@ class ColorEstimator(Annealer):
         self.state[k] = newval
 
     def cmd(self, state):
+        """Get color formula representation of the state."""
         ops = "gamma r {gamma_red:.2f}, gamma g {gamma_green:.2f}, gamma b {gamma_blue:.2f}, " \
             "sigmoidal rgb {contrast:.2f} 0.5".format(
                   **state)
         return ops
 
     def apply_color(self, arr, state):
+        """Apply color formula to an array."""
         ops = self.cmd(state)
         for func in parse_operations(ops):
             arr = func(arr)
         return arr
 
     def energy(self):
+        """Calculate state's energy."""
         arr = self.src.copy()
         arr = self.apply_color(arr, self.state)
 
@@ -108,11 +119,13 @@ class ColorEstimator(Annealer):
         return sum(scores) * 100
 
     def to_dict(self):
+        """Serialize as a dict."""
         return dict(
             best=self.best_state,
             current=self.state)
 
     def update(self, step, T, E, acceptance, improvement):
+        """Print progress."""
         if acceptance is None:
             acceptance = 0
         if improvement is None:
@@ -170,6 +183,7 @@ def histogram_distance(arr1, arr2, bins=None):
 
 
 def calc_downsample(w, h, target=400):
+    """Calculate downsampling value."""
     if w > h:
         return h / target
     elif h >= w:
