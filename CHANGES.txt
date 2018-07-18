@@ -3,6 +3,7 @@ Changes
 
 1.0dev1
 -------
+
 - Explicitly set color interpretation from the source dataset (#52).
 - Docstrings have been added for all public modules, classes, and methods
   (#50).
