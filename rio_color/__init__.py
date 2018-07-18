@@ -1,1 +1,3 @@
-__version__ = '0.4.1'
+"""rio-color"""
+
+__version__ = '1.0dev1'

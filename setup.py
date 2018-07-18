@@ -1,3 +1,5 @@
+"""Setup script."""
+
 import os
 import sys
 from setuptools import setup, find_packages
@@ -33,6 +35,7 @@ See https://github.com/mapbox/rio-color for docs."""
 
 
 def read(fname):
+    """Read a file's contents."""
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
