@@ -14,8 +14,7 @@ from rio_color.colorspace import convert
 # enums required to define src and dst for convert and convert_arr
 from rio_color.colorspace import ColorSpace as cs
 
-from colormath.color_objects import \
-    LuvColor, sRGBColor, XYZColor, LCHabColor, LabColor
+from colormath.color_objects import LuvColor, sRGBColor, XYZColor, LCHabColor, LabColor
 
 from colormath.color_conversions import convert_color
 
@@ -24,7 +23,8 @@ to_colormath = {
     cs.xyz: XYZColor,
     cs.lab: LabColor,
     cs.lch: LCHabColor,
-    cs.luv: LuvColor}
+    cs.luv: LuvColor,
+}
 
 
 tests = (
@@ -67,13 +67,10 @@ def _near(a, b, tol):
     return True
 
 
-def _make_array(x, y, z, dtype='float64'):
+def _make_array(x, y, z, dtype="float64"):
     """ make a 3, 1, 1 array
     """
-    return np.array([
-        [[x]],
-        [[y]],
-        [[z]]]).astype(dtype)
+    return np.array([[[x]], [[y]], [[z]]]).astype(dtype)
 
 
 @pytest.mark.parametrize("pair", tests)
@@ -87,9 +84,7 @@ def test_rgb2lch(pair):
 @pytest.mark.parametrize("pair", tests)
 def test_roundtrip(pair):
     rgb, lch = pair
-    argb = convert(*convert(*rgb,
-                            src=cs.rgb,
-                            dst=cs.lch), src=cs.lch, dst=cs.rgb)
+    argb = convert(*convert(*rgb, src=cs.rgb, dst=cs.lch), src=cs.lch, dst=cs.rgb)
     for v in argb:
         assert v > -0.0001
         assert v < 1.0001
@@ -108,8 +103,7 @@ def test_arr_rgb(pair):
     rgb, lch = pair
     rgb = _make_array(*rgb)
     lch = _make_array(*lch)
-    assert np.allclose(
-        convert_arr(rgb, cs.rgb, cs.lch), lch, atol=0.2)
+    assert np.allclose(convert_arr(rgb, cs.rgb, cs.lch), lch, atol=0.2)
 
 
 @pytest.mark.parametrize("pair", tests)
@@ -117,78 +111,70 @@ def test_arr_lch(pair):
     rgb, lch = pair
     rgb = _make_array(*rgb)
     lch = _make_array(*lch)
-    assert np.allclose(
-        convert_arr(lch, cs.lch, cs.rgb), rgb, atol=0.2)
+    assert np.allclose(convert_arr(lch, cs.lch, cs.rgb), rgb, atol=0.2)
 
 
 @pytest.mark.parametrize("pair", tests)
 def test_saturation_1(pair):
     rgb, lch = pair
     rgb = _make_array(*rgb)
-    assert np.allclose(
-        saturate_rgb(rgb, 1.0), rgb, atol=0.2)
+    assert np.allclose(saturate_rgb(rgb, 1.0), rgb, atol=0.2)
 
 
 def test_saturation_bw():
     rgb = _make_array(0.392156, 0.776470, 0.164705)
     sat = saturate_rgb(rgb, 0.0)
-    assert _near((sat[0, 0, 0], ), (sat[1, 0, 0], ), tol=0.1)
-    assert _near((sat[1, 0, 0], ), (sat[2, 0, 0], ), tol=0.1)
+    assert _near((sat[0, 0, 0],), (sat[1, 0, 0],), tol=0.1)
+    assert _near((sat[1, 0, 0],), (sat[2, 0, 0],), tol=0.1)
 
 
 def test_saturation():
     rgb = _make_array(0.392156, 0.776470, 0.164705)
     saturated = _make_array(0.3425, 0.78372, 0.0)
-    assert np.allclose(
-        saturate_rgb(rgb, 1.1),
-        saturated,
-        atol=0.2)
+    assert np.allclose(saturate_rgb(rgb, 1.1), saturated, atol=0.2)
 
     rgb = _make_array(0.0392, 0.1960, 0.3529)
     saturated = _make_array(0.0456, 0.1929, 0.3941)
-    assert np.allclose(
-        saturate_rgb(rgb, 1.25),
-        saturated,
-        atol=0.2)
+    assert np.allclose(saturate_rgb(rgb, 1.25), saturated, atol=0.2)
 
 
 def test_bad_array_bands():
     bad = np.random.random((2, 3, 3))
     with pytest.raises(ValueError) as exc:
         saturate_rgb(bad, 1.1)
-    assert '3 bands' in str(exc.value)
+    assert "3 bands" in str(exc.value)
 
     with pytest.raises(ValueError) as exc:
         convert_arr(bad, cs.rgb, cs.lch)
-    assert '3 bands' in str(exc.value)
+    assert "3 bands" in str(exc.value)
 
 
 def test_bad_array_dims():
     bad = np.random.random((3, 3))
     with pytest.raises(ValueError) as exc:
         saturate_rgb(bad, 1.1)
-    assert 'wrong number of dimensions' in str(exc.value)
+    assert "wrong number of dimensions" in str(exc.value)
 
     with pytest.raises(ValueError) as exc:
         convert_arr(bad, cs.rgb, cs.lch)
-    assert 'wrong number of dimensions' in str(exc.value)
+    assert "wrong number of dimensions" in str(exc.value)
 
 
 def test_bad_array_type():
-    bad = np.random.random((3, 3, 3)).astype('uint8')
+    bad = np.random.random((3, 3, 3)).astype("uint8")
     with pytest.raises(ValueError) as exc:
         saturate_rgb(bad, 1.1)
-    assert 'dtype mismatch' in str(exc.value)
+    assert "dtype mismatch" in str(exc.value)
 
     with pytest.raises(ValueError) as exc:
         convert_arr(bad, cs.rgb, cs.lch)
-    assert 'dtype mismatch' in str(exc.value)
+    assert "dtype mismatch" in str(exc.value)
 
 
 def test_array_bad_colorspace():
     arr = np.random.random((3, 3))
     with pytest.raises(ValueError):
-        convert_arr(arr, src='FOO', dst='RGB')
+        convert_arr(arr, src="FOO", dst="RGB")
 
     with pytest.raises(ValueError):
         convert_arr(arr, src=999, dst=999)
@@ -197,7 +183,7 @@ def test_array_bad_colorspace():
 def test_bad_colorspace_string():
     """String colorspaces raise ValueError"""
     with pytest.raises(ValueError):
-        convert(0.1, 0.1, 0.1, src='FOO', dst='RGB')
+        convert(0.1, 0.1, 0.1, src="FOO", dst="RGB")
 
 
 def test_bad_colorspace_invalid_int():
@@ -229,7 +215,9 @@ def assert_color_roundtrip(color, src, dst, tolerance):
 
         cm_roundtrip = convert_color(
             convert_color(src_cm(*color), dst_cm, illuminant="d65"),
-            src_cm, illuminant="d65").get_value_tuple()
+            src_cm,
+            illuminant="d65",
+        ).get_value_tuple()
 
         assert _near(rio_roundtrip, cm_roundtrip, tol=tolerance)
 
@@ -243,7 +231,7 @@ rgb_colors = xyz_colors = list(product(rgb_vals, repeat=3))
 
 
 @pytest.mark.parametrize("color", rgb_colors)
-@pytest.mark.parametrize("dst", [v for v in cs if v not in (cs.rgb, )])
+@pytest.mark.parametrize("dst", [v for v in cs if v not in (cs.rgb,)])
 @pytest.mark.parametrize("tolerance", [0.1])
 def test_rgb_convert_roundtrip(color, dst, tolerance):
     assert_color_roundtrip(color, cs.rgb, dst, tolerance)

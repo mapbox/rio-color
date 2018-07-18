@@ -6,16 +6,12 @@ from rio_color.utils import to_math_type, math_type, scale_dtype, magick_to_rio
 
 @pytest.fixture
 def arr():
-    return np.array([
-        [[1, 2],
-         [3, 4]],
-        [[5, 6],
-         [7, 8]],
-        [[9, 10],
-         [11, 12]],
-        [[0, 0],
-         [0, 0]],
-    ]).astype('uint8') * 10
+    return (
+        np.array(
+            [[[1, 2], [3, 4]], [[5, 6], [7, 8]], [[9, 10], [11, 12]], [[0, 0], [0, 0]]]
+        ).astype("uint8")
+        * 10
+    )
 
 
 def test_to_math_type(arr):
@@ -27,10 +23,10 @@ def test_to_math_type(arr):
 
 def test_scale_dtype():
     arr = np.array([0.0, 1.0]).astype(math_type)
-    x = scale_dtype(arr, 'uint8')
+    x = scale_dtype(arr, "uint8")
     assert x.max() == 255
     assert x.min() == 0
-    x = scale_dtype(arr, 'uint16')
+    x = scale_dtype(arr, "uint16")
     assert x.max() == 65535
     assert x.min() == 0
 
@@ -52,13 +48,15 @@ def test_magick_to_rio():
         "-modulate 222,135 "
     )
 
-    assert ops == ' '.join([
-        "sigmoidal B 4 0.5",
-        "gamma B 0.95",
-        "gamma R 1.10",
-        "sigmoidal RGB 1 0.55",
-        "gamma G 0.9",
-        "saturation 1.25",
-        "sigmoidal RGB 3 0.4",
-        "saturation 1.35",
-    ])
+    assert ops == " ".join(
+        [
+            "sigmoidal B 4 0.5",
+            "gamma B 0.95",
+            "gamma R 1.10",
+            "sigmoidal RGB 1 0.55",
+            "gamma G 0.9",
+            "saturation 1.25",
+            "sigmoidal RGB 3 0.4",
+            "saturation 1.35",
+        ]
+    )

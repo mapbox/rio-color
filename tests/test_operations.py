@@ -3,36 +3,46 @@ import numpy as np
 
 from rio_color.utils import to_math_type
 from rio_color.operations import (
-    sigmoidal, gamma, saturation,
-    simple_atmo, parse_operations, simple_atmo_opstring)
+    sigmoidal,
+    gamma,
+    saturation,
+    simple_atmo,
+    parse_operations,
+    simple_atmo_opstring,
+)
 
 
 @pytest.fixture
 def arr():
 
-    return to_math_type(np.array([
-        # red
-        [[1, 2],
-         [3, 4]],
-
-        # green
-        [[5, 6],
-         [7, 8]],
-
-        # blue
-        [[9, 10],
-         [11, 12]]
-    ]).astype('uint8') * 10)
+    return to_math_type(
+        np.array(
+            [
+                # red
+                [[1, 2], [3, 4]],
+                # green
+                [[5, 6], [7, 8]],
+                # blue
+                [[9, 10], [11, 12]],
+            ]
+        ).astype("uint8")
+        * 10
+    )
 
 
 @pytest.fixture
 def arr_rgba():
-    return to_math_type(np.array([
-        [[1, 2], [3, 4]],  # red
-        [[5, 6], [7, 8]],  # green
-        [[9, 10], [11, 12]],  # blue
-        [[0, 0], [25.5, 25.5]]  # alpha
-    ]).astype('uint8') * 10)
+    return to_math_type(
+        np.array(
+            [
+                [[1, 2], [3, 4]],  # red
+                [[5, 6], [7, 8]],  # green
+                [[9, 10], [11, 12]],  # blue
+                [[0, 0], [25.5, 25.5]],  # alpha
+            ]
+        ).astype("uint8")
+        * 10
+    )
 
 
 def test_sigmoidal(arr):
@@ -111,24 +121,22 @@ def test_parse_gamma(arr):
 
 def test_parse_sigmoidal(arr):
     f = parse_operations("sigmoidal rgb 5 0.53")[0]
-    assert np.array_equal(
-        f(arr),
-        sigmoidal(arr, contrast=5, bias=0.53))
+    assert np.array_equal(f(arr), sigmoidal(arr, contrast=5, bias=0.53))
 
 
 def test_parse_multi(arr):
     f1, f2 = parse_operations("gamma rgb 0.95 sigmoidal rgb 35 0.13")
     assert np.array_equal(
-        f2(f1(arr)),
-        sigmoidal(gamma(arr, g=0.95), contrast=35, bias=0.13))
+        f2(f1(arr)), sigmoidal(gamma(arr, g=0.95), contrast=35, bias=0.13)
+    )
 
 
 def test_parse_comma(arr):
     # Commas are optional whitespace, treated like empty string
     f1, f2 = parse_operations("gamma r,g,b 0.95, sigmoidal r,g,b 35 0.13")
     assert np.array_equal(
-        f2(f1(arr)),
-        sigmoidal(gamma(arr, g=0.95), contrast=35, bias=0.13))
+        f2(f1(arr)), sigmoidal(gamma(arr, g=0.95), contrast=35, bias=0.13)
+    )
 
 
 def test_parse_saturation_rgb(arr):
@@ -180,15 +188,13 @@ def test_parse_bands(arr):
 
 def test_parse_multi_saturation_first(arr):
     f1, f2 = parse_operations("saturation 1.25 gamma rgb 0.95")
-    assert np.array_equal(
-        f2(f1(arr)),
-        gamma(saturation(arr, 1.25), g=0.95))
+    assert np.array_equal(f2(f1(arr)), gamma(saturation(arr, 1.25), g=0.95))
 
 
 def test_parse_multi_name(arr):
     f1, f2 = parse_operations("saturation 1.25 gamma rgb 0.95")
-    assert f1.__name__ == 'saturation'
-    assert f2.__name__ == 'gamma'
+    assert f1.__name__ == "saturation"
+    assert f2.__name__ == "gamma"
 
 
 def test_simple_atmos_opstring(arr):
