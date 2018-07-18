@@ -23,7 +23,8 @@ install:
   - pip install -e .[test]
 
 script:
-  - pre-commit run --all-files && python -m pytest --cov rio_color --cov-report term-missing
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pre-commit run --all-files; fi
+  - python -m pytest --cov rio_color --cov-report term-missing
 
 after_success:
   - coveralls
