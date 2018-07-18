@@ -64,7 +64,7 @@ setup(
     description=u"Color correction plugin for rasterio",
     long_description=long_description,
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Stable",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
