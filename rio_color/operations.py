@@ -7,7 +7,7 @@ from .colorspace import saturate_rgb
 
 # Color manipulation functions
 def sigmoidal(arr, contrast, bias):
-    """
+    r"""
     Sigmoidal contrast is type of contrast control that
     adjusts the contrast without saturating highlights or shadows.
     It allows control over two factors:
@@ -98,7 +98,7 @@ def sigmoidal(arr, contrast, bias):
 
 
 def gamma(arr, g):
-    """
+    r"""
     Gamma correction is a nonlinear operation that
     adjusts the image's channel values pixel-by-pixel according
     to a power-law:
