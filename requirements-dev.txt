@@ -3,7 +3,6 @@ cligj
 colormath==2.0.2
 coveralls>=0.4
 delocate
-enum34
 numpy>=1.8.0
 pre-commit
 pytest~=3.10.0
