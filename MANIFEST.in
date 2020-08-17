@@ -1,4 +1,3 @@
-include README.md
-include requirements.txt
+include README.md CHANGES.txt LICENSE setup.py pyproject.toml
 include rio_color/*.pyx
 include rio_color/*.c
