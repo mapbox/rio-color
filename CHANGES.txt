@@ -1,6 +1,11 @@
 Changes
 =======
 
+1.0.1 (2020-08-17)
+------------------
+
+- Add a pyproject.toml file to specify build dependencies.
+
 1.0.0 (2018-07-26)
 ------------------
 
