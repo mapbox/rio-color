@@ -53,7 +53,12 @@ if cythonize and "clean" not in sys.argv:
 else:
     ext_modules = [Extension("rio_color.colorspace", ["rio_color/colorspace.c"])]
 
-inst_reqs = ["click>=4.0,<8", "rasterio>=1.0a11", "rio-mucho", "enum34 ; python_version < '3.4'"]
+inst_reqs = [
+    "click>=4.0,<8",
+    "rasterio>=1.0a11",
+    "rio-mucho",
+    "enum34 ; python_version < '3.4'",
+]
 
 setup(
     name="rio-color",
