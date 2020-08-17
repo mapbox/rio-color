@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.0.1 (2020-08-17)
+1.0.1 (TBD)
 ------------------
 
 - Add a pyproject.toml file to specify build dependencies.
