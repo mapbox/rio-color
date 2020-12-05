@@ -12,15 +12,15 @@ except ImportError:
     cythonize = None
 
 
-class get_numpy_include:
-    """Helper class to determine the numpy include path
-    The purpose of this class is to postpone importing numpy
-    until it is actually installed, so that the ``get_include()``
-    method can be invoked. """
+def get_numpy_include():
+    """Helper function to find the numpy include path
 
-    def __str__(self):
-        import numpy
-        return numpy.get_include()
+    The purpose of this function is to postpone importing numpy
+    until it is actually installed, so that the get_include()
+    method can be invoked.
+    """
+    import numpy
+    yield numpy.get_include()
 
 
 include_dirs = [
