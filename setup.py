@@ -11,15 +11,22 @@ try:
 except ImportError:
     cythonize = None
 
-include_dirs = []
-try:
-    import numpy
 
-    include_dirs.append(numpy.get_include())
-except ImportError:
-    print("Numpy and its headers are required to run setup(). Exiting.")
-    sys.exit(1)
+class get_numpy_include:
+    """Helper class to determine the numpy include path
+    The purpose of this class is to postpone importing numpy
+    until it is actually installed, so that the ``get_include()``
+    method can be invoked. """
 
+    def __str__(self):
+        import numpy
+        return numpy.get_include()
+
+
+include_dirs = [
+    # Path to pybind11 headers
+    get_numpy_include()
+]
 
 # Parse the version from the fiona module.
 with open("rio_color/__init__.py") as f:
@@ -90,6 +97,7 @@ setup(
     ext_modules=ext_modules,
     include_dirs=include_dirs,
     extras_require={"test": ["pytest", "colormath==2.0.2", "pytest-cov", "codecov"]},
+    setup_requires=['numpy'],
     entry_points="""
     [rasterio.rio_plugins]
     color=rio_color.scripts.cli:color
