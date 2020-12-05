@@ -24,7 +24,6 @@ class get_numpy_include:
 
 
 include_dirs = [
-    # Path to pybind11 headers
     get_numpy_include()
 ]
 
