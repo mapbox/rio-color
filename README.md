@@ -8,10 +8,10 @@ A rasterio plugin for applying basic color-oriented image operations to geospati
 ## Goals
 
 * **No heavy dependencies**: rio-color is purposefully limited in scope to remain lightweight
-* **Use the image structure**: By iterating over the internal blocks of the input image, we keep memory usage low and predictable while gaining the abililty to
+* **Use the image structure**: By iterating over the internal blocks of the input image, we keep memory usage low and predictable while gaining the ability to
 * **Use multiple cores**: thanks to [rio-mucho](https://github.com/mapbox/rio-mucho)
 * **Retain all the GeoTIFF info and TIFF structure**: nothing is lost. A GeoTIFF input → GeoTIFF output with the same georeferencing, internal tiling, compression, nodata values, etc.
-* **Efficient colorspace conversions**: the intesive math is written in highly optimized C functions and for use with scalars and numpy arrays.
+* **Efficient colorspace conversions**: the intensive math is written in highly optimized C functions and for use with scalars and numpy arrays.
 * **CLI and Python module**: accessing the functionality as a python module that can act on in-memory numpy arrays opens up new opportunities for composing this with other array operations without using intermediate files.
 
 ## Operations
