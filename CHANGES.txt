@@ -1,9 +1,11 @@
 Changes
 =======
 
-1.0.1 (TBD)
-------------------
+1.0.1a1 (2020-12-16)
+--------------------
 
+- Build binary wheels for 64-bit Linux, MacOS, and Windows using cibuildwheel
+  on AppVeyor (#70).
 - Add a pyproject.toml file to specify build dependencies.
 
 1.0.0 (2018-07-26)
