@@ -97,7 +97,7 @@ All arrays use rasterio ordering with the shape as (bands, columns, rows). Be aw
 The `rio_color.operations.parse_operations` function takes an *operations string* and
 returns a list of python functions which can be applied to an array.
 
-```
+```python
 ops = "gamma b 1.85, gamma rg 1.95, sigmoidal rgb 35 0.13, saturation 1.15"
 
 assert arr.shape[0] == 3
