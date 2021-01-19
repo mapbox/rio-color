@@ -1,4 +1,4 @@
-click
+click>=4.0,<8
 rasterio>=1.0a11
 rio-mucho
-enum34
+enum34; python_version < "3.4"
