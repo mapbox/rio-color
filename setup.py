@@ -55,7 +55,7 @@ else:
 
 inst_reqs = [
     "click>=4.0,<8",
-    "rasterio>=1.0a11",
+    "rasterio~=1.0",
     "rio-mucho",
     "enum34 ; python_version < '3.4'",
 ]
