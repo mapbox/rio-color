@@ -54,7 +54,7 @@ else:
     ext_modules = [Extension("rio_color.colorspace", ["rio_color/colorspace.c"])]
 
 inst_reqs = [
-    "click>=4.0,<8",
+    "click>=4.0",
     "rasterio~=1.0",
     "rio-mucho",
     "enum34 ; python_version < '3.4'",
