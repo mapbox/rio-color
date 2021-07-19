@@ -12,8 +12,7 @@ env:
     - PIP_FIND_LINKS=file://$HOME/.cache/pip/wheels
 
 python:
-  - "2.7"
-  - "3.6"
+  - "3.7"
 
 before_install:
   - pip install -U pip
@@ -23,7 +22,7 @@ install:
   - pip install -e .[test]
 
 script:
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pre-commit run --all-files; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then pre-commit run --all-files; fi
   - python -m pytest --cov rio_color --cov-report term-missing
 
 after_success:
