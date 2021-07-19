@@ -1,6 +1,11 @@
 Changes
 =======
 
+1.0.4 (2021-07-19)
+------------------
+
+- Build using oldest supported version of numpy.
+
 1.0.3 (2021-06-18)
 ------------------
 
