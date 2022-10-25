@@ -42,6 +42,10 @@ jobs:
           python -m pip install pre-commit
           pre-commit run --all-files
 
+      - name: Run Tests
+        run: |
+          python -m pytest --cov rio_color --cov-report xml --cov-report term-missing
+
       - name: Upload Results
         if: ${{ matrix.name == 'base' }}
         uses: codecov/codecov-action@v1
