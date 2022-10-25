@@ -7,12 +7,12 @@ from __future__ import division, print_function
 import random
 import time
 
-from simanneal import Annealer
 import click
 import numpy as np
 import rasterio
-
 from rasterio.plot import reshape_as_image
+from simanneal import Annealer
+
 from rio_color.operations import parse_operations
 from rio_color.utils import to_math_type
 
@@ -166,7 +166,7 @@ class ColorEstimator(Annealer):
 
 
 def histogram_distance(arr1, arr2, bins=None):
-    """ This function returns the sum of the squared error
+    """This function returns the sum of the squared error
     Parameters:
         two arrays constrained to 0..1
 

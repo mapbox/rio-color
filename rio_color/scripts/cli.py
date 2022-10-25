@@ -1,22 +1,17 @@
 """Main CLI."""
 
 import click
-
 import rasterio
 from rasterio.rio.options import creation_options
 from rasterio.transform import guard_transform
-from rio_color.workers import atmos_worker, color_worker
+
 from rio_color.operations import parse_operations, simple_atmo_opstring
-import riomucho
+from rio_color.workers import atmos_worker, color_worker
 
-
-jobs_opt = click.option(
-    "--jobs",
-    "-j",
-    type=int,
-    default=1,
-    help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1",
-)
+try:
+    import riomucho
+except ImportError:  # pragma: nocover
+    riomucho = None  # type: ignore
 
 
 def check_jobs(jobs):
@@ -27,11 +22,18 @@ def check_jobs(jobs):
         import multiprocessing
 
         jobs = multiprocessing.cpu_count()
+
     return jobs
 
 
 @click.command("color")
-@jobs_opt
+@click.option(
+    "--jobs",
+    "-j",
+    type=int,
+    default=1,
+    help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1",
+)
 @click.option(
     "--out-dtype",
     "-d",
@@ -98,8 +100,11 @@ Example:
         raise click.UsageError(str(e))
 
     jobs = check_jobs(jobs)
-
     if jobs > 1:
+        assert (
+            riomucho is not None
+        ), "rio-mucho must be installed to use multiprocessing"
+
         with riomucho.RioMucho(
             [src_path],
             dst_path,
@@ -110,6 +115,7 @@ Example:
             mode="manual_read",
         ) as mucho:
             mucho.run(jobs)
+
     else:
         with rasterio.open(dst_path, "w", **opts) as dest:
             with rasterio.open(src_path) as src:
@@ -161,7 +167,13 @@ Example:
 )
 @click.argument("src_path", required=True)
 @click.argument("dst_path", type=click.Path(exists=False))
-@jobs_opt
+@click.option(
+    "--jobs",
+    "-j",
+    type=int,
+    default=1,
+    help="Number of jobs to run simultaneously, Use -1 for all cores, default: 1",
+)
 @creation_options
 @click.pass_context
 def atmos(
@@ -176,8 +188,7 @@ def atmos(
     creation_options,
     as_color,
 ):
-    """Atmospheric correction
-    """
+    """Atmospheric correction"""
     if as_color:
         click.echo(
             "rio color {} {} {}".format(
@@ -199,8 +210,11 @@ def atmos(
     args = {"atmo": atmo, "contrast": contrast, "bias": bias, "out_dtype": out_dtype}
 
     jobs = check_jobs(jobs)
-
     if jobs > 1:
+        assert (
+            riomucho is not None
+        ), "rio-mucho must be installed to use multiprocessing"
+
         with riomucho.RioMucho(
             [src_path],
             dst_path,
@@ -211,6 +225,7 @@ def atmos(
             mode="manual_read",
         ) as mucho:
             mucho.run(jobs)
+
     else:
         with rasterio.open(dst_path, "w", **opts) as dest:
             with rasterio.open(src_path) as src:

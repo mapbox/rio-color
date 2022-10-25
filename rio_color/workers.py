@@ -1,9 +1,7 @@
 """Color functions for use with rio-mucho."""
 
 from .operations import parse_operations, simple_atmo
-from .utils import to_math_type, scale_dtype
-
-# Rio workers
+from .utils import scale_dtype, to_math_type
 
 
 def atmos_worker(srcs, window, ij, args):

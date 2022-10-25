@@ -65,7 +65,7 @@ Blue
 
 ## Install
 
-We highly recommend installing in a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/). Once activated, 
+We highly recommend installing in a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/). Once activated,
 
 ```
 pip install -U pip
@@ -77,7 +77,6 @@ Or if you want to install from source
 git checkout https://github.com/mapbox/rio-color.git
 cd rio-color
 pip install -U pip
-pip install -r requirements-dev.txt
 pip install -e .
 ```
 
@@ -229,3 +228,7 @@ Options:
                                   for more information.
   --help                          Show this message and exit.
 ```
+
+#### Multiprocessing
+
+To enable multiprocessing, [`rio-mucho`](https://github.com/mapbox/rio-mucho) is required. You can install it by doing `python -m pip install rio-color["mucho"]`

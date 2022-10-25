@@ -2,7 +2,8 @@
 
 import os
 import sys
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 from setuptools.extension import Extension
 
 # Use Cython if available.
@@ -20,15 +21,6 @@ except ImportError:
     print("Numpy and its headers are required to run setup(). Exiting.")
     sys.exit(1)
 
-
-# Parse the version from the fiona module.
-with open("rio_color/__init__.py") as f:
-    for line in f:
-        if line.find("__version__") >= 0:
-            version = line.split("=")[1].strip()
-            version = version.strip('"')
-            version = version.strip("'")
-            break
 
 long_description = """Color adjustment plugin for rasterio.
 
@@ -54,32 +46,30 @@ else:
     ext_modules = [Extension("rio_color.colorspace", ["rio_color/colorspace.c"])]
 
 inst_reqs = [
-    "click>=4.0",
+    "click~=8.0",
     "rasterio~=1.0",
-    "rio-mucho",
-    "enum34 ; python_version < '3.4'",
 ]
 
 setup(
     name="rio-color",
-    version=version,
-    description=u"Color correction plugin for rasterio",
+    description="Color correction plugin for rasterio",
     long_description=long_description,
+    python_requires=">=3.8",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Cython",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Multimedia :: Graphics :: Graphics Conversion",
         "Topic :: Scientific/Engineering :: GIS",
     ],
     keywords="",
-    author=u"Charlie Loyd",
+    author="Charlie Loyd",
     author_email="charlie@mapbox.com",
     url="https://github.com/mapbox/rio-color",
     license="BSD",
@@ -89,7 +79,16 @@ setup(
     install_requires=inst_reqs,
     ext_modules=ext_modules,
     include_dirs=include_dirs,
-    extras_require={"test": ["pytest", "colormath==2.0.2", "pytest-cov", "codecov"]},
+    extras_require={
+        "test": [
+            "pytest",
+            "colormath==2.0.2",
+            "pytest-cov",
+        ],
+        "mucho": [
+            "rio-mucho",
+        ],
+    },
     entry_points="""
     [rasterio.rio_plugins]
     color=rio_color.scripts.cli:color

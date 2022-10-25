@@ -1,22 +1,17 @@
-from itertools import product
 import collections
 import math
+from itertools import product
 
 import numpy as np
 import pytest
-
-# public 3d array funcs
-from rio_color.colorspace import convert_arr, saturate_rgb
-
-# public scalar func
-from rio_color.colorspace import convert
+from colormath.color_conversions import convert_color
+from colormath.color_objects import LabColor, LCHabColor, LuvColor, XYZColor, sRGBColor
 
 # enums required to define src and dst for convert and convert_arr
+# public scalar func
+# public 3d array funcs
 from rio_color.colorspace import ColorSpace as cs
-
-from colormath.color_objects import LuvColor, sRGBColor, XYZColor, LCHabColor, LabColor
-
-from colormath.color_conversions import convert_color
+from rio_color.colorspace import convert, convert_arr, saturate_rgb
 
 to_colormath = {
     cs.rgb: sRGBColor,
@@ -68,8 +63,7 @@ def _near(a, b, tol):
 
 
 def _make_array(x, y, z, dtype="float64"):
-    """ make a 3, 1, 1 array
-    """
+    """make a 3, 1, 1 array"""
     return np.array([[[x]], [[y]], [[z]]]).astype(dtype)
 
 
@@ -182,13 +176,13 @@ def test_array_bad_colorspace():
 
 def test_bad_colorspace_string():
     """String colorspaces raise ValueError"""
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         convert(0.1, 0.1, 0.1, src="FOO", dst="RGB")
 
 
 def test_bad_colorspace_invalid_int():
     """Invalid colorspace integers raise ValueError"""
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         convert(0.1, 0.1, 0.1, src=999, dst=999)
 
 

@@ -1,5 +1,5 @@
-import rasterio
 import numpy as np
+import rasterio
 
 from rio_color.workers import atmos_worker, color_worker
 

@@ -1,8 +1,9 @@
 """Color operations."""
 
 import numpy as np
-from .utils import epsilon
+
 from .colorspace import saturate_rgb
+from .utils import epsilon
 
 
 # Color manipulation functions

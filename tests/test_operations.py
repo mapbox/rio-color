@@ -1,15 +1,15 @@
-import pytest
 import numpy as np
+import pytest
 
-from rio_color.utils import to_math_type
 from rio_color.operations import (
-    sigmoidal,
     gamma,
-    saturation,
-    simple_atmo,
     parse_operations,
+    saturation,
+    sigmoidal,
+    simple_atmo,
     simple_atmo_opstring,
 )
+from rio_color.utils import to_math_type
 
 
 @pytest.fixture

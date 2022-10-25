@@ -1,13 +1,13 @@
 import os
 
-from click import UsageError
-from click.testing import CliRunner
 import numpy as np
 import pytest
 import rasterio
+from click import UsageError
+from click.testing import CliRunner
 from rasterio.enums import Compression
 
-from rio_color.scripts.cli import color, atmos, check_jobs
+from rio_color.scripts.cli import atmos, check_jobs, color
 
 
 def equal(r1, r2):

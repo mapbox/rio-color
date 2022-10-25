@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from rio_color.utils import to_math_type, math_type, scale_dtype, magick_to_rio
+from rio_color.utils import magick_to_rio, math_type, scale_dtype, to_math_type
 
 
 @pytest.fixture

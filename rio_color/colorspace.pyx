@@ -3,9 +3,10 @@ from enum import IntEnum
 
 import numpy as np
 
-cimport numpy as np
-from libc.math cimport cos, sin, atan2
 cimport cython
+cimport numpy as np
+from libc.math cimport atan2, cos, sin
+
 ctypedef np.float64_t FLOAT_t
 
 
