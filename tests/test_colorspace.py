@@ -1,4 +1,3 @@
-import collections
 import math
 from itertools import product
 
@@ -12,6 +11,11 @@ from colormath.color_objects import LabColor, LCHabColor, LuvColor, XYZColor, sR
 # public 3d array funcs
 from rio_color.colorspace import ColorSpace as cs
 from rio_color.colorspace import convert, convert_arr, saturate_rgb
+
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 
 to_colormath = {
     cs.rgb: sRGBColor,
@@ -53,7 +57,7 @@ def test_fixtures(pair):
 
 def _near(a, b, tol):
 
-    if not isinstance(tol, collections.Iterable):
+    if not isinstance(tol, Iterable):
         tol = [tol] * len(a)
 
     for x, y, t in zip(a, b, tol):
