@@ -89,7 +89,7 @@ setup(
     install_requires=inst_reqs,
     ext_modules=ext_modules,
     include_dirs=include_dirs,
-    extras_require={"test": ["pytest", "colormath==2.0.2", "pytest-cov", "codecov"]},
+    extras_require={"test": ["pytest", "colormath==3.0.0", "pytest-cov", "codecov"]},
     entry_points="""
     [rasterio.rio_plugins]
     color=rio_color.scripts.cli:color
