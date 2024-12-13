@@ -1,6 +1,18 @@
 Changes
 =======
 
+2.0.0 (2022-02-15)
+------------------
+
+- Drop support for Python <3.8.
+- Bump rasterio to 1.4.
+- Bump colormath to 3.0.
+- Bump click to 8.1.
+- Bump numpy to 1.26.
+- Bump Cython to 3.0.
+- Bump pytest to 8.3.
+- Bump pre-commit to 2.15.
+
 1.0.4 (2021-07-19)
 ------------------
 
