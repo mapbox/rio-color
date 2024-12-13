@@ -1,11 +1,11 @@
 repos:
 -
     repo: https://github.com/psf/black
-    rev: ed50737290662f6ef4016a7ea44da78ee1eff1e2
+    rev: 24.10.0  # Update to the latest version
     hooks:
     - id: black
       args: [--safe]
-      language_version: python3.6
+      language_version: python3.9
 -
     repo: 'https://github.com/pre-commit/pre-commit-hooks'
     # v1.3.0
@@ -20,7 +20,7 @@ repos:
 -
     repo: 'https://github.com/chewse/pre-commit-mirrors-pydocstyle'
     # 2.1.1
-    rev: 22d3ccf6cf91ffce3b16caa946c155778f0cb20f
+    rev: v2.1.1
     hooks:
         - id: pydocstyle
           args: [

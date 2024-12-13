@@ -2,20 +2,13 @@
 
 import os
 import sys
-from setuptools import setup, find_packages
-from setuptools.extension import Extension
-
-# Use Cython if available.
-try:
-    from Cython.Build import cythonize
-except ImportError:
-    cythonize = None
+from setuptools import setup, find_packages, Extension
+from Cython.Build import cythonize
+import numpy as np
 
 include_dirs = []
 try:
-    import numpy
-
-    include_dirs.append(numpy.get_include())
+    include_dirs.append(np.get_include())
 except ImportError:
     print("Numpy and its headers are required to run setup(). Exiting.")
     sys.exit(1)
@@ -40,44 +33,36 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
-if cythonize and "clean" not in sys.argv:
-    ext_modules = cythonize(
-        [
-            Extension(
-                "rio_color.colorspace",
-                ["rio_color/colorspace.pyx"],
-                extra_compile_args=["-O2"],
-            )
-        ]
+extensions = [
+    Extension(
+        "rio_color.colorspace",
+        ["rio_color/colorspace.pyx"],
+        include_dirs=[np.get_include()],
+        define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
     )
-else:
-    ext_modules = [Extension("rio_color.colorspace", ["rio_color/colorspace.c"])]
-
-inst_reqs = [
-    "click>=8.0",
-    "rasterio~=1.4",
-    "rio-mucho",
 ]
+
+inst_reqs = ["click>=8.0", "rasterio~=1.4", "rio-mucho"]
 
 setup(
     name="rio-color",
     version=version,
-    description=u"Color correction plugin for rasterio",
+    description="Color correction plugin for rasterio",
     long_description=long_description,
-    python_requires='>=3.6',
+    python_requires=">=3.8",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Cython",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Graphics :: Graphics Conversion",
         "Topic :: Scientific/Engineering :: GIS",
     ],
     keywords="",
-    author=u"Charlie Loyd",
+    author="Charlie Loyd",
     author_email="charlie@mapbox.com",
     url="https://github.com/mapbox/rio-color",
     license="BSD",
@@ -85,7 +70,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=inst_reqs,
-    ext_modules=ext_modules,
+    ext_modules=cythonize(extensions),
     include_dirs=include_dirs,
     extras_require={"test": ["pytest", "colormath==3.0.0", "pytest-cov", "codecov"]},
     entry_points="""

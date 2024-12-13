@@ -3,6 +3,5 @@ requires = [
   "setuptools",
   "wheel",
   "cython==3.0.11",
-  "oldest-supported-numpy; python_version >= '3.5'",
-  "numpy; python_version < '3.5'"
+  "numpy==1.26.0"
 ]

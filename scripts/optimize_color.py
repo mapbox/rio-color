@@ -166,7 +166,7 @@ class ColorEstimator(Annealer):
 
 
 def histogram_distance(arr1, arr2, bins=None):
-    """ This function returns the sum of the squared error
+    """This function returns the sum of the squared error
     Parameters:
         two arrays constrained to 0..1
 

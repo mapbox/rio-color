@@ -21,8 +21,7 @@ def to_math_type(arr):
 
 
 def scale_dtype(arr, dtype):
-    """Convert an array from 0..1 to dtype, scaling up linearly
-    """
+    """Convert an array from 0..1 to dtype, scaling up linearly"""
     max_int = np.iinfo(dtype).max
     return (arr * max_int).astype(dtype)
 

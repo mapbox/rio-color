@@ -68,8 +68,7 @@ def _near(a, b, tol):
 
 
 def _make_array(x, y, z, dtype="float64"):
-    """ make a 3, 1, 1 array
-    """
+    """make a 3, 1, 1 array"""
     return np.array([[[x]], [[y]], [[z]]]).astype(dtype)
 
 

@@ -176,8 +176,7 @@ def atmos(
     creation_options,
     as_color,
 ):
-    """Atmospheric correction
-    """
+    """Atmospheric correction"""
     if as_color:
         click.echo(
             "rio color {} {} {}".format(
