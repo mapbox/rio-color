@@ -54,10 +54,9 @@ else:
     ext_modules = [Extension("rio_color.colorspace", ["rio_color/colorspace.c"])]
 
 inst_reqs = [
-    "click>=4.0",
-    "rasterio~=1.0",
+    "click>=8.0",
+    "rasterio~=1.4",
     "rio-mucho",
-    "enum34 ; python_version < '3.4'",
 ]
 
 setup(
@@ -65,15 +64,14 @@ setup(
     version=version,
     description=u"Color correction plugin for rasterio",
     long_description=long_description,
+    python_requires='>=3.6',
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Cython",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Graphics :: Graphics Conversion",
         "Topic :: Scientific/Engineering :: GIS",
