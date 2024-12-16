@@ -1,4 +1,4 @@
 click~=8.1
-numpy==1.26.0
+numpy==2.0.2
 rasterio~=1.4
 rio-mucho

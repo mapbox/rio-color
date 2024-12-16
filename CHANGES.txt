@@ -8,7 +8,7 @@ Changes
 - Bump rasterio to 1.4.
 - Bump colormath to 3.0.
 - Bump click to 8.1.
-- Bump numpy to 1.26.
+- Bump numpy to 2.0.2.
 - Bump Cython to 3.0.
 - Bump pytest to 8.3.
 - TravisCI --> GHA
