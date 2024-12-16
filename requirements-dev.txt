@@ -2,7 +2,7 @@ affine
 cligj
 colormath==3.0.0
 delocate
-numpy==1.26.0
+numpy==2.0.2
 pre-commit
 pytest~=8.3.4
 pytest-cov>=2.2.0
