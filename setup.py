@@ -49,7 +49,7 @@ setup(
     version=version,
     description="Color correction plugin for rasterio",
     long_description=long_description,
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
@@ -57,6 +57,8 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Cython",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10"
+        "Programming Language :: Python :: 3.11"
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Graphics :: Graphics Conversion",
         "Topic :: Scientific/Engineering :: GIS",

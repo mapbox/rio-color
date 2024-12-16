@@ -1,7 +1,7 @@
 environment:
   global:
-    CIBW_SKIP: "cp27* cp35* pp* *-win32 *-manylinux_i686"
-    CIBW_BUILD: "cp38-* cp39-* cp310-*"
+    CIBW_SKIP: "cp27* cp35* cp38-* pp* *-win32 *-manylinux_i686"
+    CIBW_BUILD: "cp39-* cp310-* cp311-*"
 
 matrix:
   - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
