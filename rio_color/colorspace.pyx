@@ -41,7 +41,31 @@ cdef enum:
 cpdef convert(double one, double two, double three, src, dst):
     cdef color color
 
-    if src not in ColorSpace or dst not in ColorSpace:
+    if isinstance(src, str):
+        try:
+            src = ColorSpace[src.lower()]
+        except KeyError:
+            raise ValueError(f"Invalid source colorspace: {src}")
+
+    if isinstance(dst, str):
+        try:
+            dst = ColorSpace[dst.lower()]
+        except KeyError:
+            raise ValueError(f"Invalid destination colorspace: {dst}")
+
+    if isinstance(src, int):
+        try:
+            src = ColorSpace(src)
+        except ValueError:
+            raise ValueError(f"Invalid source colorspace: {src}")
+
+    if isinstance(dst, int):
+        try:
+            dst = ColorSpace(dst)
+        except ValueError:
+            raise ValueError(f"Invalid destination colorspace: {dst}")
+
+    if not isinstance(src, ColorSpace) or not isinstance(dst, ColorSpace):
         raise ValueError("Invalid colorspace")
 
     color = _convert(one, two, three, int(src), int(dst))

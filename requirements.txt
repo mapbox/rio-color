@@ -1,4 +1,4 @@
 click~=8.1
+numpy==1.26.0
 rasterio~=1.4
 rio-mucho
-enum34; python_version < "3.4"

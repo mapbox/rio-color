@@ -11,7 +11,6 @@ Changes
 - Bump numpy to 1.26.
 - Bump Cython to 3.0.
 - Bump pytest to 8.3.
-- Bump pre-commit to 2.15.
 
 1.0.4 (2021-07-19)
 ------------------
