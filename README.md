@@ -1,5 +1,7 @@
 # rio-color
 
+[![rio-color test](https://github.com/mapbox/rio-color/actions/workflows/test.yml/badge.svg)](https://github.com/mapbox/rio-color/actions/workflows/test.yml)
+
 A rasterio plugin for applying basic color-oriented image operations to geospatial rasters.
 
 ## Goals
