@@ -1,7 +1,6 @@
 affine
 cligj
 colormath==3.0.0
-coveralls>=0.4
 delocate
 numpy==1.26.0
 pre-commit
