@@ -4,14 +4,11 @@ environment:
     CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-*"
 
 matrix:
-  ubuntu:
-    APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+  - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
     APPVEYOR_JOB_NAME: "python39-x64-ubuntu"
-  vs2015:
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     APPVEYOR_JOB_NAME: "python39-x64-vs2015"
-  macos:
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
+  - APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     APPVEYOR_JOB_NAME: "python39-x64-macos-sonoma"
 
 stack: python 3.9
