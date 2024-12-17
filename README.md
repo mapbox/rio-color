@@ -1,7 +1,6 @@
 # rio-color
 
-[![Build Status](https://travis-ci.com/mapbox/rio-color.svg?branch=master)](https://travis-ci.com/mapbox/rio-color)
-[![Coverage Status](https://coveralls.io/repos/mapbox/rio-color/badge.svg?branch=master&service=github)](https://coveralls.io/github/mapbox/rio-color?branch=master)
+[![rio-color test](https://github.com/mapbox/rio-color/actions/workflows/test.yml/badge.svg)](https://github.com/mapbox/rio-color/actions/workflows/test.yml)
 
 A rasterio plugin for applying basic color-oriented image operations to geospatial rasters.
 

@@ -1,22 +1,27 @@
 environment:
   global:
-    CIBW_SKIP: "cp27* cp35* pp* *-win32 *-manylinux_i686"
-  matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-      APPVEYOR_JOB_NAME: "python37-x64-ubuntu"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      APPVEYOR_JOB_NAME: "python37-x64-vs2015"
-    - APPVEYOR_BUILD_WORKER_IMAGE: macos-mojave
-      APPVEYOR_JOB_NAME: "python37-x64-macos-mojave"
+    CIBW_SKIP: "cp27* cp35* cp38-* pp* *-win32 *-manylinux_i686"
+    CIBW_BUILD: "cp39-* cp310-* cp311-*"
 
-stack: python 3.7
+matrix:
+  - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+    APPVEYOR_JOB_NAME: "python39-x64-ubuntu"
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    APPVEYOR_JOB_NAME: "python39-x64-vs2015"
+  - APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
+    APPVEYOR_JOB_NAME: "python39-x64-macos-sonoma"
+
+stack: python 3.9
 
 init:
-- cmd: set PATH=C:\Python37;C:\Python37\Scripts;%PATH%
+- cmd: set PATH=C:\Python39;C:\Python39\Scripts;%PATH%
 
 install: python -m pip install cibuildwheel==1.7.1
 
-build_script: python -m cibuildwheel --output-dir wheelhouse
+build_script:
+  - python -m cibuildwheel --output-dir wheelhouse --platform linux --python 3.9
+  - python -m cibuildwheel --output-dir wheelhouse --platform windows --python 3.9
+  - python -m cibuildwheel --output-dir wheelhouse --platform macos --python 3.9
 
 artifacts:
   - path: "wheelhouse\\*.whl"
