@@ -38,7 +38,7 @@ extensions = [
         "rio_color.colorspace",
         ["rio_color/colorspace.pyx"],
         include_dirs=[np.get_include()],
-        define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
+        define_macros=[("NPY_NO_DEPRECATED_API", "NPY_2_0_API_VERSION")],
     )
 ]
 
@@ -59,6 +59,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10"
         "Programming Language :: Python :: 3.11"
+        "Programming Language :: Python :: 3.12"
         "Topic :: Multimedia :: Graphics :: Graphics Conversion",
         "Topic :: Scientific/Engineering :: GIS",
     ],
