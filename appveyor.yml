@@ -19,9 +19,9 @@ init:
 install: python -m pip install cibuildwheel==1.7.1
 
 build_script:
-  - python -m cibuildwheel --output-dir wheelhouse --platform linux --python 3.9
-  - python -m cibuildwheel --output-dir wheelhouse --platform windows --python 3.9
-  - python -m cibuildwheel --output-dir wheelhouse --platform macos --python 3.9
+  - python -m cibuildwheel --output-dir wheelhouse --platform linux
+  - python -m cibuildwheel --output-dir wheelhouse --platform windows
+  - python -m cibuildwheel --output-dir wheelhouse --platform macos
 
 artifacts:
   - path: "wheelhouse\\*.whl"
