@@ -1,10 +1,15 @@
 Changes
 =======
 
+2.0.1 (2024-12-17)
+------------------
+
+- Fix for release process
+
 2.0.0 (2024-12-16)
 ------------------
 
-- Drop support for Python <3.8.
+- Drop support for Python <3.9.
 - Bump rasterio to 1.4.
 - Bump colormath to 3.0.
 - Bump click to 8.1.
