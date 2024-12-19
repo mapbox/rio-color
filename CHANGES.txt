@@ -4,7 +4,7 @@ Changes
 2.0.1 (2024-12-17)
 ------------------
 
-- Fix for appveyor release process
+- Fix for release process
 
 2.0.0 (2024-12-16)
 ------------------
