@@ -120,6 +120,13 @@ def test_saturation_1(pair):
     assert np.allclose(saturate_rgb(rgb, 1.0), rgb, atol=0.2)
 
 
+def test_black_rgb_to_luv():
+    # XYZ of black has a 0 denominator. That division used to return nan.
+    assert convert(0, 0, 0, src=cs.rgb, dst=cs.luv) == pytest.approx((0, 0, 0))
+    back = convert(0, 0, 0, src=cs.luv, dst=cs.rgb)
+    assert back == pytest.approx((0, 0, 0), abs=1e-9)
+
+
 def test_saturation_bw():
     rgb = _make_array(0.392156, 0.776470, 0.164705)
     sat = saturate_rgb(rgb, 0.0)

@@ -434,6 +434,18 @@ cdef inline color _xyz_to_luv(double x, double y, double z):
     cdef double L, u, v, uprime, vprime, denom
 
     denom = x + (15 * y) + (3 * z)
+    # Black has no chromaticity. 0/0 used to come back as nan.
+    if denom == 0.0:
+        y = y / yn
+        if y <= t0:
+            L = kappa * y
+        else:
+            L = (116 * (y ** third)) - 16
+        color.one = L
+        color.two = 0.0
+        color.three = 0.0
+        return color
+
     uprime = (4 * x) / denom
     vprime = (9 * y) / denom
 
